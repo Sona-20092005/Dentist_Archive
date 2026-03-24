@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dentist_archive_db
+    username: postgres
+    password: user1234
+
+server:
+  port: 8087
+
