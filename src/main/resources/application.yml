@@ -5,4 +5,24 @@ spring:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT:5432}/${DB_NAME:dentist_archive_db}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 10000 # timeout to get connection from the pool
+      idle-timeout: 60000 # timeout for connection to be idle in the pool
+      maximum-pool-size: 20 # maximum number of connections in the pool
+      minimum-idle: 1 # minimum number of connections in the pool
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        check_nullability: true
+        query:
+          in_clause_parameter_padding: true
+          fail_on_pagination_over_collection_fetch: true
+logging:
+  level:
+    liquibase: INFO
+    org.springframework.boot.liquibase: INFO
