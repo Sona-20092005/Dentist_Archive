@@ -7,15 +7,31 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
-// TODO: 3/26/2026 extend from EntityMapper 
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class PatientMapper {
+public class PatientMapper implements EntityMapper<Patient, PatientDto>{
 
 
     public PatientDto toDto(Patient patient) {
-        // TODO: 3/26/2026 change to real mapper logic 
-        return new PatientDto();
+
+        PatientDto dto = new PatientDto();
+
+        dto.setId(patient.getId());
+        dto.setCreatedAt(patient.getCreatedAt());
+        dto.setCreatedBy(patient.getCreatedBy());
+        dto.setUpdatedAt(patient.getUpdatedAt());
+        dto.setUpdatedBy(patient.getUpdatedBy());
+        dto.setArchivedAt(patient.getArchivedAt());
+        dto.setArchivedBy(patient.getArchivedBy());
+        dto.setArchived(patient.isArchived());
+        dto.setName(patient.getName());
+        dto.setPhones(patient.getPhones());
+        dto.setEmails(patient.getEmails());
+        dto.setAddress(patient.getAddress());
+        dto.setPassportInformation(patient.getPassportInformation());
+        dto.setNotes(patient.getNotes());
+
+        return dto;
     }
 }

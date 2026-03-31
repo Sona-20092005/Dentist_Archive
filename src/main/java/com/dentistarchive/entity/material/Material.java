@@ -25,7 +25,7 @@ public class Material extends ArchivingBaseEntity {
     String name;
 
     @NotNull
-//    @Column(name = "unit_price")
+    @Column(name = "unit_price")
     BigDecimal unitPrice;
 
     // TODO: 3/30/2026 Maybe have a class here to also store addresses

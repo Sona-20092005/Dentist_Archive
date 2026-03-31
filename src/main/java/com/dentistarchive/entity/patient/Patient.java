@@ -33,7 +33,7 @@ public class Patient extends ArchivingBaseEntity {
 
     String address;
 
-//    @Column(name = "passport_information")
+    @Column(name = "passport_information")
     String passportInformation;
 
     String notes;
