@@ -1,7 +1,7 @@
 package com.dentistarchive.mapper;
 
 import com.dentistarchive.dto.PatientDto;
-import com.dentistarchive.entity.Patient;
+import com.dentistarchive.entity.patient.Patient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

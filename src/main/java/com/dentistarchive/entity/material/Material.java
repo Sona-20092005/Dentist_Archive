@@ -1,5 +1,6 @@
-package com.dentistarchive.entity;
+package com.dentistarchive.entity.material;
 
+import com.dentistarchive.entity.ArchivingBaseEntity;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,6 +9,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -17,26 +19,21 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Patient extends ArchivingBaseEntity {
+public class Material extends ArchivingBaseEntity {
 
     @NotNull
     String name;
 
+    @NotNull
+//    @Column(name = "unit_price")
+    BigDecimal unitPrice;
+
+    // TODO: 3/30/2026 Maybe have a class here to also store addresses
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    List<String> phones;
+    List<String> stores;
 
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    List<String> emails;
-
-    String address;
-
-    @Column(name = "passport_information")
-    String passportInformation;
+    String description;
 
     String notes;
-
 }
-
-
