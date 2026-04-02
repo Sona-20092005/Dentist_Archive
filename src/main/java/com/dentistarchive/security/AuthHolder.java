@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -31,11 +32,11 @@ public class AuthHolder {
                 .map(it -> (ActorDetails) it);
     }
 
-    public static ActorDetails getActorDetailsOrElseThrow() {
+    public static UserDetails getActorDetailsOrElseThrow() {
         return getActorDetails().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }
 
-    public static void setAuthentication(ActorDetails actorDetails) {
+    public static void setAuthentication(UserDetails actorDetails) {
         if (actorDetails == null) {
             clearAuthentication();
             return;

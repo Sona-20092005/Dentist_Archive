@@ -1,7 +1,7 @@
 package com.dentistarchive.controller;
 
 
-import com.dentistarchive.dto.PatientCreateDto;
+import com.dentistarchive.dto.create.PatientCreateDto;
 import com.dentistarchive.dto.PatientDto;
 import com.dentistarchive.mapper.PatientMapper;
 import com.dentistarchive.service.PatientService;
@@ -36,8 +36,5 @@ public class PatientController extends BaseController {
     public PatientDto createPatient(@Valid @RequestBody PatientCreateDto createDto) {
         return patientMapper.toDto(patientService.create(createDto));
     }
-
-
-
 
 }

@@ -57,7 +57,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Querydsl runtime -->
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
@@ -65,10 +64,16 @@
             <classifier>jakarta</classifier>
         </dependency>
 
-        <!-- Needed so generated sources can reference jakarta annotations -->
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.6.3</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -93,7 +98,6 @@
             <version>3.0.0</version>
         </dependency>
 
-        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

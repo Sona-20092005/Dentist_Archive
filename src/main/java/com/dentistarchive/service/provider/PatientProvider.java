@@ -1,17 +1,23 @@
 package com.dentistarchive.service.provider;
 
+import com.dentistarchive.dto.create.PatientCreateDto;
+import com.dentistarchive.entity.patient.Patient;
 import org.springframework.stereotype.Component;
 
 
-// TODO: 3/31/2026 implement provider logic 
 @Component
 public class PatientProvider {
 
-//    public Patient createDraft(PatientCreateDto createDto) {
-//        Patient patient = new Patient();
-//
-//        patient.setName(createDto.get());
-//
-//        return broker;
-//    }
+    public Patient create(PatientCreateDto createDto) {
+
+        Patient patient = new Patient();
+        patient.setName(createDto.getName());
+        patient.setPhones(createDto.getPhones());
+        patient.setEmails(createDto.getEmails());
+        patient.setAddress(createDto.getAddress());
+        patient.setPassportInformation(createDto.getPassportInformation());
+        patient.setNotes(createDto.getNotes());
+
+        return patient;
+    }
 }
