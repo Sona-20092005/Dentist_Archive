@@ -48,6 +48,4 @@ public class AdminUserCreateDto extends BaseCreateDto<DoctorDto> {
     @Schema(description = "Phone (unique inside scope)")
     String phone;
 
-    @Schema(description = "Locale", allowableValues = {"ru", "en", "uz"}, implementation = String.class)
-    Locale locale;
 }

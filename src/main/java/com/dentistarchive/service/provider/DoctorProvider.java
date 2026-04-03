@@ -36,7 +36,6 @@ public class DoctorProvider {
         doctor.setPhone(createDto.getPhone());
         doctor.setScope(UserScope.ADMIN);
         setPassword(doctor, createDto.getPassword(), createDto.isTemporaryPassword());
-        doctor.setLocale(createDto.getLocale());
 
         var roles = roleService.getByIdsOrElseThrow(createDto.getRoleIds());
         roles.forEach(role -> {
@@ -62,7 +61,6 @@ public class DoctorProvider {
         doctor.setScope(UserScope.DOCTOR);
         doctor.setRoles(Set.of(roleService.getByCodeOrElseThrow("doctor")));
         setPassword(doctor, createDto.getPassword(), false);
-        doctor.setLocale(createDto.getLocale());
         return doctor;
     }
 

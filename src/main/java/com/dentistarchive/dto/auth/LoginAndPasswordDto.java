@@ -1,6 +1,6 @@
 package com.dentistarchive.dto.auth;
 
-import com.sksoldev.rep.actor.dto.enums.ActorScope;
+import com.dentistarchive.dto.auth.enums.UserScope;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -20,5 +20,5 @@ public class LoginAndPasswordDto {
     @NotBlank
     String password;
     @NotNull
-    ActorScope scope;
+    UserScope scope;
 }

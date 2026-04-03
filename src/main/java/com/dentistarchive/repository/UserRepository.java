@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.dentistarchive.entity.QUser.user;
+
 @Repository
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserRepository extends BaseReadOnlyRepository<User, UserFilter> {
@@ -57,15 +59,15 @@ public class UserRepository extends BaseReadOnlyRepository<User, UserFilter> {
         var queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager);
         var querydsl = new Querydsl(entityManager, new PathBuilderFactory().create(User.class));
 
-        var query = (JPAQuery<User>) queryFactory.from(QUser.actor)
-                .leftJoin(QUser.actor.roles).fetchJoin();
+        var query = (JPAQuery<User>) queryFactory.from(user)
+                .leftJoin(user.roles).fetchJoin();
 
         if (pageable.isPaged()) {
             // select needed ids to avoid query with join fetch + pagination
-            JPAQuery<UUID> queryIds = queryFactory.select(QUser.actor.id).from(QUser.actor).where(predicate);
+            JPAQuery<UUID> queryIds = queryFactory.select(user.id).from(user).where(predicate);
             List<UUID> actorIds = querydsl.applyPagination(pageable, queryIds).fetch();
 
-            query.where(QUser.actor.id.in(actorIds));
+            query.where(user.id.in(actorIds));
         } else {
             query.where(predicate);
         }

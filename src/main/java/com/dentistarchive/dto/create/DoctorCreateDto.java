@@ -4,11 +4,11 @@ package com.dentistarchive.dto.create;
 //import com.skapps.tech.common.validation.NormalizedSpace;
 //import com.skapps.tech.common.validation.PhoneNumber;
 //import com.sksoldev.rep.actor.dto.UserDto;
+
 import com.dentistarchive.dto.DoctorDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -27,7 +27,6 @@ public class DoctorCreateDto extends BaseCreateDto<DoctorDto> {
 
     @Schema(description = "Full name (not unique)")
     @NotBlank
-    @Pattern(regexp = FULL_NAME_PATTERN, message = FULL_NAME_PATTERN_ERROR_CODE)
     @Size(min = 2, max = 80)
     String fullName;
 
@@ -44,6 +43,4 @@ public class DoctorCreateDto extends BaseCreateDto<DoctorDto> {
     @Schema(description = "Phone (unique inside scope)")
     String phone;
 
-    @Schema(description = "Locale", allowableValues = {"ru", "en", "uz"}, implementation = String.class)
-    Locale locale;
 }

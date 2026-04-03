@@ -3,12 +3,9 @@ package com.dentistarchive.security;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Objects;
+
 import java.util.function.Supplier;
-
-import static java.util.Objects.requireNonNull;
 
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PROTECTED)
@@ -16,12 +13,10 @@ public class SecurityManager {
 
     private static final ThreadLocal<Boolean> ACCESS_CONTROL_ENABLED = ThreadLocal.withInitial(() -> true);
 
-    final Supplier<UserDetails> clientDetailsSupplier;
+    final Supplier<CustomUserDetails> clientDetailsSupplier;
 
-    UserDetails clientDetails;
-
-    public static void runAsActor(UserDetails userDetails, Runnable runnable) {
-        UserDetails previousUserDetails = AuthHolder.getActorDetails().orElse(null);
+    public static void runAsActor(CustomUserDetails userDetails, Runnable runnable) {
+        CustomUserDetails previousUserDetails = AuthHolder.getActorDetails().orElse(null);
         try {
             AuthHolder.setAuthentication(userDetails);
             runnable.run();
@@ -30,8 +25,8 @@ public class SecurityManager {
         }
     }
 
-    public static <T> T runAsActor(UserDetails userDetails, Supplier<T> supplier) {
-        UserDetails previousUserDetails = AuthHolder.getActorDetails().orElse(null);
+    public static <T> T runAsActor(CustomUserDetails userDetails, Supplier<T> supplier) {
+        CustomUserDetails previousUserDetails = AuthHolder.getActorDetails().orElse(null);
         try {
             AuthHolder.setAuthentication(userDetails);
             return supplier.get();
@@ -41,7 +36,7 @@ public class SecurityManager {
     }
 
     public static void runWithoutAuthentication(Runnable runnable) {
-        UserDetails previousActorDetails = AuthHolder.getActorDetails().orElse(null);
+        CustomUserDetails previousActorDetails = AuthHolder.getActorDetails().orElse(null);
         try {
             AuthHolder.clearAuthentication();
             runnable.run();
@@ -51,7 +46,7 @@ public class SecurityManager {
     }
 
     public static <T> T runWithoutAuthentication(Supplier<T> supplier) {
-        UserDetails previousActorDetails = AuthHolder.getActorDetails().orElse(null);
+        CustomUserDetails previousActorDetails = AuthHolder.getActorDetails().orElse(null);
         try {
             AuthHolder.clearAuthentication();
             return supplier.get();

@@ -1,13 +1,11 @@
 package com.dentistarchive.exception.actor;
 
-import com.skapps.tech.common.locale.utils.MessageSourceUtils;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Duration;
-import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
@@ -22,9 +20,7 @@ public class ManyFailedLoginAttemptsException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return MessageSourceUtils.getMessageOrElseCode(
-                getErrorCode(),
-                List.of(Math.max(durationTillNextLoginAttempt.toSeconds(), 1))
-        );
+        long seconds = Math.max(durationTillNextLoginAttempt.toSeconds(), 1);
+        return "Too many failed login attempts. Try again in " + seconds + " seconds.";
     }
 }

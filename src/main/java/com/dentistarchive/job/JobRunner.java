@@ -12,11 +12,9 @@ public class JobRunner {
 
     DefaultRolesCreationJob defaultRolesCreationJob;
     DefaultDoctorsCreationJob defaultUsersCreationJob;
-    DefaultClientsCreationJob defaultClientsCreationJob;
 
     public void runJobs() {
         defaultRolesCreationJob.createDefaultRoles();
         defaultUsersCreationJob.createDefaultUsers(defaultRolesCreationJob.getSuperAdminRoleId());
-        defaultClientsCreationJob.createInternalMsClient(defaultRolesCreationJob.getInternalMsClientRoleId());
     }
 }

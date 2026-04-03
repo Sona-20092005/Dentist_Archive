@@ -26,6 +26,4 @@ public non-sealed class DoctorDto extends UserDto {
 
     UUID companyId;
 
-    @Schema(description = "Locale", allowableValues = {"ru", "en", "uz"}, implementation = String.class)
-    Locale locale;
 }

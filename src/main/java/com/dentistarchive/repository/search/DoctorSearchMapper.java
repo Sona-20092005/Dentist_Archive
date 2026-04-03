@@ -10,7 +10,7 @@ import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import com.dentistarchive.entity.QDoctor.doctor;
+import static com.dentistarchive.entity.QDoctor.doctor;
 
 @Component
 public class DoctorSearchMapper extends SearchMapper<DoctorFilter, DoctorSort> {

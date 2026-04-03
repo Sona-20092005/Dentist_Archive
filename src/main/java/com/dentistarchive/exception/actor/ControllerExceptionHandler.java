@@ -1,7 +1,7 @@
 package com.dentistarchive.exception.actor;
 
-import com.skapps.tech.common.error.ErrorResponseCreator;
-import com.skapps.tech.common.error.response.ErrorResponse;
+import com.dentistarchive.exception.ErrorResponse;
+import com.dentistarchive.exception.ErrorResponseCreator;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Map;
 
-import static com.skapps.tech.common.error.response.ErrorResponse.CommonErrorCodes.SERVER_ERROR;
-import static com.skapps.tech.common.error.response.ErrorResponse.CommonErrorCodes.VALIDATION_ERROR;
-import static com.skapps.tech.common.locale.utils.MessageSourceUtils.getMessageOrElseCode;
+import static com.dentistarchive.exception.ErrorResponse.CommonErrorCodes.SERVER_ERROR;
+import static com.dentistarchive.exception.ErrorResponse.CommonErrorCodes.VALIDATION_ERROR;
 
 @Slf4j
 @ControllerAdvice
@@ -37,7 +36,7 @@ public class ControllerExceptionHandler {
                     .badRequest()
                     .body(errorResponseCreator.createErrorResponse(
                             VALIDATION_ERROR,
-                            getMessageOrElseCode("database.constraint." + exception.getConstraintName())
+                            "database.constraint." + exception.getConstraintName()
                     ));
         }
         return ResponseEntity

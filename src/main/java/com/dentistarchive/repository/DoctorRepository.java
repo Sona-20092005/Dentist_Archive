@@ -2,6 +2,7 @@ package com.dentistarchive.repository;
 
 import com.dentistarchive.dto.auth.enums.UserScope;
 import com.dentistarchive.entity.Doctor;
+import com.dentistarchive.entity.QDoctor;
 import com.dentistarchive.repository.jpa.DoctorJpaRepository;
 import com.dentistarchive.repository.search.DoctorSearchMapper;
 import com.dentistarchive.search.filter.DoctorFilter;
@@ -86,15 +87,15 @@ public class DoctorRepository extends BaseReadOnlyRepository<Doctor, DoctorFilte
         var queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager);
         var querydsl = new Querydsl(entityManager, new PathBuilderFactory().create(Doctor.class));
 
-        var query = (JPAQuery<Doctor>) queryFactory.from(QDoctor.user)
-                .leftJoin(QDoctor.user.roles).fetchJoin();
+        var query = (JPAQuery<Doctor>) queryFactory.from(doctor)
+                .leftJoin(QDoctor.doctor.roles).fetchJoin();
 
         if (pageable.isPaged()) {
             // select needed ids to avoid query with join fetch + pagination
-            JPAQuery<UUID> queryIds = queryFactory.select(QDoctor.user.id).from(QDoctor.user).where(predicate);
+            JPAQuery<UUID> queryIds = queryFactory.select(QDoctor.doctor.id).from(QDoctor.doctor).where(predicate);
             List<UUID> userIds = querydsl.applyPagination(pageable, queryIds).fetch();
 
-            query.where(QDoctor.user.id.in(userIds));
+            query.where(QDoctor.doctor.id.in(userIds));
         } else {
             query.where(predicate);
         }

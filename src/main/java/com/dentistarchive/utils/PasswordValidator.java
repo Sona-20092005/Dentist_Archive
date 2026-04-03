@@ -52,7 +52,7 @@ public class PasswordValidator {
             throw new PasswordIsNotSecureException(user instanceof Doctor);
         }
         if (user instanceof Doctor doctor &&
-                (password.equals(doctor.getEmail()) || password.equals(doctor.getNickName()) || password.equals(user.getPhone()))) {
+                (password.equals(doctor.getEmail()) || password.equals(doctor.getNickName()))) {
             throw new PasswordIsNotSecureException(false);
         }
     }

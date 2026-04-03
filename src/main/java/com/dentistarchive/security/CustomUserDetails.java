@@ -25,10 +25,10 @@ import static java.util.stream.Collectors.toSet;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ActorDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
-    @JsonProperty("aid")
-    UUID actorId;
+    @JsonProperty("uid")
+    UUID userId;
 
     @JsonProperty("s")
     String scope;
