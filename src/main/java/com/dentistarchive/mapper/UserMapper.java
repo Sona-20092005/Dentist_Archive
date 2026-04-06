@@ -16,12 +16,12 @@ import static java.util.stream.Collectors.toSet;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserMapper implements EntityMapper<User, UserDto> {
 
-    UserMapper userMapper;
+    DoctorMapper doctorMapper;
 
     @Override
     public UserDto toDto(User user) {
         return switch (user) {
-            case Doctor doctors -> userMapper.toDto(doctors);
+            case Doctor doctors -> doctorMapper.toDto(doctors);
             default -> throw new IllegalStateException();
         };
     }
