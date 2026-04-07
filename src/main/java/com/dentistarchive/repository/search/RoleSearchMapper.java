@@ -8,7 +8,6 @@ import com.dentistarchive.search.sort.RoleSort;
 import com.dentistarchive.search.sort.SortDirection;
 import com.querydsl.core.types.Predicate;
 
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +29,7 @@ public class RoleSearchMapper extends SearchMapper<RoleFilter, RoleSort> {
     @Override
     protected Sort.Order toOrder(RoleSort sortName, SortDirection direction) {
         return switch (sortName) {
-            case NAME -> SortBuilder.buildOrder(role.namesMap.get(LocaleContextHolder.getLocale()), direction);
+            case NAME -> SortBuilder.buildOrder(role.name, direction);
         };
     }
 

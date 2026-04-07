@@ -9,7 +9,9 @@ public class RoleProvider {
 
     public Role create(RoleCreateDto createDto) {
         return Role.builder()
+                .name(createDto.getName())
                 .code(createDto.getCode())
+                .description(createDto.getDescription())
                 .scope(createDto.getScope())
                 .permissionCodes(createDto.getPermissionCodes())
                 .build();
@@ -22,6 +24,10 @@ public class RoleProvider {
         if (!role.getScope().equals(createDto.getScope())) {
             throw new IllegalArgumentException("Role's scope is immutable");
         }
+
+
+        role.setName(createDto.getName());
+        role.setDescription(createDto.getDescription());
         role.setPermissionCodes(createDto.getPermissionCodes());
     }
 }

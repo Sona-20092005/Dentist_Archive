@@ -23,7 +23,12 @@ import java.util.Set;
 public class RoleCreateDto extends BaseCreateDto<RoleDto> {
 
     @NotBlank
+    String name;
+
+    @NotBlank
     String code;
+
+    String description;
 
     @NotNull
     UserScope scope;

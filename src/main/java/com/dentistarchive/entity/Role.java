@@ -12,7 +12,8 @@ import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Type;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -23,40 +24,22 @@ import java.util.*;
 @FieldNameConstants
 public class Role extends BaseEntity {
 
-    // TODO: 4/7/2026 adding new HashMap is a temporary solution, needs changing
-    @NonNull
     @Column(nullable = false)
-    @Type(JsonType.class)
-    @Builder.Default
-    Map<Locale, String> namesMap = new HashMap<>();
+    String name;
 
-    @NonNull
     @Column(nullable = false, unique = true)
     String code;
 
-    @NonNull
-    @Column(nullable = false)
-    @Type(JsonType.class)
-    @Builder.Default
-    Map<Locale, String> descriptionsMap = new HashMap<>();
+    String description;
 
     boolean clientRole;
 
-    @NonNull
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     UserScope scope;
 
-    @NonNull
     @Type(JsonType.class)
     @Builder.Default
     Set<String> permissionCodes = new HashSet<>();
 
-    public String getName(Locale locale) {
-        return namesMap.get(locale);
-    }
-
-    public String getDescription(Locale locale) {
-        return descriptionsMap.get(locale);
-    }
 }

@@ -11,7 +11,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
 import java.util.Set;
 
 @Component
@@ -32,6 +31,8 @@ public class DefaultRolesCreationJob {
 
             RoleCreateDto.builder()
                     .code(SUPER_ADMIN_ROLE_CODE)
+                    .name("Super Admin")
+                    .description("System super administrator")
                     .scope(UserScope.ADMIN)
                     .permissionCodes(Set.of(
                             "read_all_users",
@@ -46,6 +47,8 @@ public class DefaultRolesCreationJob {
 
             RoleCreateDto.builder()
                     .code(DOCTOR_ROLE_CODE)
+                    .name("Doctor")
+                    .description("Doctor role")
                     .scope(UserScope.DOCTOR)
                     .permissionCodes(Set.of(
                             "read_patients",
@@ -57,6 +60,8 @@ public class DefaultRolesCreationJob {
 
             RoleCreateDto.builder()
                     .code(CLINIC_ROLE_CODE)
+                    .name("Clinic")
+                    .description("Clinic management role")
                     .scope(UserScope.CLINIC)
                     .permissionCodes(Set.of(
                             "read_doctors",
@@ -67,6 +72,8 @@ public class DefaultRolesCreationJob {
 
             RoleCreateDto.builder()
                     .code(SYSTEM_ROLE_CODE)
+                    .name("System")
+                    .description("Internal system role")
                     .scope(UserScope.SYSTEM)
                     .permissionCodes(Set.of())
                     .build()
@@ -75,7 +82,9 @@ public class DefaultRolesCreationJob {
     public void createDefaultRoles() {
         log.info("Default roles loading...");
         try {
-            roleService.overwriteAllRolesWithoutAccessControl(RolesCreateDto.withRoles(defaultRoles));
+            roleService.overwriteAllRolesWithoutAccessControl(
+                    RolesCreateDto.withRoles(defaultRoles)
+            );
             log.info("Default roles loaded");
         } catch (Exception e) {
             log.error("Failed to load default roles", e);
