@@ -3,6 +3,7 @@ package com.dentistarchive.controller;
 
 import com.dentistarchive.dto.create.PatientCreateDto;
 import com.dentistarchive.dto.PatientDto;
+import com.dentistarchive.dto.update.PatientUpdateDto;
 import com.dentistarchive.mapper.PatientMapper;
 import com.dentistarchive.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +36,12 @@ public class PatientController extends BaseController {
     @Operation(summary = "Create patient")
     public PatientDto createPatient(@Valid @RequestBody PatientCreateDto createDto) {
         return patientMapper.toDto(patientService.create(createDto));
+    }
+
+    @PutMapping
+    @Operation(summary = "Update patient info")
+    public PatientDto createPatient(@Valid @RequestBody PatientUpdateDto updateDto) {
+        return patientMapper.toDto(patientService.update(updateDto));
     }
 
 }

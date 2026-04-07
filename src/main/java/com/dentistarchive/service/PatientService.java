@@ -1,6 +1,7 @@
 package com.dentistarchive.service;
 
 import com.dentistarchive.dto.create.PatientCreateDto;
+import com.dentistarchive.dto.update.PatientUpdateDto;
 import com.dentistarchive.entity.patient.Patient;
 import com.dentistarchive.repository.PatientRepository;
 import com.dentistarchive.search.filter.PatientFilter;
@@ -41,4 +42,18 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter> 
         var patient = patientProvider.create(createDto);
         return patientRepository.save(patient);
     }
+
+    public Patient update(PatientUpdateDto updateDto) {
+        return new Patient();
+    }
+
+//    @Transactional(propagation = Propagation.NEVER)
+//    public Patient update(@NotNull UUID id, @NotNull @Valid PatientUpdateDto updateDto) {
+//        Patient patient = getByIdOrElseThrow(id);
+//        individualBrokerAccessValidator.accessControlBeforeUpdate(patient);
+//
+//
+//        individualBrokerProvider.updateIndividualBroker(patient, updateDto, newAttachmentFileInfos);
+//        return individualBrokerRepository.update(patient);
+//    }
 }

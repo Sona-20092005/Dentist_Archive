@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -38,6 +39,8 @@ public class Patient extends ArchivingBaseEntity {
 
     String notes;
 
+    @Column(name = "doctor_id", nullable = false)
+    UUID doctorId;
 }
 
 

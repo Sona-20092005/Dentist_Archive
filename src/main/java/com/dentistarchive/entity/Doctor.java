@@ -11,7 +11,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Locale;
 import java.util.UUID;
 
 @Data
@@ -31,5 +30,4 @@ public class Doctor extends User {
 
     UUID companyId;
 
-    Locale locale;
 }

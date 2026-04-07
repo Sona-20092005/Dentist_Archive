@@ -7,4 +7,5 @@ databaseChangeLog:
       file: db/changelog/changes/2026-04-03_add_role_and_user.sql
   - include:
       file: db/changelog/changes/2026-04-04_alter_role_name_description.sql
-
+  - include:
+      file: db/changelog/changes/2026-04-07_updating_patient.sql
