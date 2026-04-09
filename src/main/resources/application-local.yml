@@ -7,3 +7,11 @@ spring:
 server:
   port: 8087
 
+auth-server:
+  user-access-token-life-time: 30M
+  session-max-inactive-time: 30D
+  jwk:
+    keys:
+      - key-id: 2b3fee3d-b382-4346-b6e8-ae3f9e19fc3e
+        private-key-path: classpath:/data/local/keys/id_ecdsa.pem
+        public-key-path: classpath:/data/local/keys/id_ecdsa_pub.pem

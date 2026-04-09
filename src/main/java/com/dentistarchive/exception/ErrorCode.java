@@ -1,4 +1,4 @@
-package com.dentistarchive.exception.actor;
+package com.dentistarchive.exception;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,7 +19,12 @@ public enum ErrorCode {
     LOGIN_DELAY_AFTER_FAILED_ATTEMPTS("validation.login-delay-after-failed-attempts"),
     USER_NOT_FOUND("validation.user-not-found"),
     ROLE_WITH_INCORRECT_SCOPE_SPECIFIED("validation.role-with-incorrect-scope-specified"),
-    ;
+    AUTHORIZATION_BY_TEMPORARY_PASSWORD("validation.authorization.by-temporary-password"),
+    REFRESH_TOKEN_INVALIDATED("validation.refresh-token-invalidated"),
+    INVALID_CSRF_TOKEN("validation.invalid-csrf-token"),
+    ACCESS_TOKEN_FORMAT_INVALID("access-token.format.invalid"),
+    ACCESS_TOKEN_SIGNATURE_INVALID("access-token.signature.invalid"),
+    ACCESS_TOKEN_EXPIRED("access-token.expired");
 
     String code;
 }

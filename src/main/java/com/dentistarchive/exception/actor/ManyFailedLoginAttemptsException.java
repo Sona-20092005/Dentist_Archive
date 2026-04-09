@@ -1,5 +1,6 @@
 package com.dentistarchive.exception.actor;
 
+import com.dentistarchive.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

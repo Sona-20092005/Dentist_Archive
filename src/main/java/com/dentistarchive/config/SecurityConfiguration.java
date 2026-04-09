@@ -1,6 +1,9 @@
 package com.dentistarchive.config;
 
 import com.dentistarchive.repository.jpa.DoctorJpaRepository;
+import com.dentistarchive.security.UserDetailsMapper;
+
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import tools.jackson.databind.ObjectMapper;
+
 import java.util.stream.Stream;
 
 @Configuration
@@ -63,5 +68,11 @@ public class SecurityConfiguration {
                             .build();
                 })
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public UserDetailsMapper actorDetailsMapper(ObjectMapper objectMapper) {
+        return new UserDetailsMapper(objectMapper);
     }
 }

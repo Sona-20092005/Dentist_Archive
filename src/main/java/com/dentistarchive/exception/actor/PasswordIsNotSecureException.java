@@ -2,6 +2,7 @@ package com.dentistarchive.exception.actor;
 
 
 import com.dentistarchive.exception.CommonErrorCodeException;
+import com.dentistarchive.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

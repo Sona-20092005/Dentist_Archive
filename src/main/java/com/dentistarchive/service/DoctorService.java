@@ -6,7 +6,7 @@ import com.dentistarchive.dto.create.AdminUserCreateDto;
 import com.dentistarchive.dto.create.DoctorCreateDto;
 import com.dentistarchive.entity.Doctor;
 import com.dentistarchive.exception.actor.CustomValidationException;
-import com.dentistarchive.exception.actor.ErrorCode;
+import com.dentistarchive.exception.ErrorCode;
 import com.dentistarchive.repository.DoctorRepository;
 import com.dentistarchive.search.filter.DoctorFilter;
 import com.dentistarchive.service.access.DoctorAccessValidator;
@@ -21,8 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Service

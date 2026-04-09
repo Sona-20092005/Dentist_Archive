@@ -6,7 +6,7 @@ import com.dentistarchive.dto.create.AdminUserCreateDto;
 import com.dentistarchive.dto.create.DoctorCreateDto;
 import com.dentistarchive.entity.Doctor;
 import com.dentistarchive.exception.actor.CustomValidationException;
-import com.dentistarchive.exception.actor.ErrorCode;
+import com.dentistarchive.exception.ErrorCode;
 import com.dentistarchive.security.AuthUtils;
 import com.dentistarchive.service.RoleService;
 import lombok.AccessLevel;
