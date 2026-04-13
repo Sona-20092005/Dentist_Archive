@@ -26,3 +26,31 @@ logging:
   level:
     liquibase: INFO
     org.springframework.boot.liquibase: INFO
+
+app:
+  usualUserRoleCode: "USER"
+  usualUserLoginUrl: "http://localhost:8080/login"
+
+  serviceProviderSetPasswordUrlFormat: "http://localhost:8080/set-password?token=%s"
+  brokerSetPasswordUrlFormat: "http://localhost:8080/broker/set-password?token=%s"
+
+  emailConfirmation:
+    oneTimeCodeLifeTime: 10m
+    codeLength: 6
+    maxFailedAttempts: 5
+
+  delaysAfterFailedLoginAttemptsForUsers:
+    - numberOfFails: 1
+      delay: 0s
+    - numberOfFails: 3
+      delay: 5s
+    - numberOfFails: 5
+      delay: 30s
+
+  userAvatar:
+    maxSize: 2MB
+    contentTypes:
+      - image/png
+      - image/jpeg
+
+  publicFileStorageDomain: "http://localhost:8080/files"
