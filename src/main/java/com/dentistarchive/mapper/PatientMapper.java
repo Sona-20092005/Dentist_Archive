@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PatientMapper implements EntityMapper<Patient, PatientDto>{
 
-
     public PatientDto toDto(Patient patient) {
 
         PatientDto dto = new PatientDto();

@@ -15,8 +15,8 @@ import org.springframework.validation.annotation.Validated;
 @Service
 @Validated
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class PatientService extends BaseReadOnlyService<Patient, PatientFilter> {
-
+public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
+        implements ArchivableService<Patient> {
     PatientRepository patientRepository;
     PatientAccessValidator accessValidator;
 
@@ -40,12 +40,18 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter> 
 
     public Patient create(PatientCreateDto createDto) {
         var patient = patientProvider.create(createDto);
-        return patientRepository.save(patient);
+        return save(patient);
     }
 
     public Patient update(PatientUpdateDto updateDto) {
         return new Patient();
     }
+
+    @Override
+    public Patient save(Patient entity) {
+        return patientRepository.save(entity);
+    }
+
 
 //    @Transactional(propagation = Propagation.NEVER)
 //    public Patient update(@NotNull UUID id, @NotNull @Valid PatientUpdateDto updateDto) {

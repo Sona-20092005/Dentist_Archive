@@ -16,7 +16,7 @@ public class SecurityManager {
     final Supplier<CustomUserDetails> clientDetailsSupplier;
 
     public static void runAsActor(CustomUserDetails userDetails, Runnable runnable) {
-        CustomUserDetails previousUserDetails = AuthHolder.getActorDetails().orElse(null);
+        CustomUserDetails previousUserDetails = AuthHolder.getUserDetails().orElse(null);
         try {
             AuthHolder.setAuthentication(userDetails);
             runnable.run();
@@ -26,7 +26,7 @@ public class SecurityManager {
     }
 
     public static <T> T runAsActor(CustomUserDetails userDetails, Supplier<T> supplier) {
-        CustomUserDetails previousUserDetails = AuthHolder.getActorDetails().orElse(null);
+        CustomUserDetails previousUserDetails = AuthHolder.getUserDetails().orElse(null);
         try {
             AuthHolder.setAuthentication(userDetails);
             return supplier.get();
@@ -36,7 +36,7 @@ public class SecurityManager {
     }
 
     public static void runWithoutAuthentication(Runnable runnable) {
-        CustomUserDetails previousActorDetails = AuthHolder.getActorDetails().orElse(null);
+        CustomUserDetails previousActorDetails = AuthHolder.getUserDetails().orElse(null);
         try {
             AuthHolder.clearAuthentication();
             runnable.run();
@@ -46,7 +46,7 @@ public class SecurityManager {
     }
 
     public static <T> T runWithoutAuthentication(Supplier<T> supplier) {
-        CustomUserDetails previousActorDetails = AuthHolder.getActorDetails().orElse(null);
+        CustomUserDetails previousActorDetails = AuthHolder.getUserDetails().orElse(null);
         try {
             AuthHolder.clearAuthentication();
             return supplier.get();

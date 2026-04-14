@@ -29,6 +29,6 @@ public abstract class MutableBaseEntity extends BaseEntity {
     @PreUpdate
     protected void preUpdate() {
         updatedAt = ClockUtils.now();
-        updatedBy = AuthHolder.getActorId().orElse(null);
+        updatedBy = AuthHolder.getUserId().orElse(null);
     }
 }

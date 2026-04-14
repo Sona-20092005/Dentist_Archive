@@ -40,7 +40,7 @@ public abstract class BaseEntity implements Serializable {
         }
         createdAt = ClockUtils.now();
         if (createdBy == null) {
-            createdBy = AuthHolder.getActorId().orElse(null);
+            createdBy = AuthHolder.getUserId().orElse(null);
         }
     }
 }

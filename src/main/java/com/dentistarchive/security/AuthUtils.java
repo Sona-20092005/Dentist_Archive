@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 public class AuthUtils {
 
     public static boolean hasPermission(String permissionCode) {
-        return AuthHolder.getActorDetailsOrElseThrow().getPermissionCodes().contains(permissionCode);
+        return AuthHolder.getUserDetailsOrElseThrow().getPermissionCodes().contains(permissionCode);
     }
 
     public static boolean hasNoPermission(String permissionCode) {

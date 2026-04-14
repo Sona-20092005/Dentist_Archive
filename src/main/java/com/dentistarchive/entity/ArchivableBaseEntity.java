@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PROTECTED)
-public abstract class ArchivingBaseEntity extends MutableBaseEntity {
+public abstract class ArchivableBaseEntity extends MutableBaseEntity {
 
     boolean archived;
 

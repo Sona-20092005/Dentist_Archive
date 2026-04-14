@@ -1,6 +1,6 @@
 package com.dentistarchive.entity.material;
 
-import com.dentistarchive.entity.ArchivingBaseEntity;
+import com.dentistarchive.entity.ArchivableBaseEntity;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Material extends ArchivingBaseEntity {
+public class Material extends ArchivableBaseEntity {
 
     @NotNull
     String name;

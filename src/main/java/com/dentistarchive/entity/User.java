@@ -23,7 +23,7 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PROTECTED)
-public abstract class User extends ArchivingBaseEntity {
+public abstract class User extends ArchivableBaseEntity {
 
     @Column(nullable = false, unique = true)
     String nickName;

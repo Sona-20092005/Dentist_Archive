@@ -15,15 +15,15 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthHolder {
 
-    public static Optional<UUID> getActorId() {
-        return getActorDetails().map(CustomUserDetails::getUserId);
+    public static Optional<UUID> getUserId() {
+        return getUserDetails().map(CustomUserDetails::getUserId);
     }
 
-    public static UUID getActorIdOrElseThrow() {
-        return getActorId().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+    public static UUID getUserIdOrElseThrow() {
+        return getUserId().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }
 
-    public static Optional<CustomUserDetails> getActorDetails() {
+    public static Optional<CustomUserDetails> getUserDetails() {
         return Optional.of(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(Authentication::getPrincipal)
@@ -31,8 +31,8 @@ public class AuthHolder {
                 .map(it -> (CustomUserDetails) it);
     }
 
-    public static CustomUserDetails getActorDetailsOrElseThrow() {
-        return getActorDetails().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+    public static CustomUserDetails getUserDetailsOrElseThrow() {
+        return getUserDetails().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }
 
     public static void setAuthentication(CustomUserDetails userDetails) {

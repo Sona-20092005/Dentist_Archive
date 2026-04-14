@@ -1,6 +1,6 @@
 package com.dentistarchive.entity.pricelist;
 
-import com.dentistarchive.entity.ArchivingBaseEntity;
+import com.dentistarchive.entity.ArchivableBaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Procedure extends ArchivingBaseEntity {
+public class Procedure extends ArchivableBaseEntity {
 
     @NotNull
     String name;

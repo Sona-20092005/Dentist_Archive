@@ -19,8 +19,8 @@ public class DoctorAccessValidator extends BaseReadOnlyAccessValidator<Doctor, D
 //        if (AuthUtils.hasPermission(ActorMsPermission.READ_ALL_USERS.getCode())) {
 //            return null;
 //        }
-        if (AuthHolder.getActorId().isPresent()) {
-            return DoctorFilter.byId(AuthHolder.getActorIdOrElseThrow());
+        if (AuthHolder.getUserId().isPresent()) {
+            return DoctorFilter.byId(AuthHolder.getUserIdOrElseThrow());
         }
         throw AuthUtils.getAccessDeniedException();
     }

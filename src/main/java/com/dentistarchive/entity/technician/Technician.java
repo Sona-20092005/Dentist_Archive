@@ -1,6 +1,6 @@
 package com.dentistarchive.entity.technician;
 
-import com.dentistarchive.entity.ArchivingBaseEntity;
+import com.dentistarchive.entity.ArchivableBaseEntity;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Technician extends ArchivingBaseEntity {
+public class Technician extends ArchivableBaseEntity {
 
     @NotNull
     String name;
