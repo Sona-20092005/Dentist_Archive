@@ -1,9 +1,10 @@
 package com.dentistarchive.search.filter;
 
-import com.dentistarchive.dto.auth.enums.UserScope;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -22,10 +23,6 @@ public class UserFilter extends ArchivingBaseFilter<UserFilter> {
 
     @Schema(hidden = true)
     String login;
-
-    @Singular
-    @Schema(description = "Actors from one of given scopes")
-    Set<@NotNull UserScope> scopes;
 
     public static UserFilter byId(UUID id) {
         return UserFilter.byIds(Set.of(id));

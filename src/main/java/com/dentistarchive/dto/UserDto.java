@@ -1,6 +1,6 @@
 package com.dentistarchive.dto;
 
-import com.dentistarchive.dto.auth.enums.UserScope;
+import com.dentistarchive.enums.Role;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,7 +12,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Map;
-import java.util.Set;
 
 @Data
 @SuperBuilder
@@ -28,10 +27,9 @@ public abstract sealed class UserDto extends ArchivingBaseDto permits DoctorDto 
     @Schema(description = "Full name (not unique)")
     String fullName;
 
-    @Schema(description = "Actor role")
-    Set<RoleDto> roles;
+    @Schema(description = "User role")
+    Role role;
 
-    UserScope scope;
 
     boolean temporaryPassword;
 

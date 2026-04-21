@@ -1,84 +1,53 @@
 package com.dentistarchive.security;
 
+import com.dentistarchive.enums.Role;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
+import java.util.UUID;
 
-import java.util.function.Supplier;
-
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PROTECTED)
+@Component
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class SecurityManager {
 
-    private static final ThreadLocal<Boolean> ACCESS_CONTROL_ENABLED = ThreadLocal.withInitial(() -> true);
+    public CustomUserDetails getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    final Supplier<CustomUserDetails> clientDetailsSupplier;
+        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
+            return null;
+        }
 
-    public static void runAsActor(CustomUserDetails userDetails, Runnable runnable) {
-        CustomUserDetails previousUserDetails = AuthHolder.getUserDetails().orElse(null);
-        try {
-            AuthHolder.setAuthentication(userDetails);
-            runnable.run();
-        } finally {
-            AuthHolder.setAuthentication(previousUserDetails);
+        return (CustomUserDetails) authentication.getPrincipal();
+    }
+
+    public UUID getCurrentUserId() {
+        CustomUserDetails user = getCurrentUser();
+        return user != null ? user.getUserId() : null;
+    }
+
+    public boolean isAuthenticated() {
+        return getCurrentUser() != null;
+    }
+
+    public boolean hasRole(Role role) {
+        CustomUserDetails user = getCurrentUser();
+        return user != null && user.getRole() == role;
+    }
+
+    public void requireAuthenticated() {
+        if (!isAuthenticated()) {
+            throw new IllegalStateException("User is not authenticated");
         }
     }
 
-    public static <T> T runAsActor(CustomUserDetails userDetails, Supplier<T> supplier) {
-        CustomUserDetails previousUserDetails = AuthHolder.getUserDetails().orElse(null);
-        try {
-            AuthHolder.setAuthentication(userDetails);
-            return supplier.get();
-        } finally {
-            AuthHolder.setAuthentication(previousUserDetails);
+    public void requireRole(Role role) {
+        CustomUserDetails user = getCurrentUser();
+
+        if (user == null || user.getRole() != role) {
+            throw new IllegalStateException("Access denied");
         }
     }
-
-    public static void runWithoutAuthentication(Runnable runnable) {
-        CustomUserDetails previousActorDetails = AuthHolder.getUserDetails().orElse(null);
-        try {
-            AuthHolder.clearAuthentication();
-            runnable.run();
-        } finally {
-            AuthHolder.setAuthentication(previousActorDetails);
-        }
-    }
-
-    public static <T> T runWithoutAuthentication(Supplier<T> supplier) {
-        CustomUserDetails previousActorDetails = AuthHolder.getUserDetails().orElse(null);
-        try {
-            AuthHolder.clearAuthentication();
-            return supplier.get();
-        } finally {
-            AuthHolder.setAuthentication(previousActorDetails);
-        }
-    }
-
-    public static boolean accessControlDisabled() {
-        return !ACCESS_CONTROL_ENABLED.get();
-    }
-
-    public static boolean accessControlEnabled() {
-        return ACCESS_CONTROL_ENABLED.get();
-    }
-
-    public static void runWithoutAccessControl(Runnable runnable) {
-        try {
-            ACCESS_CONTROL_ENABLED.set(false);
-            runnable.run();
-        } finally {
-            ACCESS_CONTROL_ENABLED.set(true);
-        }
-    }
-
-    public static <T> T runWithoutAccessControl(Supplier<T> supplier) {
-        try {
-            ACCESS_CONTROL_ENABLED.set(false);
-            return supplier.get();
-        } finally {
-            ACCESS_CONTROL_ENABLED.set(true);
-        }
-    }
-
 }

@@ -22,17 +22,7 @@ public class DoctorSearchMapper extends SearchMapper<DoctorFilter, DoctorSort> {
                 .eq(doctor.archived, filter.getArchived())
                 .containsIgnoreCase(doctor.fullName, filter.getFullNameContains())
                 .in(doctor.email, filter.getEmails())
-//                .in(doctor.phone, filter.getPhones())
-                .in(doctor.scope, filter.getScopes())
-                .in(doctor.companyId, filter.getCompanyIds());
-
-        if (filter.getInCompany() != null) {
-            if (filter.getInCompany()) {
-                builder.isNotNull(doctor.companyId);
-            } else {
-                builder.isNull(doctor.companyId);
-            }
-        }
+                .in(doctor.phone, filter.getPhones());
 
         return builder.build();
     }

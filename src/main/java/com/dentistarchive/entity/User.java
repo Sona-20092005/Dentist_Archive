@@ -1,6 +1,6 @@
 package com.dentistarchive.entity;
 
-import com.dentistarchive.dto.auth.enums.UserScope;
+import com.dentistarchive.enums.Role;
 import com.dentistarchive.utils.ClockUtils;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
@@ -12,7 +12,6 @@ import org.hibernate.annotations.Type;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 @Data
 @Entity
@@ -26,22 +25,14 @@ import java.util.Set;
 public abstract class User extends ArchivableBaseEntity {
 
     @Column(nullable = false, unique = true)
-    String nickName;
+    String userName;
 
     @Column(nullable = false)
     String fullName;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    UserScope scope;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    Set<Role> roles;
+    Role role;
 
     @Column(nullable = false)
     String passwordHash;
@@ -65,8 +56,8 @@ public abstract class User extends ArchivableBaseEntity {
     protected void prePersist() {
         super.prePersist();
         passwordSetAt = getCreatedAt();
-        if (nickName == null) {
-            nickName = id.toString();
+        if (userName == null) {
+            userName = id.toString();
         }
     }
 

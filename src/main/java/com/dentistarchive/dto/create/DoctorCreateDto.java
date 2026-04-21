@@ -1,10 +1,5 @@
 package com.dentistarchive.dto.create;
 
-//import com.skapps.tech.common.dto.create.BaseCreateDto;
-//import com.skapps.tech.common.validation.NormalizedSpace;
-//import com.skapps.tech.common.validation.PhoneNumber;
-//import com.sksoldev.rep.actor.dto.UserDto;
-
 import com.dentistarchive.dto.DoctorDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -14,8 +9,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-
-import java.util.Locale;
 
 @Data
 @SuperBuilder

@@ -28,10 +28,19 @@ logging:
     org.springframework.boot.liquibase: INFO
 
 app:
+  jwt:
+    secret: "replace-with-a-long-random-secret"
+    access-token-ttl: 15m
+    refresh-token-ttl: 30d
+    issuer: "dentist-archive"
+
+  system-admin:
+    user-name: "admin"
+    full-name: "System Administrator"
+    password: "ChangeMe123!"
+
   delays-after-failed-login-attempts-for-users:
     - number-of-fails: 3
-      delay: 1m
+      delay: 30s
     - number-of-fails: 5
       delay: 5m
-    - number-of-fails: 10
-      delay: 1h

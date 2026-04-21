@@ -1,7 +1,6 @@
 package com.dentistarchive.service;
 
 import com.dentistarchive.config.properties.AppProperties;
-import com.dentistarchive.dto.auth.enums.UserScope;
 import com.dentistarchive.entity.User;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.exception.actor.ManyFailedLoginAttemptsException;
@@ -49,10 +48,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getByLoginAndPassword(@NotBlank String login, @NotBlank String password, @NotNull UserScope scope) {
+    public User getByLoginAndPassword(@NotBlank String login, @NotBlank String password) {
         UserFilter filter = UserFilter.builder()
                 .login(login)
-                .scope(scope)
                 .archived(false)
                 .build();
 

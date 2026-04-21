@@ -26,6 +26,13 @@ public abstract class MutableBaseEntity extends BaseEntity {
 
     UUID updatedBy;
 
+    @Override
+    protected void prePersist() {
+        super.prePersist();
+        updatedAt = createdAt;
+        updatedBy = createdBy;
+    }
+
     @PreUpdate
     protected void preUpdate() {
         updatedAt = ClockUtils.now();

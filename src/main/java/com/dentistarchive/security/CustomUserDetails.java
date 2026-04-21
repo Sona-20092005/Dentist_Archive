@@ -1,96 +1,61 @@
 package com.dentistarchive.security;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.dentistarchive.enums.Role;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
-import static java.util.stream.Collectors.toSet;
-
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomUserDetails implements UserDetails {
 
-    @JsonProperty("uid")
     UUID userId;
+    String username;
+    String password;
+    Role role;
+    boolean enabled;
 
-    @JsonProperty("s")
-    String scope;
-
-    @JsonProperty("u")
-    boolean isUser;
-
-    @JsonIgnore
-    String passwordHash;
-
-    @JsonProperty("ext")
-    boolean externalSystemClient;
-
-    @JsonProperty("p")
-    @Builder.Default
-    Set<String> permissionCodes = new HashSet<>();
-
-    @JsonProperty("l")
-    Locale locale;
-
-    @JsonProperty("cid")
-    UUID companyId;
-
-    @JsonIgnore
-    public boolean isClient() {
-        return !isUser;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override
-    @JsonIgnore
-    public Collection<GrantedAuthority> getAuthorities() {
-        return permissionCodes.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(toSet());
-    }
-
-    @Override
-    @JsonIgnore
     public String getPassword() {
-        return passwordHash;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override
-    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
-    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
-    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

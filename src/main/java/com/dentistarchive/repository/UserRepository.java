@@ -1,6 +1,7 @@
 package com.dentistarchive.repository;
 
 import com.dentistarchive.entity.User;
+import com.dentistarchive.enums.Role;
 import com.dentistarchive.repository.jpa.UserJpaRepository;
 import com.dentistarchive.repository.search.UserSearchMapper;
 import com.dentistarchive.search.filter.UserFilter;
@@ -45,6 +46,16 @@ public class UserRepository extends BaseReadOnlyRepository<User, UserFilter> {
         return jpaRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<User> findByUserName(String userName) {
+        return jpaRepository.findByUserName(userName);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsByRole(Role role) {
+        return jpaRepository.existsByRole(role);
+    }
+
     @Transactional
     public User save(User actor) {
         return jpaRepository.save(actor);
@@ -59,8 +70,7 @@ public class UserRepository extends BaseReadOnlyRepository<User, UserFilter> {
         var queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager);
         var querydsl = new Querydsl(entityManager, new PathBuilderFactory().create(User.class));
 
-        var query = (JPAQuery<User>) queryFactory.from(user)
-                .leftJoin(user.roles).fetchJoin();
+        var query = (JPAQuery<User>) queryFactory.from(user);
 
         if (pageable.isPaged()) {
             // select needed ids to avoid query with join fetch + pagination

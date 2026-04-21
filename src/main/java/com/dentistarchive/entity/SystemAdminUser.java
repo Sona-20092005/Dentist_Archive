@@ -1,6 +1,5 @@
 package com.dentistarchive.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;
@@ -8,22 +7,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @Entity
-@DiscriminatorValue("DOCTOR")
+@DiscriminatorValue("SYSTEM_ADMIN")
 @SuperBuilder
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@FieldNameConstants
-public class Doctor extends User {
-
-    @Column(nullable = false)
-    String email;
-
-    String phone;
-
+public class SystemAdminUser extends User {
 }

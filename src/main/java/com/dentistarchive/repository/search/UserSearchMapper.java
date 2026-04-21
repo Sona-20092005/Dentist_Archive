@@ -1,6 +1,5 @@
 package com.dentistarchive.repository.search;
 
-import com.dentistarchive.entity.QUser;
 import com.dentistarchive.search.PredicateBuilder;
 import com.dentistarchive.search.SearchMapper;
 import com.dentistarchive.search.SortBuilder;
@@ -19,12 +18,11 @@ public class UserSearchMapper extends SearchMapper<UserFilter, UserSort> {
     @Override
     protected Predicate toPredicateExceptSubFilters(UserFilter filter) {
         var builder = PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
-                .in(user.id, filter.getIds())
-                .in(user.scope, filter.getScopes());
+                .in(user.id, filter.getIds());
 
         if (filter.getLogin() != null) {
             builder.and(PredicateBuilder.builder(PredicateBuilder.Aggregation.OR)
-                    .eq(user.nickName, filter.getLogin())
+                    .eq(user.userName, filter.getLogin())
 //                    .eq(user.as(QUser.class).email.toLowerCase(), filter.getLogin().toLowerCase())
 //                    .eq(user.as(QUser.class).phone, filter.getLogin())
                     .build()

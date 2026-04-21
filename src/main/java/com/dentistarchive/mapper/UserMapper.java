@@ -1,15 +1,12 @@
 package com.dentistarchive.mapper;
 
 import com.dentistarchive.dto.UserDto;
-import com.dentistarchive.dto.auth.UserWithPermissionsDto;
 import com.dentistarchive.entity.Doctor;
 import com.dentistarchive.entity.User;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
-
-import static java.util.stream.Collectors.toSet;
 
 @Component
 @RequiredArgsConstructor
@@ -18,6 +15,7 @@ public class UserMapper implements EntityMapper<User, UserDto> {
 
     DoctorMapper doctorMapper;
 
+    // TODO: 4/21/2026 change switch
     @Override
     public UserDto toDto(User user) {
         return switch (user) {
@@ -26,13 +24,4 @@ public class UserMapper implements EntityMapper<User, UserDto> {
         };
     }
 
-    public UserWithPermissionsDto toWithPermissionsDto(User user) {
-        return new UserWithPermissionsDto(
-                toDto(user),
-                user.getPasswordSetAt(),
-                user.getRoles().stream()
-                        .flatMap(role -> role.getPermissionCodes().stream())
-                        .collect(toSet())
-        );
-    }
 }

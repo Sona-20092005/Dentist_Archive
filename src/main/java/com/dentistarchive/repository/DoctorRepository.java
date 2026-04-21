@@ -1,6 +1,5 @@
 package com.dentistarchive.repository;
 
-import com.dentistarchive.dto.auth.enums.UserScope;
 import com.dentistarchive.entity.Doctor;
 import com.dentistarchive.entity.QDoctor;
 import com.dentistarchive.repository.jpa.DoctorJpaRepository;
@@ -42,20 +41,6 @@ public class DoctorRepository extends BaseReadOnlyRepository<Doctor, DoctorFilte
         this.entityManager = entityManager;
     }
 
-    @Transactional(readOnly = true)
-    public Optional<Doctor> getUserByNickname(String nickName) {
-        return jpaRepository.findByNickName(nickName);
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<Doctor> getUserByEmailAndScope(String email, UserScope scope) {
-        return jpaRepository.findUserByEmailAndScope(email, scope);
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<Doctor> getUserByPhoneAndScope(String phone, UserScope scope) {
-        return jpaRepository.findUserByPhoneAndScope(phone, scope);
-    }
 
     @Transactional
     public void save(Doctor user) {
@@ -87,8 +72,7 @@ public class DoctorRepository extends BaseReadOnlyRepository<Doctor, DoctorFilte
         var queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager);
         var querydsl = new Querydsl(entityManager, new PathBuilderFactory().create(Doctor.class));
 
-        var query = (JPAQuery<Doctor>) queryFactory.from(doctor)
-                .leftJoin(QDoctor.doctor.roles).fetchJoin();
+        var query = (JPAQuery<Doctor>) queryFactory.from(doctor);
 
         if (pageable.isPaged()) {
             // select needed ids to avoid query with join fetch + pagination

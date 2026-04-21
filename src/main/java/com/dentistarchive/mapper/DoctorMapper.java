@@ -5,6 +5,6 @@ import com.dentistarchive.entity.Doctor;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = RoleMapper.class)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class DoctorMapper implements EntityMapper<Doctor, DoctorDto> {
 }

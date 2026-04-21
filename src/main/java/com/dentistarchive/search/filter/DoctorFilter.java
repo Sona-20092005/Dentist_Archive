@@ -1,7 +1,5 @@
 package com.dentistarchive.search.filter;
 
-import com.dentistarchive.dto.auth.enums.UserScope;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,12 +25,9 @@ public class DoctorFilter extends ArchivingBaseFilter<DoctorFilter> {
     @Singular
     Set<@NotBlank @Email String> emails;
 
-//    @Singular
-//    Set<@NotBlank @PhoneNumber String> phones;
-
     @Singular
-    @Schema(description = "Users from one of given scopes")
-    Set<@NotNull UserScope> scopes;
+    Set<@NotBlank String> phones;
+
 
     @Singular
     Set<@NotNull UUID> companyIds;

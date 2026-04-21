@@ -1,6 +1,7 @@
 package com.dentistarchive.config.properties;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -21,9 +22,16 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AppProperties {
 
+    @Valid
+    @NotNull
+    Jwt jwt = new Jwt();
+
+    @Valid
+    @NotNull
+    SystemAdmin systemAdmin = new SystemAdmin();
+
     @NotEmpty
     List<@Valid LoginDelay> delaysAfterFailedLoginAttemptsForUsers = new ArrayList<>();
-
 
     public Duration getDelayByNumberOfFailedLoginAttemptsForUsers(int number) {
         return delaysAfterFailedLoginAttemptsForUsers.stream()
@@ -33,6 +41,34 @@ public class AppProperties {
                 .orElse(Duration.ZERO);
     }
 
+    @Data
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class Jwt {
+        @NotBlank
+        String secret;
+
+        @NotNull
+        Duration accessTokenTtl = Duration.ofMinutes(15);
+
+        @NotNull
+        Duration refreshTokenTtl = Duration.ofDays(30);
+
+        @NotBlank
+        String issuer = "dentist-archive";
+    }
+
+    @Data
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class SystemAdmin {
+        @NotBlank
+        String userName = "admin";
+
+        @NotBlank
+        String fullName = "System Administrator";
+
+        @NotBlank
+        String password = "ChangeMe123!";
+    }
 
     public record LoginDelay(
             @Positive
@@ -41,5 +77,4 @@ public class AppProperties {
             Duration delay
     ) {
     }
-
 }
