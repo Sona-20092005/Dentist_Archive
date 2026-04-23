@@ -19,4 +19,6 @@ public class EntityNotFoundByIdException extends EntityNotFoundByFieldException 
     public EntityNotFoundByIdException(Class<?> entityClass, Set<UUID> ids) {
         super(entityClass, "id", ids.stream().map(Object::toString).collect(Collectors.toSet()));
     }
+
+
 }

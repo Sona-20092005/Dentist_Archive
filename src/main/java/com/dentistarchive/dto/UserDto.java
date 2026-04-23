@@ -24,6 +24,9 @@ import java.util.Map;
 })
 public abstract sealed class UserDto extends ArchivingBaseDto permits DoctorDto {
 
+    @Schema(description = "user name (unique)")
+    String userName;
+
     @Schema(description = "Full name (not unique)")
     String fullName;
 

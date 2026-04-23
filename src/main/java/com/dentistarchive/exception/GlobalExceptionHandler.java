@@ -1,7 +1,5 @@
-package com.dentistarchive.exception.actor;
+package com.dentistarchive.exception;
 
-import com.dentistarchive.exception.ErrorResponse;
-import com.dentistarchive.exception.ErrorResponseCreator;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,15 +14,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Map;
 
-import static com.dentistarchive.exception.ErrorResponse.CommonErrorCodes.SERVER_ERROR;
-import static com.dentistarchive.exception.ErrorResponse.CommonErrorCodes.VALIDATION_ERROR;
+import static com.dentistarchive.exception.ErrorCode.SERVER_ERROR;
+import static com.dentistarchive.exception.ErrorCode.VALIDATION_ERROR;
 
 @Slf4j
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ControllerExceptionHandler {
+public class GlobalExceptionHandler {
 
     ErrorResponseCreator errorResponseCreator;
 
@@ -35,13 +33,13 @@ public class ControllerExceptionHandler {
             return ResponseEntity
                     .badRequest()
                     .body(errorResponseCreator.createErrorResponse(
-                            VALIDATION_ERROR,
+                            VALIDATION_ERROR.getCode(),
                             "database.constraint." + exception.getConstraintName()
                     ));
         }
         return ResponseEntity
                 .internalServerError()
-                .body(errorResponseCreator.createErrorResponse(SERVER_ERROR, e.toString()));
+                .body(errorResponseCreator.createErrorResponse(SERVER_ERROR.getCode(), e.toString()));
     }
 
     @ExceptionHandler
@@ -55,4 +53,27 @@ public class ControllerExceptionHandler {
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(errorResponse);
     }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(PasswordIsNotSecureException e) {
+        log.error("Password is not secure:", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(EntityNotFoundByIdException e) {
+        log.error("Entity not found", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
 }

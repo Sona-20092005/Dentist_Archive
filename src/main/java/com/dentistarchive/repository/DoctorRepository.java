@@ -10,8 +10,6 @@ import com.querydsl.core.types.dsl.PathBuilderFactory;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import static com.dentistarchive.entity.QDoctor.doctor;
-
 import jakarta.persistence.EntityManager;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -20,8 +18,12 @@ import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
+import static com.dentistarchive.entity.QDoctor.doctor;
 import static java.util.stream.Collectors.toMap;
 
 @Repository
@@ -43,8 +45,8 @@ public class DoctorRepository extends BaseReadOnlyRepository<Doctor, DoctorFilte
 
 
     @Transactional
-    public void save(Doctor user) {
-        jpaRepository.save(user);
+    public Doctor save(Doctor doctor) {
+        return jpaRepository.save(doctor);
     }
 
     @Transactional

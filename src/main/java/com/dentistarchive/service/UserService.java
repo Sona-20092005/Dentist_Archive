@@ -3,7 +3,7 @@ package com.dentistarchive.service;
 import com.dentistarchive.config.properties.AppProperties;
 import com.dentistarchive.entity.User;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
-import com.dentistarchive.exception.actor.ManyFailedLoginAttemptsException;
+import com.dentistarchive.exception.ManyFailedLoginAttemptsException;
 import com.dentistarchive.repository.UserRepository;
 import com.dentistarchive.search.filter.UserFilter;
 import com.dentistarchive.security.AuthUtils;

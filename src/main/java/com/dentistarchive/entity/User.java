@@ -40,8 +40,6 @@ public abstract class User extends ArchivableBaseEntity {
     @Column(nullable = false)
     OffsetDateTime passwordSetAt;
 
-    boolean temporaryPassword;
-
     @Setter(AccessLevel.NONE)
     int numberOfFailedLoginAttempts;
 

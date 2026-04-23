@@ -2,7 +2,7 @@ package com.dentistarchive.utils;
 
 import com.dentistarchive.entity.Doctor;
 import com.dentistarchive.entity.User;
-import com.dentistarchive.exception.actor.PasswordIsNotSecureException;
+import com.dentistarchive.exception.PasswordIsNotSecureException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -13,8 +13,7 @@ import java.util.regex.Pattern;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PasswordValidator {
 
-    public static final int USER_PASSWORD_MIN_LENGTH = 5;
-    public static final int CLIENT_PASSWORD_MIN_LENGTH = 15;
+    public static final int PASSWORD_MIN_LENGTH = 5;
     public static final int PASSWORD_MAX_LENGTH = 50;
 
     // only ASCII (latin letters, digits, punctuation)
@@ -39,9 +38,8 @@ public class PasswordValidator {
     );
 
     public static void assertThatPasswordIsValid(User user, String password) {
-        if (user instanceof Doctor &&
-                (password.length() < USER_PASSWORD_MIN_LENGTH || password.length() > PASSWORD_MAX_LENGTH)) {
-            throw new PasswordIsNotSecureException(false);
+        if (password.length() < PASSWORD_MIN_LENGTH || password.length() > PASSWORD_MAX_LENGTH) {
+            throw new PasswordIsNotSecureException();
         }
         long validPatterns = PASSWORDS_ALPHABETS
                 .stream()
@@ -49,11 +47,13 @@ public class PasswordValidator {
                 .filter(Matcher::matches)
                 .count();
         if (validPatterns < PASSWORDS_ALPHABETS.size()) {
-            throw new PasswordIsNotSecureException(user instanceof Doctor);
+            throw new PasswordIsNotSecureException();
         }
-        if (user instanceof Doctor doctor &&
-                (password.equals(doctor.getEmail()) || password.equals(doctor.getUserName()))) {
-            throw new PasswordIsNotSecureException(false);
+        if(password.equals(user.getUserName())){
+            throw new PasswordIsNotSecureException();
+        }
+        if (user instanceof Doctor doctor && password.equals(doctor.getEmail())) {
+            throw new PasswordIsNotSecureException();
         }
     }
 }

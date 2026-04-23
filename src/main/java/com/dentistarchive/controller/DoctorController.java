@@ -1,23 +1,26 @@
 package com.dentistarchive.controller;
 
 import com.dentistarchive.dto.DoctorDto;
+import com.dentistarchive.dto.create.DoctorCreateDto;
 import com.dentistarchive.mapper.DoctorMapper;
 import com.dentistarchive.search.filter.DoctorFilter;
 import com.dentistarchive.search.filter.SearchRequest;
 import com.dentistarchive.search.filter.SearchResponse;
 import com.dentistarchive.search.sort.DoctorSort;
 import com.dentistarchive.service.DoctorService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
-@Tag(name = "Users")
-@RequestMapping("/api/v1/users")
+@Tag(name = "Doctors")
+@RequestMapping("/api/v1/doctors")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DoctorController extends BaseController {
@@ -26,19 +29,32 @@ public class DoctorController extends BaseController {
     DoctorMapper doctorMapper;
 
     @GetMapping("/{id}")
-    public DoctorDto getUserPublicInfoById(@PathVariable("id") UUID id) {
+    public DoctorDto getById(@PathVariable("id") UUID id) {
         return doctorMapper.toDto(doctorService.getByIdOrElseThrow(id));
     }
 
     @PostMapping("/search")
-    public SearchResponse<DoctorDto> searchUsersPublicInfo(@RequestBody SearchRequest<DoctorFilter, DoctorSort> searchRequest) {
+    public SearchResponse<DoctorDto> search(@RequestBody SearchRequest<DoctorFilter, DoctorSort> searchRequest) {
         return doctorMapper.toSearchResponse(doctorService.search(searchRequest));
     }
 
-//    @PostMapping("/doctor")
-//    @Operation(summary = "Register new usual user with email that was confirmed on previous step in the same session")
-//    public DoctorDto createUsualUser(@RequestBody DoctorCreateDto userCreateDto) {
-//        return doctorMapper.toDto(doctorService.createUsualUser(userCreateDto, true));
-//    }
+    @PostMapping
+    @Operation(summary = "Register new doctor")
+    public DoctorDto create(@RequestBody DoctorCreateDto doctorCreateDto) {
+        return doctorMapper.toDto(doctorService.create(doctorCreateDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        doctorService.archiveById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/restore")
+    public ResponseEntity<DoctorDto> unarchive(@PathVariable UUID id) {
+        return ResponseEntity.ok(
+                doctorMapper.toDto(doctorService.unarchiveById(id))
+        );
+    }
 
 }

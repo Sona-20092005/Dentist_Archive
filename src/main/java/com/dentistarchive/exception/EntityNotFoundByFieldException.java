@@ -48,7 +48,7 @@ public class EntityNotFoundByFieldException extends CommonErrorCodeException {
     @Override
     public String getErrorCode() {
         return values.size() > 1
-                ? CommonErrorCode.ENTITIES_NOT_FOUND.getCode()
-                : CommonErrorCode.ENTITY_NOT_FOUND.getCode();
+                ? ErrorCode.ENTITIES_NOT_FOUND.getCode()
+                : ErrorCode.ENTITY_NOT_FOUND.getCode();
     }
 }

@@ -1,6 +1,5 @@
 package com.dentistarchive.controller;
 
-
 import com.dentistarchive.dto.create.PatientCreateDto;
 import com.dentistarchive.dto.PatientDto;
 import com.dentistarchive.dto.update.PatientUpdateDto;

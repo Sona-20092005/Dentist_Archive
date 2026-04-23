@@ -1,13 +1,11 @@
-package com.dentistarchive.exception.actor;
+package com.dentistarchive.exception;
 
-import com.dentistarchive.exception.ValidationError;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.joining;

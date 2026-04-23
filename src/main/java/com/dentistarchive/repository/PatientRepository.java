@@ -4,10 +4,8 @@ import com.dentistarchive.entity.patient.Patient;
 import com.dentistarchive.repository.jpa.PatientJpaRepository;
 import com.dentistarchive.repository.search.PatientSearchMapper;
 import com.dentistarchive.search.filter.PatientFilter;
-import jakarta.persistence.EntityManager;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,24 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class PatientRepository extends BaseReadOnlyRepository<Patient, PatientFilter> {
 
     PatientJpaRepository jpaRepository;
-    EntityManager entityManager;
-    JdbcClient jdbcClient;
 
     public PatientRepository(
             PatientSearchMapper searchMapper,
-            PatientJpaRepository jpaRepository,
-            EntityManager entityManager,
-            JdbcClient jdbcClient
+            PatientJpaRepository jpaRepository
     ) {
         super(searchMapper, jpaRepository);
         this.jpaRepository = jpaRepository;
-        this.entityManager = entityManager;
-        this.jdbcClient = jdbcClient;
     }
 
     @Transactional
-    public <T extends Patient> T save(T announcement) {
-        return jpaRepository.save(announcement);
+    public Patient save(Patient patient) {
+        return jpaRepository.save(patient);
     }
 
     @Transactional

@@ -1,10 +1,12 @@
 package com.dentistarchive.service;
 
+import com.dentistarchive.dto.create.DoctorCreateDto;
 import com.dentistarchive.entity.Doctor;
 import com.dentistarchive.repository.DoctorRepository;
 import com.dentistarchive.search.filter.DoctorFilter;
 import com.dentistarchive.service.access.DoctorAccessValidator;
 import com.dentistarchive.service.provider.DoctorProvider;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -20,7 +22,8 @@ import java.util.UUID;
 @Service
 @Validated
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class DoctorService extends BaseReadOnlyService<Doctor, DoctorFilter> {
+public class DoctorService extends BaseReadOnlyService<Doctor, DoctorFilter>
+        implements ArchivableService<Doctor> {
 
     DoctorRepository doctorRepository;
     DoctorProvider doctorProvider;
@@ -57,14 +60,13 @@ public class DoctorService extends BaseReadOnlyService<Doctor, DoctorFilter> {
 //        this.actorMsEventPublisher = actorMsEventPublisher;
     }
 
-//
-//    @Transactional
-//    public Doctor createUsualUser(@NotNull @Valid DoctorCreateDto createDto, boolean emailConfirmation) {
-//        var user = doctorProvider.createUsualUser(createDto, emailConfirmation);
-//        doctorRepository.save(user);
-////        actorMsEventPublisher.publishUserRegisteredEvent(user);
-//        return user;
-//    }
+
+    @Transactional
+    public Doctor create(@NotNull @Valid DoctorCreateDto createDto) {
+        var doctor = doctorProvider.create(createDto);
+        save(doctor);
+        return doctor;
+    }
 //
 //    @Transactional(readOnly = true)
 //    public Optional<Doctor> getUserByEmailAndScopeWithoutAccessControl(@NotBlank String email, @NotNull UserScope scope) {
@@ -93,5 +95,10 @@ public class DoctorService extends BaseReadOnlyService<Doctor, DoctorFilter> {
             return Map.of();
         }
         return doctorRepository.getFullNamesByIds(ids);
+    }
+
+    @Override
+    public Doctor save(Doctor entity) {
+        return doctorRepository.save(entity);
     }
 }

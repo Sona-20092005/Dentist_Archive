@@ -2,6 +2,7 @@ package com.dentistarchive.config;
 
 import com.dentistarchive.security.filter.JwtAuthenticationFilter;
 import com.dentistarchive.service.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -59,6 +60,12 @@ public class SecurityConfig {
                                 "/swagger-ui.html"
                         ).permitAll()
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                        .accessDeniedHandler((request, response, accessDeniedException) ->
+                                response.sendError(HttpServletResponse.SC_FORBIDDEN))
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

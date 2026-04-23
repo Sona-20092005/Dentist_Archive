@@ -1,9 +1,9 @@
 package com.dentistarchive.service;
 
-import com.dentistarchive.exception.EntityNotFoundByIdException;
-import com.dentistarchive.search.filter.BaseFilter;
 import com.dentistarchive.entity.BaseEntity;
+import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.repository.BaseReadOnlyRepository;
+import com.dentistarchive.search.filter.BaseFilter;
 import com.dentistarchive.search.filter.SearchRequest;
 import com.dentistarchive.service.access.BaseReadOnlyAccessValidator;
 import jakarta.validation.Valid;
@@ -19,7 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
@@ -36,31 +40,44 @@ public abstract class BaseReadOnlyService<E extends BaseEntity, F extends BaseFi
     BaseReadOnlyRepository<E, F> readOnlyRepository;
     BaseReadOnlyAccessValidator<E, F> readOnlyAccessValidator;
 
-    @SneakyThrows
     public Optional<E> getById(@NotNull UUID id) {
-        F filter = filterClass.getDeclaredConstructor().newInstance();
+        F filter = newEmptyFilter();
         filter.setIds(Set.of(id));
-        return searchOne(filter);
+
+        Optional<E> entity = searchOne(filter);
+        entity.ifPresent(readOnlyAccessValidator::validateAccess);
+        return entity;
     }
 
-    public E getByIdOrElseThrow(@NotNull UUID id) {
-        return getById(id).orElseThrow(() -> new EntityNotFoundByIdException(entityClass, id));
+    public E getByIdOrElseThrow(UUID id) {
+        return getById(id)
+                .orElseThrow(() -> new EntityNotFoundByIdException(entityClass, id));
     }
 
-    @SneakyThrows
     public List<E> getByIds(@NotEmpty Set<UUID> ids) {
-        F filter = filterClass.getDeclaredConstructor().newInstance();
+        F filter = newEmptyFilter();
         filter.setIds(ids);
-        return search(filter);
+
+        List<E> entities = search(filter);
+        entities.forEach(readOnlyAccessValidator::validateAccess);
+        return entities;
     }
 
     public List<E> getByIdsOrElseThrow(@NotEmpty Set<UUID> ids) {
         List<E> entities = getByIds(ids);
+
         if (entities.size() < ids.size()) {
-            List<UUID> foundIds = entities.stream().map(BaseEntity::getId).toList();
-            Set<UUID> notFoundIds = ids.stream().filter(id -> !foundIds.contains(id)).collect(toSet());
+            List<UUID> foundIds = entities.stream()
+                    .map(BaseEntity::getId)
+                    .toList();
+
+            Set<UUID> notFoundIds = ids.stream()
+                    .filter(id -> !foundIds.contains(id))
+                    .collect(toSet());
+
             throw new EntityNotFoundByIdException(entityClass, notFoundIds);
         }
+
         return entities;
     }
 
@@ -70,10 +87,14 @@ public abstract class BaseReadOnlyService<E extends BaseEntity, F extends BaseFi
 
     public Optional<E> searchOne(@NotNull @Valid F filter) {
         List<E> entities = search(filter);
+
         if (entities.size() > 1) {
-            throw new ResponseStatusException(BAD_REQUEST,
-                    "Found " + entities.size() + " entities by filter " + filter + ", but expected only 1");
+            throw new ResponseStatusException(
+                    BAD_REQUEST,
+                    "Found " + entities.size() + " entities by filter " + filter + ", but expected only 1"
+            );
         }
+
         return entities.stream().findFirst();
     }
 
@@ -97,21 +118,27 @@ public abstract class BaseReadOnlyService<E extends BaseEntity, F extends BaseFi
         return readOnlyRepository.exists(withAccessControl(filter));
     }
 
-    @SneakyThrows
     public void existsByIdOrElseThrow(@NotNull UUID id) {
-        F filter = filterClass.getDeclaredConstructor().newInstance();
+        F filter = newEmptyFilter();
         filter.setIds(Set.of(id));
+
         if (!exists(filter)) {
             throw new EntityNotFoundByIdException(entityClass, id);
         }
     }
 
     protected SearchRequest<F, ?> withAccessControl(SearchRequest<F, ?> searchRequest) {
-        searchRequest.setFilter(readOnlyAccessValidator.getAccessControlFilter().and(searchRequest.getFilter()));
+        searchRequest.setFilter(withAccessControl(searchRequest.getFilter()));
         return searchRequest;
     }
 
     protected F withAccessControl(F filter) {
-        return readOnlyAccessValidator.getAccessControlFilter().and(filter);
+        F accessFilter = readOnlyAccessValidator.getAccessControlFilter();
+        return accessFilter == null ? filter : accessFilter.and(filter);
+    }
+
+    @SneakyThrows
+    protected F newEmptyFilter() {
+        return filterClass.getDeclaredConstructor().newInstance();
     }
 }

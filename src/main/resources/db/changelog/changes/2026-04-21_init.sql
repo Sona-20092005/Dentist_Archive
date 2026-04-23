@@ -89,7 +89,6 @@ create table users
 
     password_hash                   varchar(255) not null,
     password_set_at                 timestamptz  not null,
-    temporary_password              boolean,
     number_of_failed_login_attempts integer      not null default 0,
     last_login_failed_at            timestamptz,
 

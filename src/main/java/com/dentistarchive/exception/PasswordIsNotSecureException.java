@@ -1,14 +1,17 @@
 package com.dentistarchive.exception;
 
+
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Getter
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class DefaultErrorCodeException extends CommonErrorCodeException {
+public class PasswordIsNotSecureException extends CommonErrorCodeException {
 
-    String errorCode;
+    @Override
+    public String getErrorCode() {
+        return ErrorCode.USER_PASSWORD_IS_NOT_SECURE.getCode();
+    }
+
 }

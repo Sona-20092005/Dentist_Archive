@@ -2,7 +2,6 @@ package com.dentistarchive.search.filter;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
@@ -27,12 +26,6 @@ public class DoctorFilter extends ArchivingBaseFilter<DoctorFilter> {
 
     @Singular
     Set<@NotBlank String> phones;
-
-
-    @Singular
-    Set<@NotNull UUID> companyIds;
-
-    Boolean inCompany;
 
     public static DoctorFilter byId(UUID id) {
         return DoctorFilter.byIds(Set.of(id));

@@ -18,6 +18,11 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 public class DoctorCreateDto extends BaseCreateDto<DoctorDto> {
 
+    @Schema(description = "User name (unique)")
+    @NotBlank
+    @Size(min = 2, max = 80)
+    String userName;
+
     @Schema(description = "Full name (not unique)")
     @NotBlank
     @Size(min = 2, max = 80)

@@ -20,8 +20,7 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = ValidationErrorResponse.class),
-        @JsonSubTypes.Type(value = ExcelFileValidationErrorResponse.class)
+        @JsonSubTypes.Type(value = ValidationErrorResponse.class)
 })
 @JsonTypeName("error-response")
 public class ErrorResponse {
@@ -34,18 +33,5 @@ public class ErrorResponse {
 
     String appName;
 
-    String traceId;
-
     Map<String, Object> additionalParams;
-
-    public interface CommonErrorCodes {
-
-        String SERVER_ERROR = "server.error";
-        String VALIDATION_ERROR = "validation.error";
-        String INCORRECT_MEDIA_TYPE_ERROR = "incorrect.content.type.error";
-        String EXCEL_FILE_VALIDATION_ERROR = "excel.file.validation.error";
-        String HTTP_REQUEST_PARSING_ERROR = "validation.http.request.format.error";
-        String ACCESS_DENIED = "access.denied";
-        String AUTHENTICATION_FAILED = "authentication.failed";
-    }
 }

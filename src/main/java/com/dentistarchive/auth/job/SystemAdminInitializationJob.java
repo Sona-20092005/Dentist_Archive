@@ -36,7 +36,6 @@ public class SystemAdminInitializationJob implements ApplicationRunner {
                 .fullName(appProperties.getSystemAdmin().getFullName())
                 .passwordHash(passwordEncoder.encode(appProperties.getSystemAdmin().getPassword()))
                 .role(Role.SYSTEM_ADMIN)
-                .temporaryPassword(false)
                 .build();
 
         userRepository.save(systemAdmin);

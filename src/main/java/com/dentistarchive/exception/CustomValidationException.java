@@ -1,6 +1,5 @@
-package com.dentistarchive.exception.actor;
+package com.dentistarchive.exception;
 
-import com.dentistarchive.exception.ErrorCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

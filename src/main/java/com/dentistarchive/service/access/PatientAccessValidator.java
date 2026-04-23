@@ -13,6 +13,11 @@ public class PatientAccessValidator extends BaseReadOnlyAccessValidator<Patient,
     }
 
     @Override
+    protected boolean hasAccess(Patient entity) {
+        return false;
+    }
+
+    @Override
     protected Class<PatientFilter> getFilterClass() {
         return PatientFilter.class;
     }
