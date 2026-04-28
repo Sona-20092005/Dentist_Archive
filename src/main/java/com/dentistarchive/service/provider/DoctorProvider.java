@@ -1,6 +1,7 @@
 package com.dentistarchive.service.provider;
 
 import com.dentistarchive.dto.create.DoctorCreateDto;
+import com.dentistarchive.dto.update.DoctorUpdateDto;
 import com.dentistarchive.entity.Doctor;
 import com.dentistarchive.enums.Role;
 import lombok.AccessLevel;
@@ -28,6 +29,14 @@ public class DoctorProvider {
         doctor.setRole(Role.DOCTOR);
         setPassword(doctor, createDto.getPassword());
         return doctor;
+    }
+
+    public void update(Doctor doctor, DoctorUpdateDto updateDto) {
+        doctor.setUserName(updateDto.getUserName());
+        doctor.setFullName(updateDto.getFullName());
+        doctor.setEmail(updateDto.getEmail());
+        doctor.setPhone(updateDto.getPhone());
+
     }
 
     private void setPassword(Doctor doctor, String password) {

@@ -1,6 +1,5 @@
-package com.dentistarchive.dto.create;
+package com.dentistarchive.dto.update;
 
-import com.dentistarchive.dto.DoctorDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,16 +7,14 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.FieldNameConstants;
-import lombok.experimental.SuperBuilder;
 
 @Data
-@SuperBuilder
+@Builder
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
-public class DoctorCreateDto extends BaseCreateDto<DoctorDto> {
-
+public class DoctorUpdateDto {
     @Schema(description = "User name (unique)")
     @NotBlank
     @Size(min = 2, max = 80)
@@ -28,9 +25,9 @@ public class DoctorCreateDto extends BaseCreateDto<DoctorDto> {
     @Size(min = 2, max = 80)
     String fullName;
 
-    @NotBlank
-    @ToString.Exclude
-    String password;
+//    @NotBlank
+//    @ToString.Exclude
+//    String password;
 
     @Schema(description = "Email, confirmed in current session")
     @Email
@@ -40,5 +37,4 @@ public class DoctorCreateDto extends BaseCreateDto<DoctorDto> {
 
     @Schema(description = "Phone")
     String phone;
-
 }

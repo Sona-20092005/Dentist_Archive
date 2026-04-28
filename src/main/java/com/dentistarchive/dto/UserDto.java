@@ -33,8 +33,5 @@ public abstract sealed class UserDto extends ArchivingBaseDto permits DoctorDto 
     @Schema(description = "User role")
     Role role;
 
-
-    boolean temporaryPassword;
-
     Map<String, String> additionalParams;
 }

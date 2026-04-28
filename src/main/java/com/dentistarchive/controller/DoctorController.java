@@ -2,6 +2,7 @@ package com.dentistarchive.controller;
 
 import com.dentistarchive.dto.DoctorDto;
 import com.dentistarchive.dto.create.DoctorCreateDto;
+import com.dentistarchive.dto.update.DoctorUpdateDto;
 import com.dentistarchive.mapper.DoctorMapper;
 import com.dentistarchive.search.filter.DoctorFilter;
 import com.dentistarchive.search.filter.SearchRequest;
@@ -10,6 +11,7 @@ import com.dentistarchive.search.sort.DoctorSort;
 import com.dentistarchive.service.DoctorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -42,6 +44,13 @@ public class DoctorController extends BaseController {
     @Operation(summary = "Register new doctor")
     public DoctorDto create(@RequestBody DoctorCreateDto doctorCreateDto) {
         return doctorMapper.toDto(doctorService.create(doctorCreateDto));
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update doctor info")
+    public DoctorDto update(@PathVariable UUID id,
+                            @Valid @RequestBody DoctorUpdateDto updateDto) {
+        return doctorMapper.toDto(doctorService.update(id, updateDto));
     }
 
     @DeleteMapping("/{id}")

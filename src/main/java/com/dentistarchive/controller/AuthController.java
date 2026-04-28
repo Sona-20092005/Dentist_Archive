@@ -4,6 +4,7 @@ import com.dentistarchive.auth.AuthService;
 import com.dentistarchive.auth.dto.AuthResponse;
 import com.dentistarchive.auth.dto.LoginRequest;
 import com.dentistarchive.auth.dto.RefreshTokenRequest;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Tag(name = "Auth")
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)

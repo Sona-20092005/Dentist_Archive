@@ -24,7 +24,11 @@ public enum ErrorCode {
     REFRESH_TOKEN_INVALIDATED("validation.refresh-token-invalidated"),
     ACCESS_TOKEN_FORMAT_INVALID("access-token.format.invalid"),
     ACCESS_TOKEN_SIGNATURE_INVALID("access-token.signature.invalid"),
-    ACCESS_TOKEN_EXPIRED("access-token.expired");
+    ACCESS_TOKEN_EXPIRED("access-token.expired"),
+    HTTP_REQUEST_PARSING_ERROR("validation.http.request.format.error"),
+    ACCESS_DENIED("access.denied"),
+    AUTHENTICATION_FAILED("authentication.failed"),
+    INCORRECT_MEDIA_TYPE_ERROR("incorrect.content.type.error");
 
     String code;
 }
