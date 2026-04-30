@@ -1,17 +1,21 @@
 package com.dentistarchive.service;
 
 import com.dentistarchive.config.properties.AppProperties;
+import com.dentistarchive.dto.ChangePasswordCommand;
 import com.dentistarchive.entity.User;
+import com.dentistarchive.exception.CustomValidationException;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
+import com.dentistarchive.exception.ErrorCode;
 import com.dentistarchive.exception.ManyFailedLoginAttemptsException;
 import com.dentistarchive.repository.UserRepository;
 import com.dentistarchive.search.filter.UserFilter;
 import com.dentistarchive.security.AuthUtils;
+import com.dentistarchive.service.access.UserAccessValidator;
+import com.dentistarchive.service.provider.UserProvider;
 import com.dentistarchive.utils.ClockUtils;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Lookup;
@@ -33,13 +37,27 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Service
 @Validated
 @Slf4j
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserService {
+public class UserService extends BaseReadOnlyService<User, UserFilter> {
 
     UserRepository userRepository;
+    UserProvider userProvider;
     PasswordEncoder passwordEncoder;
     AppProperties appProperties;
+    UserAccessValidator userAccessValidator;
+
+    public UserService(UserRepository userRepository,
+                       UserProvider userProvider,
+                       PasswordEncoder passwordEncoder,
+                       AppProperties appProperties,
+                       UserAccessValidator userAccessValidator) {
+        super(User.class, UserFilter.class, userRepository, userAccessValidator);
+        this.userRepository = userRepository;
+        this.userProvider = userProvider;
+        this.passwordEncoder = passwordEncoder;
+        this.appProperties = appProperties;
+        this.userAccessValidator = userAccessValidator;
+    }
 
     @Transactional(readOnly = true)
     public User getByIdWithoutAccessControlOrElseThrow(@NotNull UUID id) {
@@ -92,6 +110,20 @@ public class UserService {
         user.clearNumberOfFailedLoginAttempts();
         return userRepository.save(user);
     }
+
+    @Transactional
+    public User changeUserPassword(ChangePasswordCommand command) {
+        if (command.getUserId() == null) {
+            throw new CustomValidationException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        User user = getByIdOrElseThrow(command.getUserId());
+
+        userProvider.changePassword(user, command);
+
+        return userRepository.save(user);
+    }
+
 
     @Lookup
     protected UserService self() {

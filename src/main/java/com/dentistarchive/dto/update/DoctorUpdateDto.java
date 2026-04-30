@@ -25,10 +25,6 @@ public class DoctorUpdateDto {
     @Size(min = 2, max = 80)
     String fullName;
 
-//    @NotBlank
-//    @ToString.Exclude
-//    String password;
-
     @Schema(description = "Email, confirmed in current session")
     @Email
     @NotBlank

@@ -39,7 +39,7 @@ public abstract class BaseReadOnlyAccessValidator<E extends BaseEntity, F extend
     protected abstract F buildAccessControlFilter();
 
     /**
-     * Checks whether current user may access the конкретный entity.
+     * Checks whether current user may access the specific entity.
      */
     protected abstract boolean hasAccess(E entity);
 

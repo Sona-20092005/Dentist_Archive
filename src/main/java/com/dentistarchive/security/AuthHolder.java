@@ -29,4 +29,9 @@ public class AuthHolder {
                 .filter(CustomUserDetails.class::isInstance)
                 .map(it -> (CustomUserDetails) it);
     }
+
+    public static CustomUserDetails getUserDetailsOrElseThrow() {
+        return getUserDetails()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+    }
 }
