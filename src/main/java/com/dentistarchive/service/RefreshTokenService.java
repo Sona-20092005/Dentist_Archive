@@ -83,7 +83,7 @@ public class RefreshTokenService {
             throw new BadCredentialsException("Refresh token user mismatch");
         }
 
-        return userRepository.getById(storedToken.getUserId())
+        return userRepository.getByIdAndNotArchived(storedToken.getUserId())
                 .orElseThrow(() -> new BadCredentialsException("User not found"));
     }
 

@@ -9,6 +9,7 @@ import com.dentistarchive.exception.ErrorCode;
 import com.dentistarchive.exception.ManyFailedLoginAttemptsException;
 import com.dentistarchive.repository.UserRepository;
 import com.dentistarchive.search.filter.UserFilter;
+import com.dentistarchive.security.AuthHolder;
 import com.dentistarchive.security.AuthUtils;
 import com.dentistarchive.service.access.UserAccessValidator;
 import com.dentistarchive.service.provider.UserProvider;
@@ -61,7 +62,7 @@ public class UserService extends BaseReadOnlyService<User, UserFilter> {
 
     @Transactional(readOnly = true)
     public User getByIdWithoutAccessControlOrElseThrow(@NotNull UUID id) {
-        return userRepository.getById(id)
+        return userRepository.getByIdAndNotArchived(id)
                 .orElseThrow(() -> new EntityNotFoundByIdException(User.class, id));
     }
 
@@ -124,6 +125,12 @@ public class UserService extends BaseReadOnlyService<User, UserFilter> {
         return userRepository.save(user);
     }
 
+    @Transactional
+    public User getCurrentUser() {
+        var userId = AuthHolder.getUserIdOrElseThrow();
+        return userRepository.getByIdAndNotArchived(userId)
+                 .orElseThrow(() -> new EntityNotFoundByIdException(User.class, userId));
+    }
 
     @Lookup
     protected UserService self() {

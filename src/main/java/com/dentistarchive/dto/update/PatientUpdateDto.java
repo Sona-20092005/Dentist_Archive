@@ -10,7 +10,6 @@ import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @SuperBuilder
@@ -31,7 +30,4 @@ public class PatientUpdateDto extends BaseUpdateDto<PatientDto> {
     String passportInformation;
 
     String notes;
-
-    UUID doctorId;
-
 }

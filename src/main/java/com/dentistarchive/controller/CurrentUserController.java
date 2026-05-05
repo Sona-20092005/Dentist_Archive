@@ -3,6 +3,7 @@ package com.dentistarchive.controller;
 import com.dentistarchive.dto.ChangePasswordCommand;
 import com.dentistarchive.dto.DoctorDto;
 import com.dentistarchive.dto.UserDto;
+import com.dentistarchive.dto.UserProfileDto;
 import com.dentistarchive.dto.update.DoctorUpdateDto;
 import com.dentistarchive.mapper.DoctorMapper;
 import com.dentistarchive.mapper.UserMapper;
@@ -49,10 +50,10 @@ public class CurrentUserController extends BaseController {
                             @Valid @RequestBody DoctorUpdateDto updateDto) {
         return doctorMapper.toDto(doctorService.update(id, updateDto));
     }
-//
-//    @GetMapping("/me")
-//    public UserProfileDto getCurrentUser() {
-//        return accountService.getCurrentUser();
-//    }
+
+    @GetMapping("/current")
+    public ResponseEntity<UserProfileDto> getCurrentUser() {
+        return ResponseEntity.ok(userMapper.toProfileDto(userService.getCurrentUser()));
+    }
 
 }

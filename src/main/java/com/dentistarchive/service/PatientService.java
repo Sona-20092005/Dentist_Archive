@@ -3,14 +3,21 @@ package com.dentistarchive.service;
 import com.dentistarchive.dto.create.PatientCreateDto;
 import com.dentistarchive.dto.update.PatientUpdateDto;
 import com.dentistarchive.entity.patient.Patient;
+import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.repository.PatientRepository;
 import com.dentistarchive.search.filter.PatientFilter;
+import com.dentistarchive.security.AuthHolder;
 import com.dentistarchive.service.access.PatientAccessValidator;
 import com.dentistarchive.service.provider.PatientProvider;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.UUID;
 
 @Service
 @Validated
@@ -38,13 +45,19 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
         this.patientProvider = patientProvider;
     }
 
+    @Transactional
     public Patient create(PatientCreateDto createDto) {
-        var patient = patientProvider.create(createDto);
+        var patient = patientProvider.create(createDto, AuthHolder.getUserId().orElseThrow());
         return save(patient);
     }
 
-    public Patient update(PatientUpdateDto updateDto) {
-        return new Patient();
+    @Transactional(propagation = Propagation.NEVER)
+    public Patient update(UUID id, @Valid PatientUpdateDto updateDto) {
+        Patient patient = patientRepository.getByIdAndNotArchived(id)
+                .orElseThrow(() -> new EntityNotFoundByIdException(Patient.class, id));
+        accessValidator.validateAccess(patient);
+        patientProvider.update(patient, updateDto);
+        return patientRepository.save(patient);
     }
 
     @Override

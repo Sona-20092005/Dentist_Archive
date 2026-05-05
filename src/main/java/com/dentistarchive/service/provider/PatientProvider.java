@@ -5,11 +5,13 @@ import com.dentistarchive.dto.update.PatientUpdateDto;
 import com.dentistarchive.entity.patient.Patient;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 
 @Component
 public class PatientProvider {
 
-    public Patient create(PatientCreateDto createDto) {
+    public Patient create(PatientCreateDto createDto, UUID doctorId) {
 
         Patient patient = new Patient();
         patient.setName(createDto.getName());
@@ -18,7 +20,7 @@ public class PatientProvider {
         patient.setAddress(createDto.getAddress());
         patient.setPassportInformation(createDto.getPassportInformation());
         patient.setNotes(createDto.getNotes());
-        patient.setDoctorId(createDto.getDoctorId());
+        patient.setDoctorId(doctorId);
 
         return patient;
     }
@@ -32,7 +34,6 @@ public class PatientProvider {
         patient.setAddress(updateDto.getAddress());
         patient.setPassportInformation(updateDto.getPassportInformation());
         patient.setNotes(updateDto.getNotes());
-        patient.setDoctorId(updateDto.getDoctorId());
 
         return patient;
     }

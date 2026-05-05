@@ -47,6 +47,11 @@ public class UserRepository extends BaseReadOnlyRepository<User, UserFilter> {
     }
 
     @Transactional(readOnly = true)
+    public Optional<User> getByIdAndNotArchived(UUID id) {
+        return jpaRepository.findByIdAndArchivedFalse(id);
+    }
+
+    @Transactional(readOnly = true)
     public Optional<User> findByUserName(String userName) {
         return jpaRepository.findByUserName(userName);
     }

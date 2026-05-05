@@ -9,6 +9,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PatientRepository extends BaseReadOnlyRepository<Patient, PatientFilter> {
@@ -22,6 +25,12 @@ public class PatientRepository extends BaseReadOnlyRepository<Patient, PatientFi
         super(searchMapper, jpaRepository);
         this.jpaRepository = jpaRepository;
     }
+
+    @Transactional(readOnly = true)
+    public Optional<Patient> getByIdAndNotArchived(UUID id) {
+        return jpaRepository.findByIdAndArchivedFalse((id));
+    }
+
 
     @Transactional
     public Patient save(Patient patient) {
