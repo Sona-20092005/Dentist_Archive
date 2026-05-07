@@ -23,7 +23,7 @@ import java.util.UUID;
 @Validated
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
-        implements ArchivableService<Patient> {
+        implements ArchivableService<Patient, PatientFilter> {
     PatientRepository patientRepository;
     PatientAccessValidator accessValidator;
 
@@ -64,6 +64,12 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
     public Patient save(Patient entity) {
         return patientRepository.save(entity);
     }
+
+    @Override
+    public void afterArchive(Patient entity) {}
+
+    @Override
+    public void afterUnarchive(Patient entity) {}
 
 
 //    @Transactional(propagation = Propagation.NEVER)

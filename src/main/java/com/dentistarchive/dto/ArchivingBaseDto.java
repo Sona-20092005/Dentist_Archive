@@ -1,5 +1,6 @@
 package com.dentistarchive.dto;
 
+import com.dentistarchive.enums.ArchiveStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -20,7 +21,7 @@ import java.util.UUID;
 public abstract class ArchivingBaseDto extends MutableBaseDto {
 
     @Schema(description = "Entity is archived")
-    boolean archived;
+    ArchiveStatus archiveStatus;
 
     @Schema(description = "Last archiving date and time")
     OffsetDateTime archivedAt;
@@ -30,6 +31,6 @@ public abstract class ArchivingBaseDto extends MutableBaseDto {
 
     @JsonIgnore
     public boolean isNotArchived() {
-        return !archived;
+        return archiveStatus == ArchiveStatus.ACTIVE;
     }
 }

@@ -1,5 +1,8 @@
 package com.dentistarchive.entity;
 
+import com.dentistarchive.enums.ArchiveStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -19,9 +22,14 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public abstract class ArchivableBaseEntity extends MutableBaseEntity {
 
-    boolean archived;
+    @Enumerated(EnumType.STRING)
+    ArchiveStatus archiveStatus;
 
     OffsetDateTime archivedAt;
 
     UUID archivedBy;
+
+    public boolean isArchived() {
+        return archiveStatus != ArchiveStatus.ACTIVE;
+    }
 }

@@ -1,5 +1,6 @@
 package com.dentistarchive.search.filter;
 
+import com.dentistarchive.enums.ArchiveStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -18,5 +19,5 @@ import lombok.experimental.SuperBuilder;
 public abstract class ArchivingBaseFilter<F extends BaseFilter<F>> extends BaseFilter<F> {
 
     @Schema(description = "Archived or not archived entities")
-    Boolean archived;
+    ArchiveStatus archiveStatus;
 }

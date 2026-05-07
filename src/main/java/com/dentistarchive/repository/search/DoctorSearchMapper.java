@@ -19,7 +19,7 @@ public class DoctorSearchMapper extends SearchMapper<DoctorFilter, DoctorSort> {
     protected Predicate toPredicateExceptSubFilters(DoctorFilter filter) {
         var builder = PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
                 .in(doctor.id, filter.getIds())
-                .eq(doctor.archived, filter.getArchived())
+                .eq(doctor.archiveStatus, filter.getArchiveStatus())
                 .containsIgnoreCase(doctor.fullName, filter.getFullNameContains())
                 .in(doctor.email, filter.getEmails())
                 .in(doctor.phone, filter.getPhones());

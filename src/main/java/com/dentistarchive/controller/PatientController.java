@@ -47,4 +47,17 @@ public class PatientController extends BaseController {
         return ResponseEntity.ok(patientMapper.toDto(patientService.update(id, updateDto)));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        patientService.archiveById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/restore")
+    public ResponseEntity<PatientDto> unarchive(@PathVariable UUID id) {
+        return ResponseEntity.ok(
+                patientMapper.toDto(patientService.unarchiveById(id))
+        );
+    }
+
 }

@@ -87,6 +87,29 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(EntityAlreadyArchivedException e) {
+        log.error("Entity already archived", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(EntityNotArchivedException e) {
+        log.error("Entity already archived", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+
+    @ExceptionHandler
     public ResponseEntity<ValidationErrorResponse> handle(ConstraintViolationException e, HttpServletRequest request) {
         log.error("Validation error:", e);
         return ResponseEntity

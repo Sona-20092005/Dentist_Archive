@@ -28,7 +28,9 @@ public enum ErrorCode {
     HTTP_REQUEST_PARSING_ERROR("validation.http.request.format.error"),
     ACCESS_DENIED("access.denied"),
     AUTHENTICATION_FAILED("authentication.failed"),
-    INCORRECT_MEDIA_TYPE_ERROR("incorrect.content.type.error");
+    INCORRECT_MEDIA_TYPE_ERROR("incorrect.content.type.error"),
+    ENTITY_ALREADY_ARCHIVED("validation.entity.already-archived"),
+    ENTITY_NOT_ARCHIVED("validation.entity.not-archived");
 
     String code;
 }

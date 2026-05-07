@@ -23,7 +23,7 @@ public class PatientMapper implements EntityMapper<Patient, PatientDto>{
         dto.setUpdatedBy(patient.getUpdatedBy());
         dto.setArchivedAt(patient.getArchivedAt());
         dto.setArchivedBy(patient.getArchivedBy());
-        dto.setArchived(patient.isArchived());
+        dto.setArchiveStatus(patient.getArchiveStatus());
         dto.setName(patient.getName());
         dto.setPhones(patient.getPhones());
         dto.setEmails(patient.getEmails());

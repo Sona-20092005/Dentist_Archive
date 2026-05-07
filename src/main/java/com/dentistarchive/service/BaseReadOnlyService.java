@@ -141,4 +141,8 @@ public abstract class BaseReadOnlyService<E extends BaseEntity, F extends BaseFi
     protected F newEmptyFilter() {
         return filterClass.getDeclaredConstructor().newInstance();
     }
+
+    public BaseReadOnlyAccessValidator<E, F> getAccessValidator() {
+        return readOnlyAccessValidator;
+    }
 }
