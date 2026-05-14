@@ -30,7 +30,11 @@ public enum ErrorCode {
     AUTHENTICATION_FAILED("authentication.failed"),
     INCORRECT_MEDIA_TYPE_ERROR("incorrect.content.type.error"),
     ENTITY_ALREADY_ARCHIVED("validation.entity.already-archived"),
-    ENTITY_NOT_ARCHIVED("validation.entity.not-archived");
+    ENTITY_NOT_ARCHIVED("validation.entity.not-archived"),
+    PATIENT_ALREADY_INACTIVE("validation.patient.already-inactive"),
+    PATIENT_NOT_INACTIVE("validation.patient.not-inactive");
+
+
 
     String code;
 }

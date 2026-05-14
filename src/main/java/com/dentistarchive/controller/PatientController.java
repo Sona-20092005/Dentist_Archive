@@ -40,11 +40,25 @@ public class PatientController extends BaseController {
         return ResponseEntity.ok(patientMapper.toDto(patientService.create(createDto)));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @Operation(summary = "Update patient info")
     public ResponseEntity<PatientDto> update(@PathVariable UUID id,
                                              @Valid @RequestBody PatientUpdateDto updateDto) {
         return ResponseEntity.ok(patientMapper.toDto(patientService.update(id, updateDto)));
+    }
+
+    @PostMapping("/{id}/deactivate")
+    public ResponseEntity<PatientDto> deactivate(@PathVariable UUID id) {
+        return ResponseEntity.ok(
+                patientMapper.toDto(patientService.deactivate(id))
+        );
+    }
+
+    @PostMapping("/{id}/deactivate")
+    public ResponseEntity<PatientDto> reactivate(@PathVariable UUID id) {
+        return ResponseEntity.ok(
+                patientMapper.toDto(patientService.reactivate(id))
+        );
     }
 
     @DeleteMapping("/{id}")

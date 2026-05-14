@@ -3,6 +3,7 @@ package com.dentistarchive.service.provider;
 import com.dentistarchive.dto.create.PatientCreateDto;
 import com.dentistarchive.dto.update.PatientUpdateDto;
 import com.dentistarchive.entity.patient.Patient;
+import com.dentistarchive.enums.PatientStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -15,6 +16,7 @@ public class PatientProvider {
 
         Patient patient = new Patient();
         patient.setName(createDto.getName());
+        patient.setPatientStatus(PatientStatus.NEW);
         patient.setPhones(createDto.getPhones());
         patient.setEmails(createDto.getEmails());
         patient.setAddress(createDto.getAddress());

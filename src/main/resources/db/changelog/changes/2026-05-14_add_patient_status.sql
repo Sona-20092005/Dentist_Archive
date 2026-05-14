@@ -1,0 +1,3 @@
+ALTER TABLE patient ADD COLUMN patient_status VARCHAR(32) NOT NULL;
+
+ALTER TABLE patient ALTER COLUMN patient_status DROP DEFAULT;

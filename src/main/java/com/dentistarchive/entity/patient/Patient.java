@@ -1,9 +1,12 @@
 package com.dentistarchive.entity.patient;
 
 import com.dentistarchive.entity.ArchivableBaseEntity;
+import com.dentistarchive.enums.PatientStatus;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -23,6 +26,10 @@ public class Patient extends ArchivableBaseEntity {
 
     @NotNull
     String name;
+
+
+    @Enumerated(EnumType.STRING)
+    PatientStatus patientStatus;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")

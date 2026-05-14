@@ -41,4 +41,9 @@ public class PatientRepository extends BaseReadOnlyRepository<Patient, PatientFi
     public void deleteAll() {
         jpaRepository.deleteAll();
     }
+
+    @Transactional(readOnly = true)
+    public long countByDoctorId(UUID doctorId) {
+        return jpaRepository.countByDoctorId(doctorId);
+    }
 }

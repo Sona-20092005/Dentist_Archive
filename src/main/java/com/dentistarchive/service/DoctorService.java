@@ -57,10 +57,12 @@ public class DoctorService extends BaseReadOnlyService<Doctor, DoctorFilter>
 
     @Override
     public void afterArchive(Doctor entity) {
+
     }
 
     @Override
     public void afterUnarchive(Doctor entity) {
+
     }
 
     @Transactional(propagation = Propagation.NEVER)

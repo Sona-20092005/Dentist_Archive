@@ -3,7 +3,10 @@ package com.dentistarchive.service;
 import com.dentistarchive.dto.create.PatientCreateDto;
 import com.dentistarchive.dto.update.PatientUpdateDto;
 import com.dentistarchive.entity.patient.Patient;
+import com.dentistarchive.enums.PatientStatus;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
+import com.dentistarchive.exception.PatientAlreadyInactiveException;
+import com.dentistarchive.exception.PatientNotInactiveException;
 import com.dentistarchive.repository.PatientRepository;
 import com.dentistarchive.search.filter.PatientFilter;
 import com.dentistarchive.security.AuthHolder;
@@ -26,7 +29,6 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
         implements ArchivableService<Patient, PatientFilter> {
     PatientRepository patientRepository;
     PatientAccessValidator accessValidator;
-
     PatientProvider patientProvider;
 
     public PatientService(
@@ -59,6 +61,27 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
         patientProvider.update(patient, updateDto);
         return patientRepository.save(patient);
     }
+
+    public Patient deactivate(UUID id) {
+        Patient patient = getByIdOrElseThrow(id);
+        getAccessValidator().validateAccess(patient);
+        if (patient.getPatientStatus() == PatientStatus.INACTIVE) {
+            throw new PatientAlreadyInactiveException(patient.getId());
+        }
+        patient.setPatientStatus(PatientStatus.INACTIVE);
+        return save(patient);
+    }
+
+    public Patient reactivate(UUID id) {
+        Patient patient = getByIdOrElseThrow(id);
+        getAccessValidator().validateAccess(patient);
+        if (patient.getPatientStatus() != PatientStatus.INACTIVE) {
+            throw new PatientNotInactiveException(patient.getId());
+        }
+        patient.setPatientStatus(PatientStatus.NEW);
+        return save(patient);
+    }
+
 
     @Override
     public Patient save(Patient entity) {

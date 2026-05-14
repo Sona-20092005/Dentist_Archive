@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface PatientJpaRepository
         extends JpaRepository<Patient, UUID>, QuerydslPredicateExecutor<Patient> {
     Optional<Patient> findByIdAndArchivedFalse(UUID id);
+
+    long countByDoctorId(UUID doctorId);
 }

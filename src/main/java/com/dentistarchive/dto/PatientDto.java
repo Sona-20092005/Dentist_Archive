@@ -1,5 +1,6 @@
 package com.dentistarchive.dto;
 
+import com.dentistarchive.enums.PatientStatus;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,8 @@ import java.util.UUID;
 public class PatientDto extends ArchivingBaseDto {
 
     String name;
+
+    PatientStatus patientStatus;
 
     List<String> phones;
 
