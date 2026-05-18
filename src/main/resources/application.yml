@@ -37,7 +37,7 @@ app:
   system-admin:
     user-name: "admin"
     full-name: "System Administrator"
-    password: "ChangeMe123!"
+    password: "Password123!"
 
   delays-after-failed-login-attempts-for-users:
     - number-of-fails: 3

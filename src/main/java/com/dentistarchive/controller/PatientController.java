@@ -54,7 +54,7 @@ public class PatientController extends BaseController {
         );
     }
 
-    @PostMapping("/{id}/deactivate")
+    @PostMapping("/{id}/reactivate")
     public ResponseEntity<PatientDto> reactivate(@PathVariable UUID id) {
         return ResponseEntity.ok(
                 patientMapper.toDto(patientService.reactivate(id))

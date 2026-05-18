@@ -23,7 +23,7 @@ import java.util.UUID;
 public abstract class ArchivableBaseEntity extends MutableBaseEntity {
 
     @Enumerated(EnumType.STRING)
-    ArchiveStatus archiveStatus;
+    ArchiveStatus archiveStatus = ArchiveStatus.ACTIVE;
 
     OffsetDateTime archivedAt;
 
