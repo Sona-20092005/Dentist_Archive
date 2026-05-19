@@ -2,7 +2,4 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/2026-04-21_init.sql
   - include:
-      file: db/changelog/changes/2026-05-07_add_archive_status.sql
-  - include:
-      file: db/changelog/changes/2026-05-14_add_patient_status.sql
-
+      file: db/changelog/changes/2026-05-19_add_procedure.sql

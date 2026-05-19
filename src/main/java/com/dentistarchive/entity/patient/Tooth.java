@@ -1,33 +1,29 @@
-package com.dentistarchive.entity.pricelist;
+package com.dentistarchive.entity.patient;
 
-import com.dentistarchive.entity.ArchivableBaseEntity;
+import com.dentistarchive.entity.MutableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
-@Entity
+//@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Procedure extends ArchivableBaseEntity {
+public class Tooth extends MutableBaseEntity {
 
-    @NotNull
-    String name;
-
-    BigDecimal price;
+    int number;
 
     String description;
 
-    @Column(name = "doctor_id", nullable = false)
-    UUID doctorId;
+    @Column(name = "patient_id", nullable = false)
+    UUID patientId;
 }
 
 

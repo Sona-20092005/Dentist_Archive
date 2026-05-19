@@ -1,6 +1,5 @@
 package com.dentistarchive.search.filter;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,14 +8,21 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.time.OffsetDateTime;
+import java.util.Set;
+import java.util.UUID;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public abstract class ArchivingBaseFilter<F extends BaseFilter<F>> extends BaseFilter<F> {
+public class ProcedureFilter extends ArchivingBaseFilter<ProcedureFilter>{
 
-    @Schema(description = "Archived or not archived entities")
-    boolean archived;
+    RangeFilter<OffsetDateTime> createdAt;
+
+    Set<UUID> createdBy;
+
+    String nameContains;
 }

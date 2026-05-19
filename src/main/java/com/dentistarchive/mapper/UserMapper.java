@@ -34,7 +34,7 @@ public class UserMapper implements EntityMapper<User, UserDto> {
                 .updatedAt(user.getUpdatedAt())
                 .updatedBy(user.getUpdatedBy())
 
-                .archiveStatus(user.getArchiveStatus())
+                .archived(user.isArchived())
                 .archivedAt(user.getArchivedAt())
                 .archivedBy(user.getArchivedBy())
 

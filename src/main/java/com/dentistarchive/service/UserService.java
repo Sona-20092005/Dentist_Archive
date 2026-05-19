@@ -3,7 +3,6 @@ package com.dentistarchive.service;
 import com.dentistarchive.config.properties.AppProperties;
 import com.dentistarchive.dto.ChangePasswordCommand;
 import com.dentistarchive.entity.User;
-import com.dentistarchive.enums.ArchiveStatus;
 import com.dentistarchive.exception.CustomValidationException;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.exception.ErrorCode;
@@ -71,7 +70,7 @@ public class UserService extends BaseReadOnlyService<User, UserFilter> {
     public User getByLoginAndPassword(@NotBlank String login, @NotBlank String password) {
         UserFilter filter = UserFilter.builder()
                 .login(login)
-                .archiveStatus(ArchiveStatus.ACTIVE)
+                .archived(true)
                 .build();
 
         User user = searchOneWithoutAccessControl(filter).orElseThrow(() -> {

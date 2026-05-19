@@ -1,7 +1,6 @@
 package com.dentistarchive.service;
 
 import com.dentistarchive.entity.ArchivableBaseEntity;
-import com.dentistarchive.enums.ArchiveStatus;
 import com.dentistarchive.exception.EntityAlreadyArchivedException;
 import com.dentistarchive.exception.EntityNotArchivedException;
 import com.dentistarchive.search.filter.BaseFilter;
@@ -41,13 +40,13 @@ public interface ArchivableService<E extends ArchivableBaseEntity, F extends Bas
     }
 
     default void archive(E entity) {
-        entity.setArchiveStatus(ArchiveStatus.ARCHIVED);
+        entity.setArchived(true);
         entity.setArchivedAt(ClockUtils.now());
         entity.setArchivedBy(AuthHolder.getUserIdOrElseThrow());
     }
 
     default void unarchive(E entity) {
-        entity.setArchiveStatus(ArchiveStatus.ACTIVE);
+        entity.setArchived(false);
         entity.setArchivedAt(null);
         entity.setArchivedBy(null);
     }

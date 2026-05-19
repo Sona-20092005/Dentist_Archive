@@ -1,6 +1,5 @@
-package com.dentistarchive.entity;
+package com.dentistarchive.dto;
 
-import jakarta.persistence.MappedSuperclass;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,21 +7,19 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
 @SuperBuilder
-@MappedSuperclass
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PROTECTED)
-public abstract class ArchivableBaseEntity extends MutableBaseEntity {
+public class ToothDto extends MutableBaseDto {
 
-    boolean archived;
+    int number;
 
-    OffsetDateTime archivedAt;
+    String description;
 
-    UUID archivedBy;
+    UUID patientId;
 
 }

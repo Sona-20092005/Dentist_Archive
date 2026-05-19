@@ -2,7 +2,6 @@ package com.dentistarchive.auth.job;
 
 import com.dentistarchive.config.properties.AppProperties;
 import com.dentistarchive.entity.SystemAdminUser;
-import com.dentistarchive.enums.ArchiveStatus;
 import com.dentistarchive.enums.Role;
 import com.dentistarchive.repository.UserRepository;
 import lombok.AccessLevel;
@@ -35,7 +34,7 @@ public class SystemAdminInitializationJob implements ApplicationRunner {
         SystemAdminUser systemAdmin = SystemAdminUser.builder()
                 .userName(appProperties.getSystemAdmin().getUserName())
                 .fullName(appProperties.getSystemAdmin().getFullName())
-                .archiveStatus(ArchiveStatus.ACTIVE)
+                .archived(false)
                 .passwordHash(passwordEncoder.encode(appProperties.getSystemAdmin().getPassword()))
                 .role(Role.SYSTEM_ADMIN)
                 .build();
