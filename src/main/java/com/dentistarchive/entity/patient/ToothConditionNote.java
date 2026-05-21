@@ -1,8 +1,11 @@
 package com.dentistarchive.entity.patient;
 
 import com.dentistarchive.entity.MutableBaseEntity;
+import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.UUID;
 
 @Data
 //@Entity
@@ -11,9 +14,14 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ToothStatus extends MutableBaseEntity {
+public class ToothConditionNote extends MutableBaseEntity {
 
-    String name;
+    int number;
+
+    String description;
+
+    @Column(name = "patient_id", nullable = false)
+    UUID patientId;
 }
 
 

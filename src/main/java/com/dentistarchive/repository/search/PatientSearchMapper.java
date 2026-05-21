@@ -22,7 +22,7 @@ public class PatientSearchMapper extends SearchMapper<PatientFilter, PatientSort
     protected Predicate toPredicateExceptSubFilters(PatientFilter filter) {
         return PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
                 .in(patient.id, filter.getIds())
-                .eq(patient.archived, filter.isArchived())
+                .eq(patient.archived, filter.getArchived())
                 .containsIgnoreCase(patient.name, filter.getNameContains())
                 .build();
     }

@@ -52,6 +52,7 @@ public class CurrentUserController extends BaseController {
     }
 
     @GetMapping("/current")
+    @Operation(summary = "Get current")
     public ResponseEntity<UserProfileDto> getCurrentUser() {
         return ResponseEntity.ok(userMapper.toProfileDto(userService.getCurrentUser()));
     }

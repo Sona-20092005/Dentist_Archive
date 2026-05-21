@@ -30,7 +30,7 @@ logging:
 app:
   jwt:
     secret: "replace-with-a-long-random-secret"
-    access-token-ttl: 15m
+    access-token-ttl: 45m
     refresh-token-ttl: 30d
     issuer: "dentist-archive"
 

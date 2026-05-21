@@ -33,11 +33,13 @@ public class DoctorController extends BaseController {
     DoctorMapper doctorMapper;
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get doctor by id")
     public DoctorDto getById(@PathVariable("id") UUID id) {
         return doctorMapper.toDto(doctorService.getByIdOrElseThrow(id));
     }
 
     @PostMapping("/search")
+    @Operation(summary = "Search doctor")
     public SearchResponse<DoctorDto> search(@RequestBody SearchRequest<DoctorFilter, DoctorSort> searchRequest) {
         return doctorMapper.toSearchResponse(doctorService.search(searchRequest));
     }
@@ -56,12 +58,14 @@ public class DoctorController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete (archive) doctor")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         doctorService.archiveById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/restore")
+    @Operation(summary = "Restore (unarchive) doctor")
     public ResponseEntity<DoctorDto> unarchive(@PathVariable UUID id) {
         return ResponseEntity.ok(
                 doctorMapper.toDto(doctorService.unarchiveById(id))

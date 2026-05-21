@@ -76,6 +76,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(InvalidToothNumberException e) {
+        log.error("Tooth Number invalid:", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handle(EntityNotFoundByIdException e) {
         log.error("Entity not found", e);
         return ResponseEntity

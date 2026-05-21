@@ -32,7 +32,9 @@ public enum ErrorCode {
     ENTITY_ALREADY_ARCHIVED("validation.entity.already-archived"),
     ENTITY_NOT_ARCHIVED("validation.entity.not-archived"),
     PATIENT_ALREADY_INACTIVE("validation.patient.already-inactive"),
-    PATIENT_NOT_INACTIVE("validation.patient.not-inactive");
+    PATIENT_NOT_INACTIVE("validation.patient.not-inactive"),
+    TOOTH_NUMBER_INVALID("validation.tooth.number.invalid");
+
 
 
 

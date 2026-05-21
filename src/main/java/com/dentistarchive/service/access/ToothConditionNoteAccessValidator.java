@@ -1,0 +1,26 @@
+//package com.dentistarchive.service.access;
+//
+//import com.dentistarchive.entity.pricelist.Procedure;
+//import com.dentistarchive.search.filter.ProcedureFilter;
+//import com.dentistarchive.security.AuthHolder;
+//import com.dentistarchive.security.CustomUserDetails;
+//import org.springframework.stereotype.Component;
+//
+//@Component
+//public class ToothConditionNoteAccessValidator extends BaseReadOnlyAccessValidator<Procedure, ProcedureFilter> {
+//
+//    @Override
+//    protected ProcedureFilter buildAccessControlFilter() {
+//        return null;
+//    }
+//
+//    @Override
+//    protected boolean hasAccess(Procedure entity) {
+//        // TODO: 5/21/2026 fix with logic
+//        return true;
+//   }
+//    @Override
+//    protected Class<ProcedureFilter> getFilterClass() {
+//        return ProcedureFilter.class;
+//    }
+//}

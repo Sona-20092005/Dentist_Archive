@@ -22,7 +22,7 @@ public class ProcedureSearchMapper extends SearchMapper<ProcedureFilter, Procedu
     protected Predicate toPredicateExceptSubFilters(ProcedureFilter filter) {
         return PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
                 .in(procedure.id, filter.getIds())
-                .eq(procedure.archived, filter.isArchived())
+                .eq(procedure.archived, filter.getArchived())
                 .containsIgnoreCase(procedure.name, filter.getNameContains())
                 .build();
     }
