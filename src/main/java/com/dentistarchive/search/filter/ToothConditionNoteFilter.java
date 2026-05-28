@@ -24,5 +24,7 @@ public class ToothConditionNoteFilter extends BaseFilter<ToothConditionNoteFilte
 
     Set<UUID> createdBy;
 
-    String nameContains;
+    Integer toothNumber;
+
+    UUID patientId;
 }

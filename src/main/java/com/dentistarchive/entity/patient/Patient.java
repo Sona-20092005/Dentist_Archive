@@ -27,7 +27,6 @@ public class Patient extends ArchivableBaseEntity {
     @NotNull
     String name;
 
-
     @Enumerated(EnumType.STRING)
     PatientStatus patientStatus;
 

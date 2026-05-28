@@ -2,13 +2,14 @@ package com.dentistarchive.entity.patient;
 
 import com.dentistarchive.entity.MutableBaseEntity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.UUID;
 
 @Data
-//@Entity
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,8 +17,10 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ToothConditionNote extends MutableBaseEntity {
 
-    int number;
+    @Column(name = "tooth_number", nullable = false)
+    int toothNumber;
 
+    @Column(nullable = false)
     String description;
 
     @Column(name = "patient_id", nullable = false)

@@ -87,6 +87,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(ToothNoteAlreadyExistsException e) {
+        log.error("Tooth Note already exists:", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handle(EntityNotFoundByIdException e) {
         log.error("Entity not found", e);
         return ResponseEntity

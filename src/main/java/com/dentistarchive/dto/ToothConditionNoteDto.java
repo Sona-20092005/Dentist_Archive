@@ -16,7 +16,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public class ToothConditionNoteDto extends MutableBaseDto {
 
-    int number;
+    int toothNumber;
 
     String description;
 

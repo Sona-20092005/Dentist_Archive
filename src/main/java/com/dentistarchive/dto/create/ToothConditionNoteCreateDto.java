@@ -9,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor
@@ -17,8 +19,10 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 public class ToothConditionNoteCreateDto extends BaseCreateDto<ToothConditionNoteDto>{
 
-    int number;
+    int toothNumber;
 
     String description;
+
+    UUID patientId;
 
 }

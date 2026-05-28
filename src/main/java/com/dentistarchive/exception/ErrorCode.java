@@ -33,7 +33,9 @@ public enum ErrorCode {
     ENTITY_NOT_ARCHIVED("validation.entity.not-archived"),
     PATIENT_ALREADY_INACTIVE("validation.patient.already-inactive"),
     PATIENT_NOT_INACTIVE("validation.patient.not-inactive"),
-    TOOTH_NUMBER_INVALID("validation.tooth.number.invalid");
+    TOOTH_NUMBER_INVALID("validation.tooth-note.number.invalid"),
+    TOOTH_NOTE_ALREADY_EXISTS("validation.tooth-note.already-exists");
+
 
 
 

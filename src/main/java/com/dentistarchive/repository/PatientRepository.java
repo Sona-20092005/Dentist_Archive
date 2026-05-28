@@ -46,4 +46,9 @@ public class PatientRepository extends BaseReadOnlyRepository<Patient, PatientFi
     public long countByDoctorId(UUID doctorId) {
         return jpaRepository.countByDoctorId(doctorId);
     }
+
+    @Transactional(readOnly = true)
+    public Optional<UUID> getDoctorIdByPatientId(UUID patientId) {
+        return jpaRepository.findDoctorIdByPatientId(patientId);
+    }
 }
