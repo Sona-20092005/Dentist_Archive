@@ -17,8 +17,9 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ToothConditionNote extends MutableBaseEntity {
 
+    @NonNull
     @Column(name = "tooth_number", nullable = false)
-    int toothNumber;
+    Integer toothNumber;
 
     @Column(nullable = false)
     String description;

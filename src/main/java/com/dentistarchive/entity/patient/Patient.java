@@ -28,6 +28,7 @@ public class Patient extends ArchivableBaseEntity {
     String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "patient_status")
     PatientStatus patientStatus;
 
     @Type(JsonType.class)
