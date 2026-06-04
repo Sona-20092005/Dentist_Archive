@@ -11,7 +11,9 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import static com.querydsl.jpa.JPAExpressions.select;
 
+import static com.dentistarchive.entity.patient.QPatient.patient;
 import static com.dentistarchive.entity.patient.QTreatmentPlan.treatmentPlan;
 
 @Component
@@ -20,10 +22,23 @@ public class TreatmentPlanSearchMapper extends SearchMapper<TreatmentPlanFilter,
 
     @Override
     protected Predicate toPredicateExceptSubFilters(TreatmentPlanFilter filter) {
-        return PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
+        PredicateBuilder builder = PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
                 .in(treatmentPlan.id, filter.getIds())
+                .in(treatmentPlan.planStatus, filter.getStatuses())
                 .eq(treatmentPlan.archived, filter.getArchived())
-                .build();
+                .eq(treatmentPlan.patientId, filter.getPatientId());
+
+        if (filter.getDoctorId() != null) {
+            builder.and(
+                    treatmentPlan.patientId.in(
+                            select(patient.id)
+                                    .from(patient)
+                                    .where(patient.doctorId.eq(filter.getDoctorId()))
+                    )
+            );
+        }
+
+        return builder.build();
     }
 
     @Override

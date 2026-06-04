@@ -2,6 +2,7 @@ package com.dentistarchive.search;
 
 import com.dentistarchive.search.filter.RangeFilter;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.*;
 import lombok.AccessLevel;
@@ -260,6 +261,14 @@ public class PredicateBuilder {
         if (Objects.nonNull(value)) {
             addBooleanExpression(attribute.containsIgnoreCase(value));
         }
+        return this;
+    }
+
+    public PredicateBuilder jsonbContainsIgnoreCase(Expression<?> field, String value) {
+        if (value == null || value.isBlank()) return this;
+
+        StringTemplate jsonbText = Expressions.stringTemplate("cast({0} as text)", field);
+        addBooleanExpression(jsonbText.containsIgnoreCase(value));
         return this;
     }
 

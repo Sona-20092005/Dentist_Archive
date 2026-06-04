@@ -3,6 +3,7 @@ package com.dentistarchive.entity.patient;
 import com.dentistarchive.entity.MutableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -24,6 +25,7 @@ public class ToothConditionNote extends MutableBaseEntity {
     @Column(nullable = false)
     String description;
 
+    @NotNull
     @Column(name = "patient_id", nullable = false)
     UUID patientId;
 }

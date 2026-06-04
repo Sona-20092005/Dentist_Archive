@@ -17,5 +17,4 @@ create table procedure
 
     constraint fk_patient_doctor foreign key (doctor_id)
         references users (id)
-        on delete restrict
 );

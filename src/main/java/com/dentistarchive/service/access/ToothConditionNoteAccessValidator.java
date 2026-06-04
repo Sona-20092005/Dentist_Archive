@@ -17,7 +17,11 @@ public class ToothConditionNoteAccessValidator extends BaseReadOnlyAccessValidat
 
     @Override
     protected ToothConditionNoteFilter buildAccessControlFilter() {
-        return null;
+        CustomUserDetails details = AuthHolder.getUserDetailsOrElseThrow();
+
+        return ToothConditionNoteFilter.builder()
+                .doctorId(details.getUserId())
+                .build();
     }
 
     @Override

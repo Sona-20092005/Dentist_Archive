@@ -23,6 +23,7 @@ public class ProcedureSearchMapper extends SearchMapper<ProcedureFilter, Procedu
         return PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
                 .in(procedure.id, filter.getIds())
                 .eq(procedure.archived, filter.getArchived())
+                .eq(procedure.doctorId, filter.getDoctorId())
                 .containsIgnoreCase(procedure.name, filter.getNameContains())
                 .build();
     }
@@ -33,6 +34,7 @@ public class ProcedureSearchMapper extends SearchMapper<ProcedureFilter, Procedu
             case NAME -> SortBuilder.buildOrder(procedure.name, direction);
             case CREATED_AT -> SortBuilder.buildOrder(procedure.createdAt, direction);
             case UPDATED_AT -> SortBuilder.buildOrder(procedure.updatedAt, direction);
+            case PRICE -> SortBuilder.buildOrder(procedure.price, direction);
         };
     }
 

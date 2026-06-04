@@ -69,6 +69,7 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
             throw new PatientAlreadyInactiveException(patient.getId());
         }
         patient.setPatientStatus(PatientStatus.INACTIVE);
+        patient.setPatientStatusSortOrder(PatientStatus.INACTIVE.getSortOrder());
         return save(patient);
     }
 
@@ -79,6 +80,7 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
             throw new PatientNotInactiveException(patient.getId());
         }
         patient.setPatientStatus(PatientStatus.NEW);
+        patient.setPatientStatusSortOrder(PatientStatus.NEW.getSortOrder());
         return save(patient);
     }
 

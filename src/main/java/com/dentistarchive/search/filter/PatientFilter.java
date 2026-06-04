@@ -1,5 +1,6 @@
 package com.dentistarchive.search.filter;
 
+import com.dentistarchive.enums.PatientStatus;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,7 +23,13 @@ public class PatientFilter extends ArchivingBaseFilter<PatientFilter>{
 
     RangeFilter<OffsetDateTime> createdAt;
 
-    Set<UUID> createdBy;
+    Set<PatientStatus> statuses;
 
     String nameContains;
+
+    String phoneContains;
+
+    String emailContains;
+
+    UUID doctorId;
 }

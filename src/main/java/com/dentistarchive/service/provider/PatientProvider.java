@@ -17,6 +17,7 @@ public class PatientProvider {
         Patient patient = new Patient();
         patient.setName(createDto.getName());
         patient.setPatientStatus(PatientStatus.NEW);
+        patient.setPatientStatusSortOrder(PatientStatus.NEW.getSortOrder());
         patient.setPhones(createDto.getPhones());
         patient.setEmails(createDto.getEmails());
         patient.setAddress(createDto.getAddress());

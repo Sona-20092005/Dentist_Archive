@@ -38,6 +38,7 @@ public class ProcedureController extends BaseController {
         return ResponseEntity.ok(procedureMapper.toDto(procedureService.getByIdOrElseThrow(id)));
     }
 
+
     @PostMapping("/search")
     @Operation(summary = "Search procedure")
     public SearchResponse<ProcedureDto> search(@RequestBody SearchRequest<ProcedureFilter, ProcedureSort> searchRequest) {

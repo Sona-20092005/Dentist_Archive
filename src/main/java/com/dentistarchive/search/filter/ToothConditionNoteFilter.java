@@ -9,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -22,9 +21,9 @@ public class ToothConditionNoteFilter extends BaseFilter<ToothConditionNoteFilte
 
     RangeFilter<OffsetDateTime> createdAt;
 
-    Set<UUID> createdBy;
-
     Integer toothNumber;
 
     UUID patientId;
+
+    UUID doctorId;
 }

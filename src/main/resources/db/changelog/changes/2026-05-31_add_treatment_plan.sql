@@ -15,9 +15,9 @@ create table treatment_plan
     plan_status      varchar(32),
     discount_percent numeric(5, 2),
     discount_amount  numeric(19, 4),
+    completed_date   date,
     notes            text,
 
     constraint fk_treatment_plan_patient foreign key (patient_id)
         references patient (id)
-        on delete restrict
 );

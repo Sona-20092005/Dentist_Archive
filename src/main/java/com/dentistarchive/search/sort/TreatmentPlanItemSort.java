@@ -1,7 +1,6 @@
 package com.dentistarchive.search.sort;
 
-public enum PatientSort implements AvailableSorts {
-    NAME,
+public enum TreatmentPlanItemSort implements AvailableSorts {
     CREATED_AT,
     UPDATED_AT,
     STATUS

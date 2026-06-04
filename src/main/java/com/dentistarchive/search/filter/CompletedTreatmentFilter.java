@@ -1,6 +1,5 @@
 package com.dentistarchive.search.filter;
 
-import com.dentistarchive.enums.TreatmentPlanStatus;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -19,13 +17,20 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TreatmentPlanFilter extends ArchivingBaseFilter<TreatmentPlanFilter>{
+public class CompletedTreatmentFilter extends ArchivingBaseFilter<CompletedTreatmentFilter>{
 
     RangeFilter<OffsetDateTime> createdAt;
 
-    Set<TreatmentPlanStatus> statuses;
+    Integer toothNumber;
+
+    UUID procedureId;
+
+    UUID treatmentPlanItemId;
+
+    UUID appointmentId;
 
     UUID patientId;
 
     UUID doctorId;
+
 }

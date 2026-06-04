@@ -1,7 +1,7 @@
 package com.dentistarchive.entity.patient;
 
 import com.dentistarchive.entity.ArchivableBaseEntity;
-import com.dentistarchive.enums.PatientStatus;
+import com.dentistarchive.enums.TreatmentPlanItemStatus;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +12,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,39 +23,34 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Patient extends ArchivableBaseEntity {
+public class TreatmentPlanItem extends ArchivableBaseEntity {
 
-    @NotNull
-    @Column(nullable = false)
-    String name;
-
-    @NotNull
+    @NonNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "patient_status", nullable = false)
-    PatientStatus patientStatus;
+    @Column(name = "item_status", nullable = false)
+    TreatmentPlanItemStatus itemStatus;
 
     @NotNull
-    @Column(name = "patient_status_sort_order", nullable = false)
-    Integer patientStatusSortOrder;
+    @Column(name = "item_status_sort_order", nullable = false)
+    Integer itemStatusSortOrder;
+
+    @NotNull
+    @Column(name = "unit_price", nullable = false)
+    BigDecimal unitPrice;
 
     @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    List<String> phones;
-
-    @Type(JsonType.class)
-    @Column(columnDefinition = "jsonb")
-    List<String> emails;
-
-    String address;
-
-    @Column(name = "passport_information")
-    String passportInformation;
+    @Column(name = "tooth_numbers", columnDefinition = "jsonb")
+    List<Integer> toothNumbers;
 
     String notes;
 
     @NotNull
-    @Column(name = "doctor_id", nullable = false)
-    UUID doctorId;
+    @Column(name = "procedure_id", nullable = false)
+    UUID procedureId;
+
+    @NotNull
+    @Column(name = "treatment_plan_id", nullable = false)
+    UUID treatmentPlanId;
 }
 
 

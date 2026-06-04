@@ -12,7 +12,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import static com.dentistarchive.entity.patient.QPatient.patient;
 import static com.dentistarchive.entity.patient.QToothConditionNote.toothConditionNote;
+import static com.querydsl.jpa.JPAExpressions.select;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -20,17 +22,28 @@ public class ToothConditionNoteSearchMapper extends SearchMapper<ToothConditionN
 
     @Override
     protected Predicate toPredicateExceptSubFilters(ToothConditionNoteFilter filter) {
-        return PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
+        PredicateBuilder builder = PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
                 .in(toothConditionNote.id, filter.getIds())
                 .eq(toothConditionNote.patientId, filter.getPatientId())
-                .eq(toothConditionNote.toothNumber, filter.getToothNumber())
-                .build();
+                .eq(toothConditionNote.toothNumber, filter.getToothNumber());
+
+        if (filter.getDoctorId() != null) {
+            builder.and(
+                    toothConditionNote.patientId.in(
+                            select(patient.id)
+                                    .from(patient)
+                                    .where(patient.doctorId.eq(filter.getDoctorId()))
+                    )
+            );
+        }
+
+        return builder.build();
     }
 
     @Override
     protected Sort.Order toOrder(ToothConditionNoteSort sortName, SortDirection direction) {
         return switch (sortName) {
-            case NAME -> SortBuilder.buildOrder(toothConditionNote.toothNumber, direction);
+            case NUMBER -> SortBuilder.buildOrder(toothConditionNote.toothNumber, direction);
             case CREATED_AT -> SortBuilder.buildOrder(toothConditionNote.createdAt, direction);
             case UPDATED_AT -> SortBuilder.buildOrder(toothConditionNote.updatedAt, direction);
         };

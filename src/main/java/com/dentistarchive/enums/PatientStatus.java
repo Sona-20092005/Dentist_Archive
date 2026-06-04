@@ -1,13 +1,19 @@
 package com.dentistarchive.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum PatientStatus {
-    NEW,
+    WAITING_FOR_APPOINTMENT(10),
+    IN_TREATMENT(20),
+    ACTIVE(30),
+    NEW(40),
+    INACTIVE(50);
 
-    ACTIVE,
+    private final int sortOrder;
 
-    IN_TREATMENT,
+    PatientStatus(int sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 
-    WAITING_FOR_APPOINTMENT,
-
-    INACTIVE
 }

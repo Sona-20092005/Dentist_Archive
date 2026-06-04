@@ -1,17 +1,17 @@
 package com.dentistarchive.entity.patient;
 
 import com.dentistarchive.entity.ArchivableBaseEntity;
-import com.dentistarchive.enums.TreatmentPlanStatus;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -21,30 +21,31 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TreatmentPlan extends ArchivableBaseEntity {
+public class CompletedTreatment extends ArchivableBaseEntity {
 
     @NotNull
     @Column(nullable = false)
     LocalDate date;
 
-    @NonNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "plan_status", nullable = false)
-    TreatmentPlanStatus planStatus;
+    @Column(name = "unit_price")
+    BigDecimal unitPrice;
 
-    @Column(name = "discount_percent")
-    BigDecimal discountPercent;
-
-    @Column(name = "discount_amount")
-    BigDecimal discountAmount;
-
-    // TODO: 6/1/2026 add logic
-    @Column(name = "completed_date")
-    LocalDate completedDate;
+    @Type(JsonType.class)
+    @Column(name = "tooth_numbers", columnDefinition = "jsonb")
+    List<Integer> toothNumbers;
 
     String notes;
 
-    @NonNull
+    @Column(name = "procedure_id", nullable = false)
+    UUID procedureId;
+
+    @Column(name = "appointment_id")
+    UUID appointmentId;
+
+    @Column(name = "treatment_plan_item_id")
+    UUID treatmentPlanItemId;
+
+    @NotNull
     @Column(name = "patient_id", nullable = false)
     UUID patientId;
 

@@ -9,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -22,7 +21,7 @@ public class ProcedureFilter extends ArchivingBaseFilter<ProcedureFilter>{
 
     RangeFilter<OffsetDateTime> createdAt;
 
-    Set<UUID> createdBy;
-
     String nameContains;
+
+    UUID doctorId;
 }

@@ -1,7 +1,7 @@
 package com.dentistarchive.search.sort;
 
 public enum ToothConditionNoteSort implements AvailableSorts {
-    NAME,
+    NUMBER,
     CREATED_AT,
     UPDATED_AT
 }

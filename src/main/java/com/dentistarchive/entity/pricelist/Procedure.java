@@ -20,12 +20,16 @@ import java.util.UUID;
 public class Procedure extends ArchivableBaseEntity {
 
     @NotNull
+    @Column(nullable = false)
     String name;
 
+    @NotNull
+    @Column(nullable = false)
     BigDecimal price;
 
     String description;
 
+    @NotNull
     @Column(name = "doctor_id", nullable = false)
     UUID doctorId;
 }

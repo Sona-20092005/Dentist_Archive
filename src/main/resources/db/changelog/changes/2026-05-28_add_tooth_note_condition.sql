@@ -13,5 +13,4 @@ create table tooth_condition_note
 
     constraint fk_tooth_condition_note_patient foreign key (patient_id)
         references patient (id)
-        on delete restrict
 );

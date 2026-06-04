@@ -11,7 +11,11 @@ public class ProcedureAccessValidator extends BaseReadOnlyAccessValidator<Proced
 
     @Override
     protected ProcedureFilter buildAccessControlFilter() {
-        return null;
+        CustomUserDetails details = AuthHolder.getUserDetailsOrElseThrow();
+
+        return ProcedureFilter.builder().
+                doctorId(details.getUserId()).
+                build();
     }
 
     @Override

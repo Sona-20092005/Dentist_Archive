@@ -22,7 +22,6 @@ create table users
 
     additional_params               jsonb,
 
-    -- Doctor fields
     email                           varchar(255),
     phone                           varchar(255)
 );
@@ -42,16 +41,15 @@ create table patient
 
     name                 text        not null,
     patient_status       varchar(32) not null,
+    patient_status_sort_order int not null,
     phones               jsonb       not null,
     emails               jsonb       not null,
     address              text,
-
     passport_information text,
     notes                text,
 
     constraint fk_patient_doctor foreign key (doctor_id)
         references users (id)
-        on delete restrict
 );
 
 create table refresh_tokens
@@ -68,8 +66,6 @@ create table refresh_tokens
     revoked_at   timestamptz,
     revoke_reason text,
 
-    constraint fk_refresh_tokens_user
-        foreign key (user_id)
+    constraint fk_refresh_tokens_user foreign key (user_id)
             references users(id)
-            on delete cascade
 );
