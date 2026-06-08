@@ -49,6 +49,7 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
 
     @Transactional
     public Patient create(PatientCreateDto createDto) {
+
         var patient = patientProvider.create(createDto, AuthHolder.getUserId().orElseThrow());
         return save(patient);
     }

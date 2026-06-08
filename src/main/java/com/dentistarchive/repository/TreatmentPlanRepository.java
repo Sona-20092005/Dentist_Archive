@@ -40,4 +40,9 @@ public class TreatmentPlanRepository extends BaseReadOnlyRepository<TreatmentPla
     public void deleteAll() {
         jpaRepository.deleteAll();
     }
+
+    @Transactional(readOnly = true)
+    public Optional<UUID> getPatientIdByPlanId(UUID planId) {
+        return jpaRepository.findPatientIdByPlanId(planId);
+    }
 }

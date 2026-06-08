@@ -4,6 +4,7 @@ import com.dentistarchive.search.filter.RangeFilter;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.core.types.dsl.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

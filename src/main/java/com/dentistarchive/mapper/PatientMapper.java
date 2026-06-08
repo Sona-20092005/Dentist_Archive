@@ -29,6 +29,7 @@ public class PatientMapper implements EntityMapper<Patient, PatientDto>{
         dto.setEmails(patient.getEmails());
         dto.setAddress(patient.getAddress());
         dto.setPassportInformation(patient.getPassportInformation());
+        dto.setPatientStatus(patient.getPatientStatus());
         dto.setNotes(patient.getNotes());
         dto.setDoctorId(patient.getDoctorId());
 

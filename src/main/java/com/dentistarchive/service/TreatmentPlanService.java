@@ -23,15 +23,16 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TreatmentPlanService extends BaseReadOnlyService<TreatmentPlan, TreatmentPlanFilter>
         implements ArchivableService<TreatmentPlan, TreatmentPlanFilter> {
+    PatientService patientService;
     TreatmentPlanRepository planRepository;
     TreatmentPlanAccessValidator accessValidator;
     TreatmentPlanProvider planProvider;
 
     public TreatmentPlanService(
+            PatientService patientService,
             TreatmentPlanRepository planRepository,
             TreatmentPlanAccessValidator accessValidator,
             TreatmentPlanProvider planProvider
-
     ) {
         super(
                 TreatmentPlan.class,
@@ -39,6 +40,7 @@ public class TreatmentPlanService extends BaseReadOnlyService<TreatmentPlan, Tre
                 planRepository,
                 accessValidator
         );
+        this.patientService = patientService;
         this.planRepository = planRepository;
         this.accessValidator = accessValidator;
         this.planProvider = planProvider;
@@ -46,6 +48,8 @@ public class TreatmentPlanService extends BaseReadOnlyService<TreatmentPlan, Tre
 
     @Transactional
     public TreatmentPlan create(TreatmentPlanCreateDto createDto) {
+        patientService.getByIdOrElseThrow(createDto.getPatientId());
+
         var plan = planProvider.create(createDto);
         return save(plan);
     }

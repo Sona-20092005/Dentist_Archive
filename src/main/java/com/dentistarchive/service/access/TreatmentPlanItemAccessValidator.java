@@ -2,6 +2,7 @@ package com.dentistarchive.service.access;
 
 import com.dentistarchive.entity.patient.TreatmentPlanItem;
 import com.dentistarchive.repository.PatientRepository;
+import com.dentistarchive.repository.TreatmentPlanRepository;
 import com.dentistarchive.search.filter.TreatmentPlanItemFilter;
 import com.dentistarchive.security.AuthHolder;
 import com.dentistarchive.security.CustomUserDetails;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class TreatmentPlanItemAccessValidator extends BaseReadOnlyAccessValidator<TreatmentPlanItem, TreatmentPlanItemFilter> {
     PatientRepository patientRepository;
+    TreatmentPlanRepository planRepository;
 
-    public TreatmentPlanItemAccessValidator(PatientRepository patientRepository) {
+    public TreatmentPlanItemAccessValidator(PatientRepository patientRepository, TreatmentPlanRepository planRepository) {
         this.patientRepository = patientRepository;
+        this.planRepository = planRepository;
     }
 
     @Override
@@ -26,14 +29,14 @@ public class TreatmentPlanItemAccessValidator extends BaseReadOnlyAccessValidato
 
     @Override
     protected boolean hasAccess(TreatmentPlanItem entity) {
-        // TODO: 6/2/2026 fix
-        return true;
-//        CustomUserDetails details = AuthHolder.getUserDetailsOrElseThrow();
-//
-//        return patientRepository
-//                .getDoctorIdByPatientId(entity.getPatientId())
-//                .map(details.getUserId()::equals)
-//                .orElse(false);
+        CustomUserDetails details = AuthHolder.getUserDetailsOrElseThrow();
+
+
+        return planRepository
+                .getPatientIdByPlanId(entity.getTreatmentPlanId())
+                .flatMap(patientRepository::getDoctorIdByPatientId)
+                .map(details.getUserId()::equals)
+                .orElse(false);
    }
     @Override
     protected Class<TreatmentPlanItemFilter> getFilterClass() {
