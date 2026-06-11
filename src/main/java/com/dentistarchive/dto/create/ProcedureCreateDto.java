@@ -24,5 +24,4 @@ public class ProcedureCreateDto extends BaseCreateDto<ProcedureDto>{
     BigDecimal price;
 
     String description;
-
 }

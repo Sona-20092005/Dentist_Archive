@@ -23,11 +23,17 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompletedTreatmentService extends BaseReadOnlyService<CompletedTreatment, CompletedTreatmentFilter>
         implements ArchivableService<CompletedTreatment, CompletedTreatmentFilter> {
+    PatientService patientService;
+    ProcedureService procedureService;
+    TreatmentPlanItemService planItemService;
     CompletedTreatmentRepository treatmentRepository;
     CompletedTreatmentAccessValidator accessValidator;
     CompletedTreatmentProvider treatmentProvider;
 
     public CompletedTreatmentService(
+            PatientService patientService,
+            ProcedureService procedureService,
+            TreatmentPlanItemService planItemService,
             CompletedTreatmentRepository treatmentRepository,
             CompletedTreatmentAccessValidator accessValidator,
             CompletedTreatmentProvider treatmentProvider
@@ -39,19 +45,30 @@ public class CompletedTreatmentService extends BaseReadOnlyService<CompletedTrea
                 treatmentRepository,
                 accessValidator
         );
+        this.patientService = patientService;
+        this.procedureService = procedureService;
+        this.planItemService = planItemService;
         this.treatmentRepository = treatmentRepository;
         this.accessValidator = accessValidator;
         this.treatmentProvider = treatmentProvider;
     }
 
+    // TODO: 6/9/2026 Add also getaccesible check for appointment (in create and update)
     @Transactional
     public CompletedTreatment create(CompletedTreatmentCreateDto createDto) {
+        patientService.getAccessiblePatient(createDto.getPatientId());
+        procedureService.getAccessibleProcedure(createDto.getProcedureId());
+        planItemService.getAccessibleTreatmentPlanItem(createDto.getTreatmentPlanItemId());
+
         var treatment = treatmentProvider.create(createDto);
         return save(treatment);
     }
 
     @Transactional(propagation = Propagation.NEVER)
     public CompletedTreatment update(UUID id, @Valid CompletedTreatmentUpdateDto updateDto) {
+        procedureService.getAccessibleProcedure(updateDto.getProcedureId());
+        planItemService.getAccessibleTreatmentPlanItem(updateDto.getTreatmentPlanItemId());
+
         CompletedTreatment treatment = treatmentRepository.getByIdAndNotArchived(id)
                 .orElseThrow(() -> new EntityNotFoundByIdException(CompletedTreatment.class, id));
         accessValidator.validateAccess(treatment);

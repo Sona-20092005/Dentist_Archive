@@ -23,11 +23,15 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TreatmentPlanItemService extends BaseReadOnlyService<TreatmentPlanItem, TreatmentPlanItemFilter>
         implements ArchivableService<TreatmentPlanItem, TreatmentPlanItemFilter> {
+    TreatmentPlanService planService;
+    ProcedureService procedureService;
     TreatmentPlanItemRepository itemRepository;
     TreatmentPlanItemAccessValidator accessValidator;
     TreatmentPlanItemProvider itemProvider;
 
     public TreatmentPlanItemService(
+            TreatmentPlanService planService,
+            ProcedureService procedureService,
             TreatmentPlanItemRepository itemRepository,
             TreatmentPlanItemAccessValidator accessValidator,
             TreatmentPlanItemProvider itemProvider
@@ -39,6 +43,8 @@ public class TreatmentPlanItemService extends BaseReadOnlyService<TreatmentPlanI
                 itemRepository,
                 accessValidator
         );
+        this.planService = planService;
+        this.procedureService = procedureService;
         this.itemRepository = itemRepository;
         this.accessValidator = accessValidator;
         this.itemProvider = itemProvider;
@@ -46,12 +52,17 @@ public class TreatmentPlanItemService extends BaseReadOnlyService<TreatmentPlanI
 
     @Transactional
     public TreatmentPlanItem create(TreatmentPlanItemCreateDto createDto) {
+        planService.getAccessibleTreatmentPlan(createDto.getTreatmentPlanId());
+        procedureService.getAccessibleProcedure(createDto.getProcedureId());
+
         var item = itemProvider.create(createDto);
         return save(item);
     }
 
     @Transactional(propagation = Propagation.NEVER)
     public TreatmentPlanItem update(UUID id, @Valid TreatmentPlanItemUpdateDto updateDto) {
+        procedureService.getAccessibleProcedure(updateDto.getProcedureId());
+
         TreatmentPlanItem item = itemRepository.getByIdAndNotArchived(id)
                 .orElseThrow(() -> new EntityNotFoundByIdException(TreatmentPlanItem.class, id));
         accessValidator.validateAccess(item);
@@ -69,5 +80,20 @@ public class TreatmentPlanItemService extends BaseReadOnlyService<TreatmentPlanI
 
     @Override
     public void afterUnarchive(TreatmentPlanItem entity) {}
+
+    public TreatmentPlanItem getAccessibleTreatmentPlanItem(UUID id) {
+        if (id == null) {
+            return null;
+        }
+
+        TreatmentPlanItem item = itemRepository
+                .getByIdAndNotArchived(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundByIdException(TreatmentPlanItem.class, id));
+
+        accessValidator.validateAccess(item);
+
+        return item;
+    }
 
 }

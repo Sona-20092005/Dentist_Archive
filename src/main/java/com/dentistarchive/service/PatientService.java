@@ -97,14 +97,19 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
     @Override
     public void afterUnarchive(Patient entity) {}
 
+    public Patient getAccessiblePatient(UUID id) {
+        if (id == null) {
+            return null;
+        }
 
-//    @Transactional(propagation = Propagation.NEVER)
-//    public Patient update(@NotNull UUID id, @NotNull @Valid PatientUpdateDto updateDto) {
-//        Patient patient = getByIdOrElseThrow(id);
-//        individualBrokerAccessValidator.accessControlBeforeUpdate(patient);
-//
-//
-//        individualBrokerProvider.updateIndividualBroker(patient, updateDto, newAttachmentFileInfos);
-//        return individualBrokerRepository.update(patient);
-//    }
+        Patient patient = patientRepository
+                .getByIdAndNotArchived(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundByIdException(Patient.class, id));
+
+        accessValidator.validateAccess(patient);
+
+        return patient;
+    }
+
 }

@@ -48,7 +48,7 @@ public class TreatmentPlanService extends BaseReadOnlyService<TreatmentPlan, Tre
 
     @Transactional
     public TreatmentPlan create(TreatmentPlanCreateDto createDto) {
-        patientService.getByIdOrElseThrow(createDto.getPatientId());
+        patientService.getAccessiblePatient(createDto.getPatientId());
 
         var plan = planProvider.create(createDto);
         return save(plan);
@@ -73,5 +73,20 @@ public class TreatmentPlanService extends BaseReadOnlyService<TreatmentPlan, Tre
 
     @Override
     public void afterUnarchive(TreatmentPlan entity) {}
+
+    public TreatmentPlan getAccessibleTreatmentPlan(UUID id) {
+        if (id == null) {
+            return null;
+        }
+
+        TreatmentPlan plan = planRepository
+                .getByIdAndNotArchived(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundByIdException(TreatmentPlan.class, id));
+
+        accessValidator.validateAccess(plan);
+
+        return plan;
+    }
 
 }

@@ -73,4 +73,19 @@ public class ProcedureService extends BaseReadOnlyService<Procedure, ProcedureFi
     @Override
     public void afterUnarchive(Procedure entity) {}
 
+    public Procedure getAccessibleProcedure(UUID id) {
+        if (id == null) {
+            return null;
+        }
+
+        Procedure procedure = procedureRepository
+                .getByIdAndNotArchived(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundByIdException(Procedure.class, id));
+
+        accessValidator.validateAccess(procedure);
+
+        return procedure;
+    }
+
 }

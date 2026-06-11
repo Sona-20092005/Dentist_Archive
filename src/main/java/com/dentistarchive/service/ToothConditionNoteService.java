@@ -22,12 +22,14 @@ import java.util.UUID;
 @Validated
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ToothConditionNoteService extends BaseReadOnlyService<ToothConditionNote, ToothConditionNoteFilter> {
+    PatientService patientService;
     ToothConditionNoteRepository toothConditionNoteRepository;
     ToothConditionNoteAccessValidator accessValidator;
     ToothConditionNoteProvider toothConditionNoteProvider;
     ToothConditionNoteValidator toothConditionNoteValidator;
 
     public ToothConditionNoteService(
+            PatientService patientService,
             ToothConditionNoteRepository toothConditionNoteRepository,
             ToothConditionNoteAccessValidator accessValidator,
             ToothConditionNoteProvider toothConditionNoteProvider,
@@ -39,6 +41,7 @@ public class ToothConditionNoteService extends BaseReadOnlyService<ToothConditio
                 toothConditionNoteRepository,
                 accessValidator
         );
+        this.patientService = patientService;
         this.toothConditionNoteRepository = toothConditionNoteRepository;
         this.accessValidator = accessValidator;
         this.toothConditionNoteProvider = toothConditionNoteProvider;
@@ -48,6 +51,8 @@ public class ToothConditionNoteService extends BaseReadOnlyService<ToothConditio
 
     @Transactional
     public ToothConditionNote create(ToothConditionNoteCreateDto createDto) {
+        patientService.getAccessiblePatient(createDto.getPatientId());
+
         toothConditionNoteValidator.validate(createDto);
         var note = toothConditionNoteProvider.create(createDto);
         return toothConditionNoteRepository.save(note);
