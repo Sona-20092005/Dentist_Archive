@@ -34,11 +34,11 @@ public enum ErrorCode {
     PATIENT_ALREADY_INACTIVE("validation.patient.already-inactive"),
     PATIENT_NOT_INACTIVE("validation.patient.not-inactive"),
     TOOTH_NUMBER_INVALID("validation.tooth-note.number.invalid"),
-    TOOTH_NOTE_ALREADY_EXISTS("validation.tooth-note.already-exists");
-
-
-
-
+    TOOTH_NOTE_ALREADY_EXISTS("validation.tooth-note.already-exists"),
+    WORK_SCHEDULE_PERIOD_INVALID("validation.work-schedule.period.invalid"),
+    WORK_SCHEDULE_OVERLAP("validation.work-schedule.overlap"),
+    WORK_SCHEDULE_RULE_TIME_RANGE_INVALID("validation.work-schedule.time-range.invalid"),
+    WORK_SCHEDULE_RULE_OVERLAP("validation.work-schedule-rule.overlap");
 
     String code;
 }

@@ -1,7 +1,8 @@
 package com.dentistarchive.entity.schedule;
 
 import com.dentistarchive.entity.ArchivableBaseEntity;
-import com.dentistarchive.enums.AppointmentStatus;
+import com.dentistarchive.enums.ModificationType;
+import com.dentistarchive.enums.WorkSessionType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Appointment extends ArchivableBaseEntity {
+public class WorkScheduleModification extends ArchivableBaseEntity {
 
     @NotNull
     @Column(nullable = false)
@@ -37,28 +38,26 @@ public class Appointment extends ArchivableBaseEntity {
 
     @NonNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "appointment_status", nullable = false)
-    AppointmentStatus appointmentStatus;
+    @Column(name = "modification_type", nullable = false)
+    ModificationType modificationType;
 
-    String notes;
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "work_session_type", nullable = false)
+    WorkSessionType workSessionType;
 
-    @Column(name = "nurse_id")
-    UUID nurseId;
+    @Column(name = "source_date")
+    LocalDate sourceDate;
+
+    @Column(name = "source_start_time")
+    LocalTime sourceStartTime;
+
+    @Column(name = "source_end_time")
+    LocalTime sourceEndTime;
 
     @NotNull
-    @Column(name = "patient_id", nullable = false)
-    UUID patientId;
-
-    @NotNull
-    @Column(name = "doctor_id", nullable = false)
-    UUID doctorId;
+    @Column(name = "schedule_id", nullable = false)
+    UUID scheduleId;
 }
 
-//+appointment_id
-//+appointment_date
-//+start_time
-//+end_time
-//+status (SCHEDULED, CANCELED)
-//+notes
 
-//Appointment(date(NN), start_time(NN), end_time(NN), notes, patient_id(FK), nurse_id, status)
