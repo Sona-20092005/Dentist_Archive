@@ -28,5 +28,7 @@ public class WorkScheduleModificationFilter extends ArchivingBaseFilter<WorkSche
 
     Set<WorkSessionType> workSessionTypes;
 
+    UUID scheduleId;
+
     UUID doctorId;
 }

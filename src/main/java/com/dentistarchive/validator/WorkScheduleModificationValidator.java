@@ -2,26 +2,33 @@ package com.dentistarchive.validator;
 
 import com.dentistarchive.entity.schedule.WorkSchedule;
 import com.dentistarchive.entity.schedule.WorkScheduleModification;
-import com.dentistarchive.repository.WorkScheduleRepository;
+import com.dentistarchive.security.AuthHolder;
+import com.dentistarchive.security.CustomUserDetails;
+import com.dentistarchive.service.WorkCalendarService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import static com.dentistarchive.utils.ScheduleUtils.isDateWithinPeriod;
 import static com.dentistarchive.utils.ScheduleUtils.isTimeRangeValid;
 
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Component
 public class WorkScheduleModificationValidator {
     // TODO: 7/2/2026 exceptions
 
-    private final WorkScheduleRepository workScheduleRepository;
+    WorkCalendarService  workCalendarService;
 
-    public WorkScheduleModificationValidator(WorkScheduleRepository workScheduleRepository) {
-        this.workScheduleRepository = workScheduleRepository;
-    }
 
     public void validate(WorkScheduleModification modification, WorkSchedule workSchedule) {
         validateTimeRanges(modification);
         validateDates(modification, workSchedule);
         validateInputs(modification);
+
+        validateSource(modification, workSchedule);
+        validateTarget(modification);
     }
 
 
@@ -46,23 +53,47 @@ public class WorkScheduleModificationValidator {
     private void validateInputs(WorkScheduleModification modification) {
         switch (modification.getModificationType()) {
             case ADD -> {
-                if (!hasNoSource(modification)) {
+                if (!hasNoSource(modification) || !hasTarget(modification)) {
                     throw new IllegalStateException("ADD must have current date fields and cannot have source fields");
                 }
             }
             case MODIFY -> {
-                if (!hasSource(modification)) {
+                if (!hasSource(modification) || !hasTarget(modification)) {
                     throw new IllegalStateException("MODIFY must have current date fields and source fields");
                 }
             }
             case CANCEL -> {
-                if (!hasSource(modification)) {
+                if (!hasSource(modification) || !hasNoTarget(modification)) {
                     throw new IllegalStateException("CANCEL cannot have current fields and must have source fields");
                 }
             }
         }
     }
 
+    private void validateSource(WorkScheduleModification modification, WorkSchedule workSchedule) {
+        switch (modification.getModificationType()) {
+            case MODIFY, CANCEL -> workCalendarService.findRuleSession(modification.getScheduleId(), modification.getSourceDate(),
+                        modification.getSourceStartTime(), modification.getSourceEndTime())
+                        .orElseThrow(() -> new IllegalStateException("Source session does not exist"));
+            case ADD -> {
+            }
+        }
+    }
+
+    private void validateTarget(WorkScheduleModification modification) {
+        CustomUserDetails details = AuthHolder.getUserDetailsOrElseThrow();
+
+        switch (modification.getModificationType()) {
+            case ADD, MODIFY -> {
+                if(workCalendarService.hasOverlappingSession(details.getUserId(), modification.getDate(),
+                        modification.getStartTime(), modification.getEndTime())) {
+                    throw new IllegalStateException("Work sessions already exist at the specified time");
+                }
+            }
+            case CANCEL -> {
+            }
+        }
+    }
 
     private boolean hasSource(WorkScheduleModification modification) {
         return modification.getSourceDate() != null
@@ -75,22 +106,18 @@ public class WorkScheduleModificationValidator {
                 && modification.getSourceStartTime() == null
                 && modification.getSourceEndTime() == null;
     }
-//
-//    private void validateNoOverlap(WorkSchedule schedule) {
-//
-//        var schedules = workScheduleRepository.findByClinicId(schedule.getClinicId());
-//
-//        for (WorkSchedule existing : schedules) {
-//
-//            if (schedule.getId() != null && schedule.getId().equals(existing.getId())) {
-//                continue;
-//            }
-//
-//            if (periodsOverlap(existing.getEffectiveFrom(), existing.getEffectiveUntil(),
-//                    schedule.getEffectiveFrom(), schedule.getEffectiveUntil())) {
-//                throw new WorkScheduleOverlapException();
-//            }
-//        }
-//    }
+
+    private boolean hasTarget(WorkScheduleModification modification) {
+        return modification.getDate() != null
+                && modification.getStartTime() != null
+                && modification.getEndTime() != null;
+    }
+
+    private boolean hasNoTarget(WorkScheduleModification modification) {
+        return modification.getDate() == null
+                && modification.getStartTime() == null
+                && modification.getEndTime() == null;
+    }
 
 }
+

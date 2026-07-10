@@ -8,6 +8,9 @@ import com.dentistarchive.exception.WorkScheduleRuleOverlapException;
 import com.dentistarchive.repository.WorkScheduleRepository;
 import com.dentistarchive.repository.WorkScheduleRuleRepository;
 import com.dentistarchive.utils.ScheduleUtils;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,20 +20,15 @@ import java.util.UUID;
 
 import static com.dentistarchive.utils.ScheduleUtils.timesOverlap;
 
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Component
 public class WorkScheduleRuleValidator {
     // TODO: 7/2/2026 exception mechanism
     // TODO: 7/2/2026 repo find methods archived checks
 
-    private final WorkScheduleRepository workScheduleRepository;
-    private final WorkScheduleRuleRepository workScheduleRuleRepository;
-
-
-    public WorkScheduleRuleValidator(WorkScheduleRepository workScheduleRepository,
-                                     WorkScheduleRuleRepository workScheduleRuleRepository) {
-        this.workScheduleRepository = workScheduleRepository;
-        this.workScheduleRuleRepository = workScheduleRuleRepository;
-    }
+    WorkScheduleRepository workScheduleRepository;
+    WorkScheduleRuleRepository workScheduleRuleRepository;
 
     public void validate(WorkScheduleRule rule) {
 
@@ -137,6 +135,7 @@ public class WorkScheduleRuleValidator {
         }
     }
 
+    // TODO: 7/7/2026 fix the for loop
     private void validateInternalConflicts(List<WorkScheduleRule> rules) {
         for (int i = 0; i < rules.size(); i++) {
 

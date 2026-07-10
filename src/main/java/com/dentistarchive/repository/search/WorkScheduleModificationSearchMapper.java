@@ -25,7 +25,7 @@ public class WorkScheduleModificationSearchMapper extends SearchMapper<WorkSched
                 .in(workScheduleModification.modificationType, filter.getModificationTypes())
                 .in(workScheduleModification.workSessionType, filter.getWorkSessionTypes())
                 .eq(workScheduleModification.archived, filter.getArchived())
-                .eq(workScheduleModification.doctorId, filter.getDoctorId())
+                .eq(workScheduleModification.scheduleId, filter.getScheduleId())
                 .inRange(workScheduleModification.createdAt, filter.getCreatedAt())
                 .build();
     }

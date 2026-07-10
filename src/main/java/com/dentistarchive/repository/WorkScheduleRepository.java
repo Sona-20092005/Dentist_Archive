@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -56,4 +57,11 @@ public class WorkScheduleRepository extends BaseReadOnlyRepository<WorkSchedule,
     public List<WorkSchedule> findByDoctorId(UUID doctorId) {
         return jpaRepository.findByDoctorIdAndArchivedFalse(doctorId);
     }
+
+    @Transactional(readOnly = true)
+    public List<WorkSchedule> findEffectiveSchedules(UUID doctorId, LocalDate from, LocalDate until) {
+        return jpaRepository.findByDoctorIdAndEffectivePeriod(doctorId, from, until);
+    }
+
+
 }

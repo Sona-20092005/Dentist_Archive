@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class WorkScheduleModificationAccessValidator extends BaseReadOnlyAccessValidator<WorkScheduleModification, WorkScheduleModificationFilter> {
 
+    // TODO: 7/10/2026 implement methods
+
     @Override
     protected WorkScheduleModificationFilter buildAccessControlFilter() {
         CustomUserDetails details = AuthHolder.getUserDetailsOrElseThrow();

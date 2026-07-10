@@ -44,7 +44,7 @@ public class WorkScheduleModificationController extends BaseController {
     }
 
     @PostMapping
-    @Operation(summary = "Create work schedule modifiction")
+    @Operation(summary = "Create work schedule modification")
     public ResponseEntity<WorkScheduleModificationDto> create(@Valid @RequestBody WorkScheduleModificationCreateDto createDto) {
         return ResponseEntity.ok(scheduleModificationMapper.toDto(scheduleModificationService.create(createDto)));
     }
