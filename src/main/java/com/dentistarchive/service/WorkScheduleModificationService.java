@@ -52,28 +52,40 @@ public class WorkScheduleModificationService extends BaseReadOnlyService<WorkSch
     public WorkScheduleModification create(WorkScheduleModificationCreateDto createDto) {
         var workSchedule = workScheduleService.getAccessibleWorkSchedule(createDto.getScheduleId());
 
-        var workScheduleModification = workScheduleModificationProvider.create(createDto);
-        workScheduleModificationValidator.validate(workScheduleModification, workSchedule);
-        return save(workScheduleModification);
+        var modification = workScheduleModificationProvider.create(createDto);
+        workScheduleModificationValidator.validate(modification, workSchedule);
+        return save(modification);
     }
 
 //    @Transactional(propagation = Propagation.NEVER)
 //    public WorkScheduleModification update(UUID id, @Valid WorkScheduleModificationUpdateDto updateDto) {
-//        clinicService.getAccessibleClinic(updateDto.getClinicId());
+//        var workSchedule = workScheduleService.getAccessibleWorkSchedule(updateDto.getScheduleId());
 //
-//        WorkSchedule workSchedule = workScheduleRepository.getByIdAndNotArchived(id)
-//                .orElseThrow(() -> new EntityNotFoundByIdException(WorkSchedule.class, id));
-//        accessValidator.validateAccess(workSchedule);
-//        workScheduleProvider.update(workSchedule, updateDto);
-//        workScheduleValidator.validate(workSchedule);
-//        workScheduleRuleValidator.validateUpdate(workSchedule);
-//        return workScheduleRepository.save(workSchedule);
+//        WorkScheduleModification modification = workScheduleModificationRepository.getByIdAndNotArchived(id)
+//                .orElseThrow(() -> new EntityNotFoundByIdException(WorkScheduleModification.class, id));
+//
+//        accessValidator.validateAccess(modification);
+//        workScheduleModificationProvider.update(modification, updateDto);
+//        workScheduleModificationValidator.validate(modification, workSchedule);
+//        return workScheduleModificationRepository.save(modification);
 //    }
 
 
     @Override
     public WorkScheduleModification save(WorkScheduleModification entity) {
         return workScheduleModificationRepository.save(entity);
+    }
+
+    @Override
+    @Transactional
+    public WorkScheduleModification unarchiveById(UUID id) {
+        WorkScheduleModification modification = getByIdOrElseThrow(id);
+        validateUnarchive(modification);
+        var workSchedule = workScheduleService.getAccessibleWorkSchedule(modification.getScheduleId());
+        workScheduleModificationValidator.validateUnarchive(modification, workSchedule);
+        unarchive(modification);
+        modification = save(modification);
+        return modification;
     }
 
     @Override
@@ -96,6 +108,7 @@ public class WorkScheduleModificationService extends BaseReadOnlyService<WorkSch
 
         return workScheduleModification;
     }
+
 
     // TODO: 7/3/2026 think also about the session type in modification
 

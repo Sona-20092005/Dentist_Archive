@@ -50,7 +50,7 @@ public class WorkScheduleModificationController extends BaseController {
     }
 
 //    @PatchMapping("/{id}")
-//    @Operation(summary = "Update work schedule modification info")`
+//    @Operation(summary = "Update work schedule modification info")
 //    public ResponseEntity<WorkScheduleModificationDto> update(@PathVariable UUID id,
 //                                             @Valid @RequestBody WorkScheduleModificationUpdateDto updateDto) {
 //        return ResponseEntity.ok(scheduleModificationMapper.toDto(scheduleModificationService.update(id, updateDto)));

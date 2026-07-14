@@ -24,19 +24,15 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkScheduleModification extends ArchivableBaseEntity {
 
-    @NotNull
-    @Column(nullable = false)
+    @Column()
     LocalDate date;
 
-    @NotNull
-    @Column(name = "start_time", nullable = false)
+    @Column(name = "start_time")
     LocalTime startTime;
 
-    @NotNull
-    @Column(name = "end_time", nullable = false)
+    @Column(name = "end_time")
     LocalTime endTime;
 
-    @NonNull
     @Enumerated(EnumType.STRING)
     @Column(name = "modification_type", nullable = false)
     ModificationType modificationType;

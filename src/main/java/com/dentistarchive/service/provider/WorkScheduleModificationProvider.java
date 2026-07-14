@@ -36,6 +36,7 @@ public class WorkScheduleModificationProvider {
         modification.setSourceDate(updateDto.getSourceDate());
         modification.setSourceStartTime(updateDto.getSourceStartTime());
         modification.setSourceEndTime(updateDto.getSourceEndTime());
+        modification.setScheduleId(updateDto.getScheduleId());
 
         return modification;
     }

@@ -23,30 +23,67 @@ public class WorkScheduleModificationValidator {
 
 
     public void validate(WorkScheduleModification modification, WorkSchedule workSchedule) {
+        validateInputs(modification);
+
         validateTimeRanges(modification);
         validateDates(modification, workSchedule);
-        validateInputs(modification);
 
         validateSource(modification, workSchedule);
         validateTarget(modification);
     }
 
 
+    public void validateUnarchive(WorkScheduleModification modification, WorkSchedule workSchedule) {
+        validateSource(modification, workSchedule);
+        validateTarget(modification);
+    }
+
+
     private void validateTimeRanges(WorkScheduleModification modification) {
-        if (!isTimeRangeValid(modification.getStartTime(), modification.getEndTime())) {
-            throw new IllegalStateException("Modification time ranges are not valid");
+        switch (modification.getModificationType()) {
+            case ADD -> isTargetTimeRangeValid(modification);
+            case MODIFY -> {
+                isSourceTimeRangeValid(modification);
+                isTargetTimeRangeValid(modification);
+            }
+            case CANCEL -> isSourceTimeRangeValid(modification);
         }
+    }
+
+
+    private void isTargetTimeRangeValid(WorkScheduleModification modification) {
+        if (!isTimeRangeValid(modification.getStartTime(), modification.getEndTime())) {
+            throw new IllegalStateException("Target time ranges are not valid");
+        }
+    }
+
+    private void isSourceTimeRangeValid(WorkScheduleModification modification) {
         if (!isTimeRangeValid(modification.getSourceStartTime(), modification.getSourceEndTime())) {
             throw new IllegalStateException("Source time ranges are not valid");
         }
     }
 
+
     private void validateDates(WorkScheduleModification modification, WorkSchedule workSchedule) {
-        if (!isDateWithinPeriod(modification.getDate(), workSchedule.getEffectiveFrom(), workSchedule.getEffectiveUntil())) {
-            throw new IllegalStateException("Modification dates are not within a valid period");
+        switch (modification.getModificationType()) {
+            case ADD -> isTargetDateValid(modification, workSchedule);
+            case MODIFY -> {
+                isSourceDateValid(modification, workSchedule);
+                isTargetDateValid(modification, workSchedule);
+            }
+            case CANCEL -> isSourceDateValid(modification, workSchedule);
         }
+    }
+
+    private void isTargetDateValid(WorkScheduleModification modification, WorkSchedule workSchedule) {
+        if (!isDateWithinPeriod(modification.getDate(), workSchedule.getEffectiveFrom(), workSchedule.getEffectiveUntil())) {
+            throw new IllegalStateException("Target date is not within a valid period");
+        }
+    }
+
+    private void isSourceDateValid(WorkScheduleModification modification, WorkSchedule workSchedule) {
         if (!isDateWithinPeriod(modification.getSourceDate(), workSchedule.getEffectiveFrom(), workSchedule.getEffectiveUntil())) {
-            throw new IllegalStateException("Source dates are not within a valid period");
+            throw new IllegalStateException("Source date is not within a valid period");
         }
     }
 

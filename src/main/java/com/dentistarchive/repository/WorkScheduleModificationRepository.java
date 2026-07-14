@@ -34,13 +34,13 @@ public class WorkScheduleModificationRepository extends BaseReadOnlyRepository<W
     }
 
     @Transactional(readOnly = true)
-    public List<WorkScheduleModification> findByScheduleIdAndDate(UUID scheduleId, LocalDate date) {
-        return jpaRepository.findByScheduleIdAndDateAndArchivedFalse(scheduleId, date);
+    public List<WorkScheduleModification> findEffectiveModifications(UUID scheduleId, LocalDate date) {
+        return jpaRepository.findEffectiveModifications(scheduleId, date);
     }
 
     @Transactional
-    public WorkScheduleModification save(WorkScheduleModification plan) {
-        return jpaRepository.save(plan);
+    public WorkScheduleModification save(WorkScheduleModification modification) {
+        return jpaRepository.save(modification);
     }
 
     @Transactional

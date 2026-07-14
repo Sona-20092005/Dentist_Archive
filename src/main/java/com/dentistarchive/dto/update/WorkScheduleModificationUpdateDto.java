@@ -14,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Data
 @SuperBuilder
@@ -38,4 +39,6 @@ public class WorkScheduleModificationUpdateDto extends BaseCreateDto<WorkSchedul
     LocalTime sourceStartTime;
 
     LocalTime sourceEndTime;
+
+    UUID scheduleId;
 }

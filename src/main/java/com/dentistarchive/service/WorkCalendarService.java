@@ -120,20 +120,26 @@ public class WorkCalendarService {
     }
 
     private void addModifications(WorkSchedule schedule, LocalDate date, List<WorkSessionDto> sessions) {
-        List<WorkScheduleModification> modifications = workScheduleModificationRepository.findByScheduleIdAndDate(schedule.getId(), date);
+        List<WorkScheduleModification> modifications = workScheduleModificationRepository.findEffectiveModifications(schedule.getId(), date);
 
         for (WorkScheduleModification modification : modifications) {
-
             switch (modification.getModificationType()) {
-
                 case ADD -> sessions.add(workSessionMapper.toWorkSession(modification));
-
                 case MODIFY -> {
-                    removeSessions(modification, sessions);
-                    sessions.add(workSessionMapper.toWorkSession(modification));
+                    if (date.equals(modification.getSourceDate())) {
+                        if (!removeSessions(modification, sessions)) {
+                            throw new IllegalStateException("Could not find source session for modification.");
+                        }
+                    }
+                    if (date.equals(modification.getDate())) {
+                        sessions.add(workSessionMapper.toWorkSession(modification));
+                    }
                 }
-
-                case CANCEL -> removeSessions(modification, sessions);
+                case CANCEL -> {
+                    if (!removeSessions(modification, sessions)) {
+                        throw new IllegalStateException("Could not find source session for cancellation.");
+                    }
+                }
             }
         }
     }
@@ -148,10 +154,12 @@ public class WorkCalendarService {
         }
     }
 
-    private void removeSessions(WorkScheduleModification modification, List<WorkSessionDto> sessions) {
-        sessions.removeIf(session -> session.getDate().equals(modification.getSourceDate())
+    private boolean removeSessions(WorkScheduleModification modification, List<WorkSessionDto> sessions) {
+        return sessions.removeIf(session -> session.getDate().equals(modification.getSourceDate())
                 && session.getStartTime().equals(modification.getSourceStartTime())
-                && session.getEndTime().equals(modification.getSourceEndTime()));
+                && session.getEndTime().equals(modification.getSourceEndTime())
+                && session.getModificationId() == null);
+
     }
 
 }
