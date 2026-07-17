@@ -2,7 +2,6 @@ package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.WorkScheduleModificationDto;
 import com.dentistarchive.dto.create.BaseCreateDto;
-import com.dentistarchive.enums.ModificationType;
 import com.dentistarchive.enums.WorkSessionType;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -30,15 +29,7 @@ public class WorkScheduleModificationUpdateDto extends BaseCreateDto<WorkSchedul
 
     LocalTime endTime;
 
-    ModificationType modificationType;
-
     WorkSessionType workSessionType;
-
-    LocalDate sourceDate;
-
-    LocalTime sourceStartTime;
-
-    LocalTime sourceEndTime;
 
     UUID scheduleId;
 }

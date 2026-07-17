@@ -1,6 +1,7 @@
 package com.dentistarchive.service;
 
 import com.dentistarchive.dto.create.WorkScheduleModificationCreateDto;
+import com.dentistarchive.dto.update.WorkScheduleModificationUpdateDto;
 import com.dentistarchive.entity.schedule.WorkScheduleModification;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.repository.WorkScheduleModificationRepository;
@@ -8,9 +9,11 @@ import com.dentistarchive.search.filter.WorkScheduleModificationFilter;
 import com.dentistarchive.service.access.WorkScheduleModificationAccessValidator;
 import com.dentistarchive.service.provider.WorkScheduleModificationProvider;
 import com.dentistarchive.validator.WorkScheduleModificationValidator;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
@@ -57,18 +60,19 @@ public class WorkScheduleModificationService extends BaseReadOnlyService<WorkSch
         return save(modification);
     }
 
-//    @Transactional(propagation = Propagation.NEVER)
-//    public WorkScheduleModification update(UUID id, @Valid WorkScheduleModificationUpdateDto updateDto) {
-//        var workSchedule = workScheduleService.getAccessibleWorkSchedule(updateDto.getScheduleId());
-//
-//        WorkScheduleModification modification = workScheduleModificationRepository.getByIdAndNotArchived(id)
-//                .orElseThrow(() -> new EntityNotFoundByIdException(WorkScheduleModification.class, id));
-//
-//        accessValidator.validateAccess(modification);
-//        workScheduleModificationProvider.update(modification, updateDto);
-//        workScheduleModificationValidator.validate(modification, workSchedule);
-//        return workScheduleModificationRepository.save(modification);
-//    }
+    @Transactional(propagation = Propagation.NEVER)
+    public WorkScheduleModification update(UUID id, @Valid WorkScheduleModificationUpdateDto updateDto) {
+        WorkScheduleModification modification = workScheduleModificationRepository.getByIdAndNotArchived(id)
+                .orElseThrow(() -> new EntityNotFoundByIdException(WorkScheduleModification.class, id));
+        accessValidator.validateAccess(modification);
+        workScheduleModificationValidator.validateUpdatable(modification);
+        var workSchedule = workScheduleService.getAccessibleWorkSchedule(updateDto.getScheduleId());
+
+        UUID previousScheduleId = modification.getScheduleId();
+        workScheduleModificationProvider.update(modification, updateDto);
+        workScheduleModificationValidator.validateUpdate(modification, previousScheduleId, workSchedule);
+        return workScheduleModificationRepository.save(modification);
+    }
 
 
     @Override

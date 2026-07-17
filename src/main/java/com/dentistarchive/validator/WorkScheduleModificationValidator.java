@@ -2,6 +2,7 @@ package com.dentistarchive.validator;
 
 import com.dentistarchive.entity.schedule.WorkSchedule;
 import com.dentistarchive.entity.schedule.WorkScheduleModification;
+import com.dentistarchive.enums.ModificationType;
 import com.dentistarchive.security.AuthHolder;
 import com.dentistarchive.security.CustomUserDetails;
 import com.dentistarchive.service.WorkCalendarService;
@@ -9,6 +10,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 import static com.dentistarchive.utils.ScheduleUtils.isDateWithinPeriod;
 import static com.dentistarchive.utils.ScheduleUtils.isTimeRangeValid;
@@ -32,12 +35,26 @@ public class WorkScheduleModificationValidator {
         validateTarget(modification);
     }
 
-
     public void validateUnarchive(WorkScheduleModification modification, WorkSchedule workSchedule) {
         validateSource(modification, workSchedule);
         validateTarget(modification);
     }
 
+    public void validateUpdatable(WorkScheduleModification modification) {
+        if (modification.getModificationType() == ModificationType.CANCEL) {
+            throw new IllegalStateException("CANCEL modifications cannot be updated");
+        }
+    }
+
+    public void validateUpdate(WorkScheduleModification modification, UUID previousScheduleId, WorkSchedule workSchedule) {
+        validateUpdateInputs(modification, previousScheduleId);
+
+        validateUpdateTimeRange(modification);
+        validateUpdateDates(modification, workSchedule);
+
+        validateUpdateTarget(modification);
+
+    }
 
     private void validateTimeRanges(WorkScheduleModification modification) {
         switch (modification.getModificationType()) {
@@ -50,6 +67,9 @@ public class WorkScheduleModificationValidator {
         }
     }
 
+    private void validateUpdateTimeRange(WorkScheduleModification modification) {
+        isTargetTimeRangeValid(modification);
+    }
 
     private void isTargetTimeRangeValid(WorkScheduleModification modification) {
         if (!isTimeRangeValid(modification.getStartTime(), modification.getEndTime())) {
@@ -63,7 +83,6 @@ public class WorkScheduleModificationValidator {
         }
     }
 
-
     private void validateDates(WorkScheduleModification modification, WorkSchedule workSchedule) {
         switch (modification.getModificationType()) {
             case ADD -> isTargetDateValid(modification, workSchedule);
@@ -73,6 +92,10 @@ public class WorkScheduleModificationValidator {
             }
             case CANCEL -> isSourceDateValid(modification, workSchedule);
         }
+    }
+
+    private void validateUpdateDates(WorkScheduleModification modification, WorkSchedule workSchedule) {
+        isTargetDateValid(modification, workSchedule);
     }
 
     private void isTargetDateValid(WorkScheduleModification modification, WorkSchedule workSchedule) {
@@ -86,6 +109,15 @@ public class WorkScheduleModificationValidator {
             throw new IllegalStateException("Source date is not within a valid period");
         }
     }
+
+    private void validateUpdateInputs(WorkScheduleModification modification, UUID previousScheduleId) {
+        hasTarget(modification);
+
+        if((modification.getModificationType() == ModificationType.MODIFY) && !previousScheduleId.equals(modification.getScheduleId())) {
+            throw new IllegalStateException("MODIFY modifications cannot change the schedule");
+        }
+    }
+
 
     private void validateInputs(WorkScheduleModification modification) {
         switch (modification.getModificationType()) {
@@ -129,6 +161,15 @@ public class WorkScheduleModificationValidator {
             }
             case CANCEL -> {
             }
+        }
+    }
+
+    private void validateUpdateTarget(WorkScheduleModification modification) {
+        CustomUserDetails details = AuthHolder.getUserDetailsOrElseThrow();
+
+        if(workCalendarService.hasOverlappingSession(details.getUserId(), modification.getDate(),
+                        modification.getStartTime(), modification.getEndTime(), modification.getId())) {
+            throw new IllegalStateException("Work sessions already exist at the specified time");
         }
     }
 

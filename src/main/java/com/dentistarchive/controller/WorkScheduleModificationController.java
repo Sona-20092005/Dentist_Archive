@@ -2,6 +2,7 @@ package com.dentistarchive.controller;
 
 import com.dentistarchive.dto.WorkScheduleModificationDto;
 import com.dentistarchive.dto.create.WorkScheduleModificationCreateDto;
+import com.dentistarchive.dto.update.WorkScheduleModificationUpdateDto;
 import com.dentistarchive.mapper.WorkScheduleModificationMapper;
 import com.dentistarchive.search.filter.SearchRequest;
 import com.dentistarchive.search.filter.SearchResponse;
@@ -49,12 +50,12 @@ public class WorkScheduleModificationController extends BaseController {
         return ResponseEntity.ok(scheduleModificationMapper.toDto(scheduleModificationService.create(createDto)));
     }
 
-//    @PatchMapping("/{id}")
-//    @Operation(summary = "Update work schedule modification info")
-//    public ResponseEntity<WorkScheduleModificationDto> update(@PathVariable UUID id,
-//                                             @Valid @RequestBody WorkScheduleModificationUpdateDto updateDto) {
-//        return ResponseEntity.ok(scheduleModificationMapper.toDto(scheduleModificationService.update(id, updateDto)));
-//    }
+    @PatchMapping("/{id}")
+    @Operation(summary = "Update work schedule modification info")
+    public ResponseEntity<WorkScheduleModificationDto> update(@PathVariable UUID id,
+                                             @Valid @RequestBody WorkScheduleModificationUpdateDto updateDto) {
+        return ResponseEntity.ok(scheduleModificationMapper.toDto(scheduleModificationService.update(id, updateDto)));
+    }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete (archive) work schedule modification")
