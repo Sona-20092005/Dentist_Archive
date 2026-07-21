@@ -9,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +33,16 @@ public class AppointmentRepository extends BaseReadOnlyRepository<Appointment, A
         return jpaRepository.findByIdAndArchivedFalse((id));
     }
 
+    @Transactional(readOnly = true)
+    public List<Appointment> findByDoctorAndDate(UUID doctorId, LocalDate date) {
+        return jpaRepository.findByDoctorAndDate(doctorId, date);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Appointment> findByDoctorAndDate(UUID doctorId, LocalDate date, UUID ignoredAppointmentId){
+        return jpaRepository.findByDoctorAndDate(doctorId, date, ignoredAppointmentId);
+    }
+
     @Transactional
     public Appointment save(Appointment plan) {
         return jpaRepository.save(plan);
@@ -40,4 +52,5 @@ public class AppointmentRepository extends BaseReadOnlyRepository<Appointment, A
     public void deleteAll() {
         jpaRepository.deleteAll();
     }
+
 }

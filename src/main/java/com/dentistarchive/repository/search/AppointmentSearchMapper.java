@@ -24,7 +24,7 @@ public class AppointmentSearchMapper extends SearchMapper<AppointmentFilter, App
                 .in(appointment.id, filter.getIds())
                 .in(appointment.appointmentStatus, filter.getStatuses())
                 .eq(appointment.archived, filter.getArchived())
-                .eq(appointment.doctorId, filter.getDoctorId())
+                .eq(appointment.scheduleId, filter.getScheduleId())
                 .eq(appointment.patientId, filter.getPatientId())
                 .eq(appointment.nurseId, filter.getNurseId())
                 .inRange(appointment.createdAt, filter.getCreatedAt())

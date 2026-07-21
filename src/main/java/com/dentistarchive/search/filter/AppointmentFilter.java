@@ -1,5 +1,6 @@
 package com.dentistarchive.search.filter;
 
+import com.dentistarchive.enums.AppointmentSchedulingStatus;
 import com.dentistarchive.enums.AppointmentStatus;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -25,9 +26,11 @@ public class AppointmentFilter extends ArchivingBaseFilter<AppointmentFilter>{
 
     Set<AppointmentStatus> statuses;
 
+    Set<AppointmentSchedulingStatus> schedulingStatuses;
+
     UUID nurseId;
 
     UUID patientId;
 
-    UUID doctorId;
+    UUID scheduleId;
 }

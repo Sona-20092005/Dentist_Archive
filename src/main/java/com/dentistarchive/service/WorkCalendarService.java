@@ -106,14 +106,12 @@ public class WorkCalendarService {
                                 session.getEndTime()));
     }
 
-    // TODO: 7/10/2026 maybe do sessioned version, for later when doing appointments
-    public boolean isAvailable(UUID doctorId, LocalDate date, LocalTime startTime, LocalTime endTime) {
-        return getDoctorSessions(doctorId, date).stream()
+    public boolean isAvailable(UUID scheduleId, LocalDate date, LocalTime startTime, LocalTime endTime) {
+        return getScheduleSessions(scheduleId, date).stream()
                 .anyMatch(session ->
                         !startTime.isBefore(session.getStartTime())
                                 && !endTime.isAfter(session.getEndTime()));
     }
-
 
     private List<WorkSessionDto> buildSchedule(WorkSchedule schedule, LocalDate date) {
 

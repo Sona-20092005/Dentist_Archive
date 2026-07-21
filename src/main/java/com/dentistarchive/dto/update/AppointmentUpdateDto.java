@@ -2,6 +2,7 @@ package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.AppointmentDto;
 import com.dentistarchive.dto.create.BaseCreateDto;
+import com.dentistarchive.enums.AppointmentSchedulingStatus;
 import com.dentistarchive.enums.AppointmentStatus;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -31,9 +32,13 @@ public class AppointmentUpdateDto extends BaseCreateDto<AppointmentDto> {
 
     AppointmentStatus appointmentStatus;
 
+    AppointmentSchedulingStatus appointmentSchedulingStatus;
+
     String notes;
 
     UUID nurseId;
 
     UUID patientId;
+
+    UUID scheduleId;
 }

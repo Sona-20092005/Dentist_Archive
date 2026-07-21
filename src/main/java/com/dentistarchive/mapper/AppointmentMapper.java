@@ -31,7 +31,7 @@ public class AppointmentMapper implements EntityMapper<Appointment, AppointmentD
         dto.setPatientId(appointment.getPatientId());
         dto.setNurseId(appointment.getNurseId());
         dto.setNotes(appointment.getNotes());
-        dto.setPatientId(appointment.getDoctorId());
+        dto.setScheduleId(appointment.getScheduleId());
 
         return dto;
     }

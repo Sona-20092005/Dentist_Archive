@@ -1,6 +1,7 @@
 package com.dentistarchive.entity.schedule;
 
 import com.dentistarchive.entity.ArchivableBaseEntity;
+import com.dentistarchive.enums.AppointmentSchedulingStatus;
 import com.dentistarchive.enums.AppointmentStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,6 +41,11 @@ public class Appointment extends ArchivableBaseEntity {
     @Column(name = "appointment_status", nullable = false)
     AppointmentStatus appointmentStatus;
 
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "appointment_scheduling_status", nullable = false)
+    AppointmentSchedulingStatus appointmentSchedulingStatus;
+
     String notes;
 
     @Column(name = "nurse_id")
@@ -50,15 +56,6 @@ public class Appointment extends ArchivableBaseEntity {
     UUID patientId;
 
     @NotNull
-    @Column(name = "doctor_id", nullable = false)
-    UUID doctorId;
+    @Column(name = "schedule_id", nullable = false)
+    UUID scheduleId;
 }
-
-//+appointment_id
-//+appointment_date
-//+start_time
-//+end_time
-//+status (SCHEDULED, CANCELED)
-//+notes
-
-//Appointment(date(NN), start_time(NN), end_time(NN), notes, patient_id(FK), nurse_id, status)

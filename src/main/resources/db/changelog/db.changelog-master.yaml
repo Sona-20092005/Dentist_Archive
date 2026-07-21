@@ -15,3 +15,5 @@ databaseChangeLog:
       file: db/changelog/changes/2026-06-18_add_work_schedule_constraint.sql
   - include:
       file: db/changelog/changes/2026-07-02_update_work_schedule_modification.sql
+  - include:
+      file: db/changelog/changes/2026-07-17_update_appointment.sql

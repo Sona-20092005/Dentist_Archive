@@ -1,5 +1,6 @@
 package com.dentistarchive.dto;
 
+import com.dentistarchive.enums.AppointmentSchedulingStatus;
 import com.dentistarchive.enums.AppointmentStatus;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -27,13 +28,15 @@ public class AppointmentDto extends ArchivingBaseDto {
 
     AppointmentStatus appointmentStatus;
 
+    AppointmentSchedulingStatus appointmentSchedulingStatus;
+
     String notes;
 
     UUID nurseId;
 
     UUID patientId;
 
-    UUID doctorId;
+    UUID scheduleId;
 }
 
 

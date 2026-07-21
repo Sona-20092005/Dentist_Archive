@@ -35,4 +35,6 @@ public class AppointmentCreateDto extends BaseCreateDto<ProcedureDto>{
     UUID nurseId;
 
     UUID patientId;
+
+    UUID scheduleId;
 }
