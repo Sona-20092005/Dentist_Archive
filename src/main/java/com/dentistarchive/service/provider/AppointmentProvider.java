@@ -17,7 +17,9 @@ public class AppointmentProvider {
         appointment.setStartTime(createDto.getStartTime());
         appointment.setEndTime(createDto.getEndTime());
         appointment.setAppointmentStatus(createDto.getAppointmentStatus());
+        appointment.setAppointmentStatusSortOrder(createDto.getAppointmentStatus().getSortOrder());
         appointment.setAppointmentSchedulingStatus(AppointmentSchedulingStatus.NORMAL);
+        appointment.setAppointmentSchedulingStatusSortOrder(AppointmentSchedulingStatus.NORMAL.getSortOrder());
         appointment.setNotes(createDto.getNotes());
         appointment.setPatientId(createDto.getPatientId());
         appointment.setNurseId(createDto.getNurseId());
@@ -33,7 +35,9 @@ public class AppointmentProvider {
         appointment.setStartTime(updateDto.getStartTime());
         appointment.setEndTime(updateDto.getEndTime());
         appointment.setAppointmentStatus(updateDto.getAppointmentStatus());
+        appointment.setAppointmentStatusSortOrder(updateDto.getAppointmentStatus().getSortOrder());
         appointment.setAppointmentSchedulingStatus(updateDto.getAppointmentSchedulingStatus());
+        appointment.setAppointmentSchedulingStatusSortOrder(updateDto.getAppointmentSchedulingStatus().getSortOrder());
         appointment.setNotes(updateDto.getNotes());
         appointment.setPatientId(updateDto.getPatientId());
         appointment.setNurseId(updateDto.getNurseId());

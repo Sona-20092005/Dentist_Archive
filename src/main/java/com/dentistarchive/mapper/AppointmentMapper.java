@@ -28,6 +28,7 @@ public class AppointmentMapper implements EntityMapper<Appointment, AppointmentD
         dto.setStartTime(appointment.getStartTime());
         dto.setEndTime(appointment.getEndTime());
         dto.setAppointmentStatus(appointment.getAppointmentStatus());
+        dto.setAppointmentSchedulingStatus(appointment.getAppointmentSchedulingStatus());
         dto.setPatientId(appointment.getPatientId());
         dto.setNurseId(appointment.getNurseId());
         dto.setNotes(appointment.getNotes());

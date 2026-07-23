@@ -18,10 +18,10 @@ import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
+import static com.dentistarchive.utils.ScheduleUtils.areAdjacent;
+import static com.dentistarchive.utils.ScheduleUtils.isTimeWithinRange;
 
 @Service
 @Validated
@@ -106,11 +106,41 @@ public class WorkCalendarService {
                                 session.getEndTime()));
     }
 
+    // TODO: 7/23/2026 write a better algorithm
     public boolean isAvailable(UUID scheduleId, LocalDate date, LocalTime startTime, LocalTime endTime) {
-        return getScheduleSessions(scheduleId, date).stream()
-                .anyMatch(session ->
-                        !startTime.isBefore(session.getStartTime())
-                                && !endTime.isAfter(session.getEndTime()));
+        List<WorkSessionDto> sessions = getScheduleSessions(scheduleId, date).stream()
+                .sorted(Comparator.comparing(WorkSessionDto::getStartTime))
+                .toList();
+
+        boolean started = false;
+
+        for (int i = 0; i < sessions.size(); i++) {
+
+            WorkSessionDto current = sessions.get(i);
+
+            if (!started) {
+                if (!isTimeWithinRange(startTime, current.getStartTime(), current.getEndTime())) {
+                    continue;
+                }
+                started = true;
+            }
+
+            if (isTimeWithinRange(endTime, current.getStartTime(), current.getEndTime())) {
+                return true;
+            }
+
+            if (i == sessions.size() - 1) {
+                return false;
+            }
+
+            WorkSessionDto next = sessions.get(i + 1);
+
+            if (!areAdjacent(current.getEndTime(), next.getStartTime())) {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     private List<WorkSessionDto> buildSchedule(WorkSchedule schedule, LocalDate date) {

@@ -128,6 +128,29 @@ public class PredicateBuilder {
         return this;
     }
 
+    public <T extends Comparable<? super T>> PredicateBuilder inRange(
+            DatePath<T> attribute,
+            RangeFilter<T> range
+    ) {
+        return inRange(attribute, range, Objects::nonNull);
+    }
+
+    public <T extends Comparable<? super T>> PredicateBuilder inRange(
+            DatePath<T> attribute,
+            RangeFilter<T> range,
+            Function<RangeFilter<T>, Boolean> validator
+    ) {
+        if (TRUE.equals(validator.apply(range))) {
+            if (range.getMin() != null) {
+                addBooleanExpression(attribute.goe(range.getMin()));
+            }
+            if (range.getMax() != null) {
+                addBooleanExpression(attribute.loe(range.getMax()));
+            }
+        }
+        return this;
+    }
+
     public <T extends Comparable<T>> PredicateBuilder inRange(
             ComparableExpression<T> attribute,
             RangeFilter<T> range

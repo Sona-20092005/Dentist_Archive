@@ -8,7 +8,9 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.time.DayOfWeek;
 import java.time.OffsetDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -21,8 +23,11 @@ public class WorkScheduleRuleFilter extends ArchivingBaseFilter<WorkScheduleRule
 
     RangeFilter<OffsetDateTime> createdAt;
 
+    Set<DayOfWeek> daysOfWeek;
+
     UUID scheduleId;
 
-    // TODO: 6/15/2026 edit rule search mapper
     UUID doctorId;
+
+    UUID clinicId;
 }

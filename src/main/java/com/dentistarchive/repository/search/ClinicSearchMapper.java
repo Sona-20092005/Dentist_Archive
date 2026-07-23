@@ -23,8 +23,10 @@ public class ClinicSearchMapper extends SearchMapper<ClinicFilter, ClinicSort> {
         return PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
                 .in(clinic.id, filter.getIds())
                 .eq(clinic.archived, filter.getArchived())
+                .eq(clinic.doctorId, filter.getDoctorId())
                 .inRange(clinic.createdAt, filter.getCreatedAt())
                 .containsIgnoreCase(clinic.name, filter.getNameContains())
+                .containsIgnoreCase(clinic.address, filter.getAddressContains())
                 .build();
     }
 

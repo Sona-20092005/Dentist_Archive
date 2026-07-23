@@ -16,6 +16,7 @@ public class WorkScheduleRuleProvider {
 
         WorkScheduleRule rule = new WorkScheduleRule();
         rule.setDayOfWeek(createDto.getDayOfWeek());
+        rule.setDayOfWeekSortOrder(createDto.getDayOfWeek().getValue());
         rule.setStartTime(createDto.getStartTime());
         rule.setEndTime(createDto.getEndTime());
         rule.setNotes(createDto.getNotes());
@@ -28,6 +29,7 @@ public class WorkScheduleRuleProvider {
 
         WorkScheduleRule rule = new WorkScheduleRule();
         rule.setDayOfWeek(createDto.getDayOfWeek());
+        rule.setDayOfWeekSortOrder(createDto.getDayOfWeek().getValue());
         rule.setStartTime(createDto.getStartTime());
         rule.setEndTime(createDto.getEndTime());
         rule.setNotes(createDto.getNotes());
@@ -40,6 +42,7 @@ public class WorkScheduleRuleProvider {
     public WorkScheduleRule update(WorkScheduleRule rule, WorkScheduleRuleCorrectDto updateDto) {
 
         rule.setDayOfWeek(updateDto.getDayOfWeek());
+        rule.setDayOfWeekSortOrder(updateDto.getDayOfWeek().getValue());
         rule.setStartTime(updateDto.getStartTime());
         rule.setEndTime(updateDto.getEndTime());
         rule.setNotes(updateDto.getNotes());

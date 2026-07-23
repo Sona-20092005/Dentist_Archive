@@ -28,6 +28,10 @@ public class WorkScheduleRule extends ArchivableBaseEntity {
     DayOfWeek dayOfWeek;
 
     @NotNull
+    @Column(name = "day_of_week_sort_order", nullable = false)
+    Integer dayOfWeekSortOrder;
+
+    @NotNull
     @Column(name = "start_time", nullable = false)
     LocalTime startTime;
 

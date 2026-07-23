@@ -4,6 +4,7 @@ import com.dentistarchive.entity.schedule.WorkSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,4 +31,13 @@ public interface WorkScheduleJpaRepository
       )
     """)
     List<WorkSchedule> findByDoctorIdAndEffectivePeriod(UUID doctorId, LocalDate from, LocalDate until);
+
+    @Query(nativeQuery = true,
+            value = """
+            select doctor_id
+            from work_schedule
+            where id = :scheduleId
+            """
+    )
+    Optional<UUID> findDoctorIdByScheduleId(@Param("scheduleId") UUID scheduleId);
 }

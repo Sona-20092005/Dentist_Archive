@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RangeFilter<T extends Comparable<T>> {
+public class RangeFilter<T extends Comparable<? super T>> {
     T min;
     T max;
 }

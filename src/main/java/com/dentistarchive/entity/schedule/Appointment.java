@@ -41,10 +41,18 @@ public class Appointment extends ArchivableBaseEntity {
     @Column(name = "appointment_status", nullable = false)
     AppointmentStatus appointmentStatus;
 
+    @NotNull
+    @Column(name = "appointment_status_sort_order", nullable = false)
+    Integer appointmentStatusSortOrder;
+
     @NonNull
     @Enumerated(EnumType.STRING)
     @Column(name = "appointment_scheduling_status", nullable = false)
     AppointmentSchedulingStatus appointmentSchedulingStatus;
+
+    @NotNull
+    @Column(name = "appointment_scheduling_status_sort_order", nullable = false)
+    Integer appointmentSchedulingStatusSortOrder;
 
     String notes;
 

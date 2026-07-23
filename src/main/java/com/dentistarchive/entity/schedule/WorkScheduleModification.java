@@ -33,14 +33,23 @@ public class WorkScheduleModification extends ArchivableBaseEntity {
     @Column(name = "end_time")
     LocalTime endTime;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "modification_type", nullable = false)
     ModificationType modificationType;
+
+    @NotNull
+    @Column(name = "modification_type_sort_order", nullable = false)
+    Integer modificationTypeSortOrder;
 
     @NonNull
     @Enumerated(EnumType.STRING)
     @Column(name = "work_session_type", nullable = false)
     WorkSessionType workSessionType;
+
+    @NonNull
+    @Column(name = "work_session_type_sort_order", nullable = false)
+    Integer workSessionTypeSortOrder;
 
     @Column(name = "source_date")
     LocalDate sourceDate;

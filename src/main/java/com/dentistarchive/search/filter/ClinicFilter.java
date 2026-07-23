@@ -24,4 +24,6 @@ public class ClinicFilter extends ArchivingBaseFilter<ClinicFilter>{
     String nameContains;
 
     UUID doctorId;
+
+    String addressContains;
 }

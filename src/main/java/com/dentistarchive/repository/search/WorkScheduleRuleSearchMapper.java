@@ -12,7 +12,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import static com.dentistarchive.entity.schedule.QWorkSchedule.workSchedule;
 import static com.dentistarchive.entity.schedule.QWorkScheduleRule.workScheduleRule;
+import static com.querydsl.jpa.JPAExpressions.select;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -20,12 +22,35 @@ public class WorkScheduleRuleSearchMapper extends SearchMapper<WorkScheduleRuleF
 
     @Override
     protected Predicate toPredicateExceptSubFilters(WorkScheduleRuleFilter filter) {
-        return PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
+        PredicateBuilder builder = PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
                 .in(workScheduleRule.id, filter.getIds())
+                .in(workScheduleRule.id, filter.getIds())
+                .in(workScheduleRule.dayOfWeek, filter.getDaysOfWeek())
                 .eq(workScheduleRule.archived, filter.getArchived())
                 .eq(workScheduleRule.scheduleId, filter.getScheduleId())
-                .inRange(workScheduleRule.createdAt, filter.getCreatedAt())
-                .build();
+                .inRange(workScheduleRule.createdAt, filter.getCreatedAt());
+
+        if (filter.getDoctorId() != null) {
+            builder.and(
+                    workScheduleRule.scheduleId.in(
+                            select(workSchedule.id)
+                                    .from(workSchedule)
+                                    .where(workSchedule.doctorId.eq(filter.getDoctorId()))
+                    )
+            );
+        }
+
+        if (filter.getClinicId() != null) {
+            builder.and(
+                    workScheduleRule.scheduleId.in(
+                            select(workSchedule.id)
+                                    .from(workSchedule)
+                                    .where(workSchedule.clinicId.eq(filter.getClinicId()))
+                    )
+            );
+        }
+
+        return builder.build();
     }
 
     @Override
@@ -33,6 +58,8 @@ public class WorkScheduleRuleSearchMapper extends SearchMapper<WorkScheduleRuleF
         return switch (sortName) {
             case CREATED_AT -> SortBuilder.buildOrder(workScheduleRule.createdAt, direction);
             case UPDATED_AT -> SortBuilder.buildOrder(workScheduleRule.updatedAt, direction);
+            case DAY_OF_WEEK -> SortBuilder.buildOrder(workScheduleRule.dayOfWeekSortOrder, direction);
+            case START_TIME ->  SortBuilder.buildOrder(workScheduleRule.startTime, direction);
         };
     }
 

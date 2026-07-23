@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -24,6 +25,8 @@ public class AppointmentFilter extends ArchivingBaseFilter<AppointmentFilter>{
 
     RangeFilter<OffsetDateTime> createdAt;
 
+    RangeFilter<LocalDate> date;
+
     Set<AppointmentStatus> statuses;
 
     Set<AppointmentSchedulingStatus> schedulingStatuses;
@@ -33,4 +36,8 @@ public class AppointmentFilter extends ArchivingBaseFilter<AppointmentFilter>{
     UUID patientId;
 
     UUID scheduleId;
+
+    UUID doctorId;
+
+    UUID clinicId;
 }

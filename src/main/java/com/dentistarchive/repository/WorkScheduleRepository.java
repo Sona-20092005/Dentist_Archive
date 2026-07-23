@@ -49,6 +49,11 @@ public class WorkScheduleRepository extends BaseReadOnlyRepository<WorkSchedule,
     }
 
     @Transactional(readOnly = true)
+    public Optional<UUID> getDoctorIdByScheduleId(UUID scheduleId) {
+        return jpaRepository.findDoctorIdByScheduleId(scheduleId);
+    }
+
+    @Transactional(readOnly = true)
     public List<WorkSchedule> findByClinicId(UUID clinicId) {
         return jpaRepository.findByClinicIdAndArchivedFalse(clinicId);
     }

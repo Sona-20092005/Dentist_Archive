@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -24,6 +25,8 @@ public class WorkScheduleModificationFilter extends ArchivingBaseFilter<WorkSche
 
     RangeFilter<OffsetDateTime> createdAt;
 
+    RangeFilter<LocalDate> date;
+
     Set<ModificationType> modificationTypes;
 
     Set<WorkSessionType> workSessionTypes;
@@ -31,4 +34,6 @@ public class WorkScheduleModificationFilter extends ArchivingBaseFilter<WorkSche
     UUID scheduleId;
 
     UUID doctorId;
+
+    UUID clinicId;
 }

@@ -25,6 +25,9 @@ public class WorkScheduleSearchMapper extends SearchMapper<WorkScheduleFilter, W
                 .eq(workSchedule.archived, filter.getArchived())
                 .eq(workSchedule.doctorId, filter.getDoctorId())
                 .eq(workSchedule.clinicId, filter.getClinicId())
+                .containsIgnoreCase(workSchedule.name, filter.getNameContains())
+                .inRange(workSchedule.effectiveFrom, filter.getEffectiveFrom())
+                .inRange(workSchedule.effectiveUntil, filter.getEffectiveUntil())
                 .inRange(workSchedule.createdAt, filter.getCreatedAt())
                 .build();
     }
@@ -34,6 +37,9 @@ public class WorkScheduleSearchMapper extends SearchMapper<WorkScheduleFilter, W
         return switch (sortName) {
             case CREATED_AT -> SortBuilder.buildOrder(workSchedule.createdAt, direction);
             case UPDATED_AT -> SortBuilder.buildOrder(workSchedule.updatedAt, direction);
+            case EFFECTIVE_FROM -> SortBuilder.buildOrder(workSchedule.effectiveFrom, direction);
+            case EFFECTIVE_UNTIL -> SortBuilder.buildOrder(workSchedule.effectiveUntil, direction);
+            case NAME -> SortBuilder.buildOrder(workSchedule.name, direction);
         };
     }
 

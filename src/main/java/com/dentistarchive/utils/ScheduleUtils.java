@@ -39,4 +39,12 @@ public class ScheduleUtils {
         return !date.isBefore(start) && (end == null || !date.isAfter(end));
     }
 
+    public static boolean isTimeWithinRange(LocalTime time, LocalTime start, LocalTime end) {
+        return !time.isBefore(start) && !time.isAfter(end);
+    }
+
+    public static boolean areAdjacent(LocalTime firstEnd, LocalTime secondStart) {
+        return firstEnd.equals(secondStart);
+    }
+
 }
