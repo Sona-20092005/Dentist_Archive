@@ -1,6 +1,6 @@
 package com.dentistarchive.dto.create;
 
-import com.dentistarchive.dto.ProcedureDto;
+import com.dentistarchive.dto.WorkScheduleRuleDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
-public class WorkScheduleRuleCreateDto extends BaseCreateDto<ProcedureDto>{
+public class WorkScheduleRuleCreateDto extends BaseCreateDto<WorkScheduleRuleDto>{
 
     DayOfWeek dayOfWeek;
 

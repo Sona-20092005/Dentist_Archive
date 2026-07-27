@@ -1,32 +1,34 @@
-package com.dentistarchive.dto.create;
+package com.dentistarchive.search.filter;
 
-import com.dentistarchive.dto.WorkScheduleDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@FieldNameConstants
-public class WorkScheduleCreateDto extends BaseCreateDto<WorkScheduleDto>{
+public class NurseFilter extends ArchivingBaseFilter<NurseFilter>{
 
-    String name;
+    RangeFilter<OffsetDateTime> createdAt;
 
-    String notes;
+    RangeFilter<LocalDate> hireDate;
 
-    LocalDate effectiveFrom;
-
-    LocalDate effectiveUntil;
+    String nameContains;
 
     UUID clinicId;
+
+    UUID doctorId;
+
+    Boolean currentlyEmployed;
 }

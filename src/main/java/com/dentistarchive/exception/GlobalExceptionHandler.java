@@ -122,7 +122,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handle(EntityNotArchivedException e) {
-        log.error("Entity already archived", e);
+        log.error("Entity not archived", e);
         return ResponseEntity
                 .badRequest()
                 .body(errorResponseCreator.createErrorResponse(
@@ -146,6 +146,94 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handle(PatientNotInactiveException e) {
         log.error("Patient not inactive", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(InvalidWorkSchedulePeriodException e) {
+        log.error("WorkSchedule period invalid:", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(InvalidWorkScheduleRuleTimeRangeException e) {
+        log.error("WorkScheduleRule time range invalid:", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(WorkScheduleOverlapException e) {
+        log.error("WorkSchedule overlap:", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(WorkScheduleRuleOverlapException e) {
+        log.error("WorkScheduleRule overlap:", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(WorkScheduleModificationTargetOverlapException e) {
+        log.error("WorkScheduleModification target overlap:", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(InvalidWorkScheduleModificationSourceException e) {
+        log.error("WorkScheduleModification source invalid:", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(InvalidWorkScheduleModificationInputException e) {
+        log.error("WorkScheduleModification input invalid:", e);
+        return ResponseEntity
+                .badRequest()
+                .body(errorResponseCreator.createErrorResponse(
+                        e.getErrorCode(),
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handle(WorkScheduleModificationScheduleChangeNotAllowedException e) {
+        log.error("WorkScheduleModification schedule change not allowed:", e);
         return ResponseEntity
                 .badRequest()
                 .body(errorResponseCreator.createErrorResponse(

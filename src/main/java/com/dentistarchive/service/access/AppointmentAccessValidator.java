@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class AppointmentAccessValidator extends BaseReadOnlyAccessValidator<Appointment, AppointmentFilter> {
-    WorkScheduleRepository workScheduleRepository;
+    final WorkScheduleRepository workScheduleRepository;
 
     @Override
     protected AppointmentFilter buildAccessControlFilter() {

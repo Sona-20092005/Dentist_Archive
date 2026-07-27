@@ -5,15 +5,13 @@ import com.dentistarchive.repository.PatientRepository;
 import com.dentistarchive.search.filter.TreatmentPlanFilter;
 import com.dentistarchive.security.AuthHolder;
 import com.dentistarchive.security.CustomUserDetails;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class TreatmentPlanAccessValidator extends BaseReadOnlyAccessValidator<TreatmentPlan, TreatmentPlanFilter> {
-    PatientRepository patientRepository;
-
-    public TreatmentPlanAccessValidator(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
-    }
+    final PatientRepository patientRepository;
 
     @Override
     protected TreatmentPlanFilter buildAccessControlFilter() {

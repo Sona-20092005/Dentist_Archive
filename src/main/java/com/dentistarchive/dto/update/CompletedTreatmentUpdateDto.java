@@ -1,6 +1,6 @@
 package com.dentistarchive.dto.update;
 
-import com.dentistarchive.dto.TreatmentPlanDto;
+import com.dentistarchive.dto.CompletedTreatmentDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
-public class CompletedTreatmentUpdateDto extends BaseUpdateDto<TreatmentPlanDto> {
+public class CompletedTreatmentUpdateDto extends BaseUpdateDto<CompletedTreatmentDto> {
 
     LocalDate date;
 

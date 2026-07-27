@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class TreatmentPlanItemAccessValidator extends BaseReadOnlyAccessValidator<TreatmentPlanItem, TreatmentPlanItemFilter> {
-    PatientRepository patientRepository;
-    TreatmentPlanRepository planRepository;
+    final PatientRepository patientRepository;
+    final TreatmentPlanRepository planRepository;
 
     @Override
     protected TreatmentPlanItemFilter buildAccessControlFilter() {

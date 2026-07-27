@@ -1,6 +1,6 @@
 package com.dentistarchive.dto.create;
 
-import com.dentistarchive.dto.ProcedureDto;
+import com.dentistarchive.dto.AppointmentDto;
 import com.dentistarchive.enums.AppointmentStatus;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
-public class AppointmentCreateDto extends BaseCreateDto<ProcedureDto>{
+public class AppointmentCreateDto extends BaseCreateDto<AppointmentDto>{
 
     LocalDate date;
 

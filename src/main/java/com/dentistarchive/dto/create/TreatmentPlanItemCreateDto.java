@@ -1,6 +1,6 @@
 package com.dentistarchive.dto.create;
 
-import com.dentistarchive.dto.TreatmentPlanDto;
+import com.dentistarchive.dto.TreatmentPlanItemDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
-public class TreatmentPlanItemCreateDto extends BaseCreateDto<TreatmentPlanDto>{
+public class TreatmentPlanItemCreateDto extends BaseCreateDto<TreatmentPlanItemDto>{
 
     BigDecimal unitPrice;
 

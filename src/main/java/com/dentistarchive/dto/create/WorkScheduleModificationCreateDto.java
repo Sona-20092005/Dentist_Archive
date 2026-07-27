@@ -1,6 +1,6 @@
 package com.dentistarchive.dto.create;
 
-import com.dentistarchive.dto.ProcedureDto;
+import com.dentistarchive.dto.WorkScheduleModificationDto;
 import com.dentistarchive.enums.ModificationType;
 import com.dentistarchive.enums.WorkSessionType;
 import lombok.AccessLevel;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
-public class WorkScheduleModificationCreateDto extends BaseCreateDto<ProcedureDto>{
+public class WorkScheduleModificationCreateDto extends BaseCreateDto<WorkScheduleModificationDto>{
 
     LocalDate date;
 

@@ -38,7 +38,11 @@ public enum ErrorCode {
     WORK_SCHEDULE_PERIOD_INVALID("validation.work-schedule.period.invalid"),
     WORK_SCHEDULE_OVERLAP("validation.work-schedule.overlap"),
     WORK_SCHEDULE_RULE_TIME_RANGE_INVALID("validation.work-schedule.time-range.invalid"),
-    WORK_SCHEDULE_RULE_OVERLAP("validation.work-schedule-rule.overlap");
+    WORK_SCHEDULE_RULE_OVERLAP("validation.work-schedule-rule.overlap"),
+    WORK_SCHEDULE_MODIFICATION_TARGET_OVERLAP("validation.work-schedule-modification.target.overlap"),
+    WORK_SCHEDULE_MODIFICATION_SOURCE_INVALID("validation.work-schedule-modification.source.invalid"),
+    WORK_SCHEDULE_MODIFICATION_INPUT_INVALID("validation.work-schedule-modification.input.invalid"),
+    WORK_SCHEDULE_MODIFICATION_SCHEDULE_CHANGE_NOT_ALLOWED("validation.work-schedule-modification.schedule-change-not-allowed");
 
     String code;
 }

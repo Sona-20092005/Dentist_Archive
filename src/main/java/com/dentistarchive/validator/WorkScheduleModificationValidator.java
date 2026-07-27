@@ -3,6 +3,10 @@ package com.dentistarchive.validator;
 import com.dentistarchive.entity.schedule.WorkSchedule;
 import com.dentistarchive.entity.schedule.WorkScheduleModification;
 import com.dentistarchive.enums.ModificationType;
+import com.dentistarchive.exception.InvalidWorkScheduleModificationInputException;
+import com.dentistarchive.exception.InvalidWorkScheduleModificationSourceException;
+import com.dentistarchive.exception.WorkScheduleModificationScheduleChangeNotAllowedException;
+import com.dentistarchive.exception.WorkScheduleModificationTargetOverlapException;
 import com.dentistarchive.security.AuthHolder;
 import com.dentistarchive.security.CustomUserDetails;
 import com.dentistarchive.service.WorkCalendarService;
@@ -114,7 +118,7 @@ public class WorkScheduleModificationValidator {
         hasTarget(modification);
 
         if((modification.getModificationType() == ModificationType.MODIFY) && !previousScheduleId.equals(modification.getScheduleId())) {
-            throw new IllegalStateException("MODIFY modifications cannot change the schedule");
+            throw new WorkScheduleModificationScheduleChangeNotAllowedException();
         }
     }
 
@@ -123,17 +127,17 @@ public class WorkScheduleModificationValidator {
         switch (modification.getModificationType()) {
             case ADD -> {
                 if (!hasNoSource(modification) || !hasTarget(modification)) {
-                    throw new IllegalStateException("ADD must have current date fields and cannot have source fields");
+                    throw new InvalidWorkScheduleModificationInputException();
                 }
             }
             case MODIFY -> {
                 if (!hasSource(modification) || !hasTarget(modification)) {
-                    throw new IllegalStateException("MODIFY must have current date fields and source fields");
+                    throw new InvalidWorkScheduleModificationInputException();
                 }
             }
             case CANCEL -> {
                 if (!hasSource(modification) || !hasNoTarget(modification)) {
-                    throw new IllegalStateException("CANCEL cannot have current fields and must have source fields");
+                    throw new InvalidWorkScheduleModificationInputException();
                 }
             }
         }
@@ -143,9 +147,8 @@ public class WorkScheduleModificationValidator {
         switch (modification.getModificationType()) {
             case MODIFY, CANCEL -> workCalendarService.findRuleSession(modification.getScheduleId(), modification.getSourceDate(),
                         modification.getSourceStartTime(), modification.getSourceEndTime())
-                        .orElseThrow(() -> new IllegalStateException("Source session does not exist"));
-            case ADD -> {
-            }
+                        .orElseThrow(() -> new InvalidWorkScheduleModificationSourceException());
+            case ADD -> {}
         }
     }
 
@@ -156,7 +159,7 @@ public class WorkScheduleModificationValidator {
             case ADD, MODIFY -> {
                 if(workCalendarService.hasOverlappingSession(details.getUserId(), modification.getDate(),
                         modification.getStartTime(), modification.getEndTime())) {
-                    throw new IllegalStateException("Work sessions already exist at the specified time");
+                    throw new WorkScheduleModificationTargetOverlapException();
                 }
             }
             case CANCEL -> {
@@ -169,7 +172,7 @@ public class WorkScheduleModificationValidator {
 
         if(workCalendarService.hasOverlappingSession(details.getUserId(), modification.getDate(),
                         modification.getStartTime(), modification.getEndTime(), modification.getId())) {
-            throw new IllegalStateException("Work sessions already exist at the specified time");
+            throw new WorkScheduleModificationTargetOverlapException();
         }
     }
 

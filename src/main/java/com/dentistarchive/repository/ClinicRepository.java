@@ -31,9 +31,14 @@ public class ClinicRepository extends BaseReadOnlyRepository<Clinic, ClinicFilte
         return jpaRepository.findByIdAndArchivedFalse((id));
     }
 
+    @Transactional(readOnly = true)
+    public Optional<UUID> getDoctorIdByClinicId(UUID clinicId) {
+        return jpaRepository.findDoctorIdByClinicId(clinicId);
+    }
+
     @Transactional
-    public Clinic save(Clinic plan) {
-        return jpaRepository.save(plan);
+    public Clinic save(Clinic clinic) {
+        return jpaRepository.save(clinic);
     }
 
     @Transactional

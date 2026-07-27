@@ -1,6 +1,6 @@
 package com.dentistarchive.dto.update;
 
-import com.dentistarchive.dto.TreatmentPlanDto;
+import com.dentistarchive.dto.TreatmentPlanItemDto;
 import com.dentistarchive.enums.TreatmentPlanItemStatus;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
-public class TreatmentPlanItemUpdateDto extends BaseUpdateDto<TreatmentPlanDto> {
+public class TreatmentPlanItemUpdateDto extends BaseUpdateDto<TreatmentPlanItemDto> {
 
     TreatmentPlanItemStatus itemStatus;
 

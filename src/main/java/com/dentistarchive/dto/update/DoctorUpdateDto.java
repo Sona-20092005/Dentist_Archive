@@ -1,5 +1,6 @@
 package com.dentistarchive.dto.update;
 
+import com.dentistarchive.dto.DoctorDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +15,7 @@ import lombok.experimental.FieldNameConstants;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
-public class DoctorUpdateDto {
+public class DoctorUpdateDto extends BaseUpdateDto<DoctorDto>{
     @Schema(description = "User name (unique)")
     @NotBlank
     @Size(min = 2, max = 80)

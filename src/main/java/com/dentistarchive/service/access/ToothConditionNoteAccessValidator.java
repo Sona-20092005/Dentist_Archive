@@ -5,15 +5,13 @@ import com.dentistarchive.repository.PatientRepository;
 import com.dentistarchive.search.filter.ToothConditionNoteFilter;
 import com.dentistarchive.security.AuthHolder;
 import com.dentistarchive.security.CustomUserDetails;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class ToothConditionNoteAccessValidator extends BaseReadOnlyAccessValidator<ToothConditionNote, ToothConditionNoteFilter> {
-    PatientRepository patientRepository;
-
-    public ToothConditionNoteAccessValidator(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
-    }
+    final PatientRepository patientRepository;
 
     @Override
     protected ToothConditionNoteFilter buildAccessControlFilter() {
