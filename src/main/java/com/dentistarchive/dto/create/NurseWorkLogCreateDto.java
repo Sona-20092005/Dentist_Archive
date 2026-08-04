@@ -1,7 +1,7 @@
 package com.dentistarchive.dto.create;
 
-import com.dentistarchive.dto.NurseDto;
-import com.dentistarchive.enums.CompensationType;
+import com.dentistarchive.dto.NurseWorkLogDto;
+import com.dentistarchive.enums.NurseWorkType;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Data
@@ -21,31 +21,19 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
-public class NurseCreateDto extends BaseCreateDto<NurseDto>{
+public class NurseWorkLogCreateDto extends BaseCreateDto<NurseWorkLogDto>{
 
-    String name;
+    UUID nurseId;
 
-    BigDecimal baseSalary;
+    NurseWorkType workType;
+
+    LocalDate date;
+
+    LocalTime startTime;
+
+    LocalTime endTime;
 
     BigDecimal hourlyRate;
 
-    BigDecimal overtimeHourlyRate;
-
-    Integer contractedWeeklyHours;
-
-    LocalDate hireDate;
-
-    LocalDate terminationDate;
-
-    LocalDate payrollStartDate;
-
-    CompensationType compensationType;
-
-    List<String> phones;
-
-    List<String> emails;
-
     String notes;
-
-    UUID clinicId;
 }

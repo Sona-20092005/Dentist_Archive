@@ -1,6 +1,6 @@
 package com.dentistarchive.dto;
 
-import com.dentistarchive.enums.CompensationType;
+import com.dentistarchive.enums.NurseWorkType;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Data
@@ -18,33 +18,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PROTECTED)
-public class NurseDto extends ArchivingBaseDto {
+public class NurseWorkLogDto extends ArchivingBaseDto {
 
-    String name;
+    UUID nurseId;
 
-    BigDecimal baseSalary;
+    NurseWorkType workType;
+
+    LocalDate date;
+
+    LocalTime startTime;
+
+    LocalTime endTime;
 
     BigDecimal hourlyRate;
 
-    BigDecimal overtimeHourlyRate;
-
-    Integer contractedWeeklyHours;
-
-    LocalDate hireDate;
-
-    LocalDate terminationDate;
-
-    LocalDate payrollStartDate;
-
-    CompensationType compensationType;
-
-    List<String> phones;
-
-    List<String> emails;
-
     String notes;
 
-    UUID clinicId;
 }
 
 

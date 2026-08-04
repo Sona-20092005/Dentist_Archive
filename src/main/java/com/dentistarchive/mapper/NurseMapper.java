@@ -24,12 +24,16 @@ public class NurseMapper implements EntityMapper<Nurse, NurseDto> {
         dto.setArchivedAt(nurse.getArchivedAt());
         dto.setArchivedBy(nurse.getArchivedBy());
         dto.setArchived(nurse.isArchived());
+
         dto.setName(nurse.getName());
         dto.setPhones(nurse.getPhones());
         dto.setEmails(nurse.getEmails());
         dto.setNotes(nurse.getNotes());
         dto.setBaseSalary(nurse.getBaseSalary());
         dto.setHourlyRate(nurse.getHourlyRate());
+        dto.setOvertimeHourlyRate(nurse.getOvertimeHourlyRate());
+        dto.setContractedWeeklyHours(nurse.getContractedWeeklyHours());
+        dto.setCompensationType(nurse.getCompensationType());
         dto.setPayrollStartDate(nurse.getPayrollStartDate());
         dto.setHireDate(nurse.getHireDate());
         dto.setTerminationDate(nurse.getTerminationDate());

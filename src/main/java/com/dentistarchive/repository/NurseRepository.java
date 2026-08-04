@@ -31,6 +31,11 @@ public class NurseRepository extends BaseReadOnlyRepository<Nurse, NurseFilter> 
         return jpaRepository.findByIdAndArchivedFalse((id));
     }
 
+    @Transactional(readOnly = true)
+    public Optional<UUID> getClinicIdByNurseId(UUID nurseId) {
+        return jpaRepository.findClinicIdByNurseId(nurseId);
+    }
+
     @Transactional
     public Nurse save(Nurse nurse) {
         return jpaRepository.save(nurse);

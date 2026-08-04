@@ -19,9 +19,12 @@ public class NurseProvider {
         nurse.setClinicId(createDto.getClinicId());
         nurse.setBaseSalary(createDto.getBaseSalary());
         nurse.setHourlyRate(createDto.getHourlyRate());
+        nurse.setOvertimeHourlyRate(createDto.getOvertimeHourlyRate());
         nurse.setHireDate(createDto.getHireDate());
         nurse.setTerminationDate(createDto.getTerminationDate());
         nurse.setPayrollStartDate(createDto.getPayrollStartDate());
+        nurse.setContractedWeeklyHours(createDto.getContractedWeeklyHours());
+        nurse.setCompensationType(createDto.getCompensationType());
 
         return nurse;
     }
@@ -36,9 +39,13 @@ public class NurseProvider {
         nurse.setClinicId(updateDto.getClinicId());
         nurse.setBaseSalary(updateDto.getBaseSalary());
         nurse.setHourlyRate(updateDto.getHourlyRate());
+        nurse.setOvertimeHourlyRate(updateDto.getOvertimeHourlyRate());
         nurse.setHireDate(updateDto.getHireDate());
         nurse.setTerminationDate(updateDto.getTerminationDate());
         nurse.setPayrollStartDate(updateDto.getPayrollStartDate());
+        nurse.setContractedWeeklyHours(updateDto.getContractedWeeklyHours());
+        nurse.setCompensationType(updateDto.getCompensationType());
+
 
         return nurse;
     }

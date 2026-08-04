@@ -1,9 +1,12 @@
 package com.dentistarchive.entity.nurse;
 
 import com.dentistarchive.entity.ArchivableBaseEntity;
+import com.dentistarchive.enums.CompensationType;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -31,6 +34,17 @@ public class Nurse extends ArchivableBaseEntity {
 
     @Column(name = "hourly_rate")
     BigDecimal hourlyRate;
+
+    @Column(name = "overtime_hourly_rate")
+    BigDecimal overtimeHourlyRate;
+
+    @Column(name = "contracted_weekly_hours")
+    Integer contractedWeeklyHours;
+
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "compensation_type")
+    CompensationType compensationType;
 
     @Column(name = "hire_date")
     LocalDate hireDate;
