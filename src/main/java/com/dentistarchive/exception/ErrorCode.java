@@ -42,7 +42,8 @@ public enum ErrorCode {
     WORK_SCHEDULE_MODIFICATION_TARGET_OVERLAP("validation.work-schedule-modification.target.overlap"),
     WORK_SCHEDULE_MODIFICATION_SOURCE_INVALID("validation.work-schedule-modification.source.invalid"),
     WORK_SCHEDULE_MODIFICATION_INPUT_INVALID("validation.work-schedule-modification.input.invalid"),
-    WORK_SCHEDULE_MODIFICATION_SCHEDULE_CHANGE_NOT_ALLOWED("validation.work-schedule-modification.schedule-change-not-allowed");
+    WORK_SCHEDULE_MODIFICATION_SCHEDULE_CHANGE_NOT_ALLOWED("validation.work-schedule-modification.schedule-change-not-allowed"),
+    NURSE_COMPENSATION_TYPE_CHANGE_ALREADY_EXISTS("validation.nurse.compensation-type-change.already-exists");
 
     String code;
 }

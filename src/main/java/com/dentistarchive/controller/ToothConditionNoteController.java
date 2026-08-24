@@ -36,7 +36,7 @@ public class ToothConditionNoteController extends BaseController {
 
     @PostMapping
     @Operation(summary = "Create tooth note")
-    public ResponseEntity<ToothConditionNoteDto> createPatient(@Valid @RequestBody ToothConditionNoteCreateDto createDto) {
+    public ResponseEntity<ToothConditionNoteDto> create(@Valid @RequestBody ToothConditionNoteCreateDto createDto) {
         return ResponseEntity.ok(toothConditionNoteMapper.toDto(toothConditionNoteService.create(createDto)));
     }
 

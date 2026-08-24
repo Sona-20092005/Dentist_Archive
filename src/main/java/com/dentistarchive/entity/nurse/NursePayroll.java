@@ -1,11 +1,10 @@
 package com.dentistarchive.entity.nurse;
 
-import com.dentistarchive.entity.ArchivableBaseEntity;
+import com.dentistarchive.entity.MutableBaseEntity;
 import com.dentistarchive.enums.CompensationType;
 import com.dentistarchive.enums.NursePayrollStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.dentistarchive.utils.MonthConverter;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,13 +15,13 @@ import java.time.Month;
 import java.util.UUID;
 
 @Data
-//@Entity
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class NursePayroll extends ArchivableBaseEntity {
+public class NursePayroll extends MutableBaseEntity {
 
     @NonNull
     @Column(name = "nurse_id", nullable = false)
@@ -38,36 +37,49 @@ public class NursePayroll extends ArchivableBaseEntity {
     Integer year;
 
     @NotNull
+    @Convert(converter = MonthConverter.class)
     @Column(nullable = false)
     Month month;
 
+    @Builder.Default
     @NotNull
     @Column(name = "calculated_regular_amount", nullable = false)
-    BigDecimal calculatedRegularAmount;
+    BigDecimal calculatedRegularAmount = BigDecimal.ZERO;
 
+    @Builder.Default
     @NotNull
     @Column(name = "regular_amount", nullable = false)
-    BigDecimal regularAmount;
+    BigDecimal regularAmount = BigDecimal.ZERO;
 
+    @Builder.Default
     @NotNull
     @Column(name = "calculated_overtime_amount", nullable = false)
-    BigDecimal calculatedOvertimeAmount;
+    BigDecimal calculatedOvertimeAmount = BigDecimal.ZERO;
 
+    @Builder.Default
     @NotNull
     @Column(name = "overtime_amount", nullable = false)
-    BigDecimal overtimeAmount;
+    BigDecimal overtimeAmount = BigDecimal.ZERO;
 
-    BigDecimal bonus;
+    @Builder.Default
+    @NotNull
+    @Column(nullable = false)
+    BigDecimal bonus = BigDecimal.ZERO;
 
-    BigDecimal deduction;
+    @Builder.Default
+    @NotNull
+    @Column(nullable = false)
+    BigDecimal deduction = BigDecimal.ZERO;
 
+    @Builder.Default
     @NotNull
     @Column(name = "regular_minutes_worked", nullable = false)
-    Integer regularMinutesWorked;
+    Integer regularMinutesWorked = 0;
 
+    @Builder.Default
     @NotNull
     @Column(name = "overtime_minutes_worked", nullable = false)
-    Integer overtimeMinutesWorked;
+    Integer overtimeMinutesWorked = 0;
 
     LocalDate paymentDate;
 
@@ -77,14 +89,28 @@ public class NursePayroll extends ArchivableBaseEntity {
     CompensationType compensationType;
 
     @NotNull
-    @Column(name = "has_manually_adjustments", nullable = false)
-    Boolean hasManuallyAdjustments;
-
-    @NotNull
     @Column(nullable = false)
     Boolean locked;
 
     String notes;
+
+    public boolean isManuallyAdjusted() {
+        return regularAmount.compareTo(calculatedRegularAmount) != 0
+                || overtimeAmount.compareTo(calculatedOvertimeAmount) != 0
+                || bonus.compareTo(BigDecimal.ZERO) != 0
+                || deduction.compareTo(BigDecimal.ZERO) != 0;
+    }
+
+
+    public boolean isRegularAmountManuallyAdjusted() {
+        return regularAmount.compareTo(calculatedRegularAmount) != 0;
+    }
+
+    public boolean isOvertimeAmountManuallyAdjusted() {
+        return overtimeAmount.compareTo(calculatedOvertimeAmount) != 0;
+    }
+
+
 
 }
 

@@ -12,7 +12,6 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
@@ -27,12 +26,14 @@ public class NurseWorkLogService extends BaseReadOnlyService<NurseWorkLog, Nurse
     NurseWorkLogAccessValidator accessValidator;
     NurseWorkLogProvider nurseWorkLogProvider;
     NurseService nurseService;
+    NursePayrollSynchronizer payrollSynchronizer;
 
     public NurseWorkLogService(
             NurseWorkLogRepository nurseWorkLogRepository,
             NurseWorkLogAccessValidator accessValidator,
             NurseWorkLogProvider nurseWorkLogProvider,
-            NurseService nurseService
+            NurseService nurseService,
+            NursePayrollSynchronizer nursePayrollSynchronizer
     ) {
         super(
                 NurseWorkLog.class,
@@ -44,6 +45,7 @@ public class NurseWorkLogService extends BaseReadOnlyService<NurseWorkLog, Nurse
         this.accessValidator = accessValidator;
         this.nurseWorkLogProvider = nurseWorkLogProvider;
         this.nurseService = nurseService;
+        this.payrollSynchronizer = nursePayrollSynchronizer;
     }
 
     @Transactional
@@ -51,19 +53,29 @@ public class NurseWorkLogService extends BaseReadOnlyService<NurseWorkLog, Nurse
         nurseService.getAccessibleNurse(createDto.getNurseId());
 
         var nurseWorkLog = nurseWorkLogProvider.create(createDto);
-        return save(nurseWorkLog);
+        nurseWorkLog = save(nurseWorkLog);
+
+        payrollSynchronizer.applyWorkLogCreate(nurseWorkLog);
+
+        return nurseWorkLog;
     }
 
-    @Transactional(propagation = Propagation.NEVER)
+    @Transactional
     public NurseWorkLog update(UUID id, @Valid NurseWorkLogUpdateDto updateDto) {
-        nurseService.getAccessibleNurse(updateDto.getNurseId());
 
         NurseWorkLog nurseWorkLog = nurseWorkLogRepository.getByIdAndNotArchived(id)
                 .orElseThrow(() -> new EntityNotFoundByIdException(NurseWorkLog.class, id));
 
         accessValidator.validateAccess(nurseWorkLog);
+
+        NurseWorkLog oldWorkLog = copyForPayroll(nurseWorkLog);
+
         nurseWorkLogProvider.update(nurseWorkLog, updateDto);
-        return nurseWorkLogRepository.save(nurseWorkLog);
+        nurseWorkLog = nurseWorkLogRepository.save(nurseWorkLog);
+
+        payrollSynchronizer.applyWorkLogUpdate(oldWorkLog, nurseWorkLog);
+
+        return nurseWorkLog;
     }
 
     @Override
@@ -72,10 +84,14 @@ public class NurseWorkLogService extends BaseReadOnlyService<NurseWorkLog, Nurse
     }
 
     @Override
-    public void afterArchive(NurseWorkLog entity) {}
+    public void afterArchive(NurseWorkLog entity) {
+        payrollSynchronizer.applyWorkLogDelete(entity);
+    }
 
     @Override
-    public void afterUnarchive(NurseWorkLog entity) {}
+    public void afterUnarchive(NurseWorkLog entity) {
+        payrollSynchronizer.applyWorkLogCreate(entity);
+    }
 
     public NurseWorkLog getAccessibleNurseWorkLog(UUID id) {
         if (id == null) {
@@ -90,6 +106,20 @@ public class NurseWorkLogService extends BaseReadOnlyService<NurseWorkLog, Nurse
         accessValidator.validateAccess(nurseWorkLog);
 
         return nurseWorkLog;
+    }
+
+    private NurseWorkLog copyForPayroll(NurseWorkLog nurseWorkLog) {
+        NurseWorkLog copy = new NurseWorkLog();
+
+        copy.setId(nurseWorkLog.getId());
+        copy.setArchived(nurseWorkLog.isArchived());
+        copy.setNurseId(nurseWorkLog.getNurseId());
+        copy.setWorkType(nurseWorkLog.getWorkType());
+        copy.setDate(nurseWorkLog.getDate());
+        copy.setStartTime(nurseWorkLog.getStartTime());
+        copy.setEndTime(nurseWorkLog.getEndTime());
+        copy.setHourlyRate(nurseWorkLog.getHourlyRate());
+        return copy;
     }
 
 }

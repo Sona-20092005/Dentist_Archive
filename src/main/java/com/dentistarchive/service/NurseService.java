@@ -27,12 +27,14 @@ public class NurseService extends BaseReadOnlyService<Nurse, NurseFilter>
     NurseAccessValidator accessValidator;
     NurseProvider nurseProvider;
     ClinicService clinicService;
+    NursePayrollGenerator payrollGenerator;
 
     public NurseService(
             NurseRepository nurseRepository,
             NurseAccessValidator accessValidator,
             NurseProvider nurseProvider,
-            ClinicService clinicService
+            ClinicService clinicService,
+            NursePayrollGenerator payrollGenerator
     ) {
         super(
                 Nurse.class,
@@ -44,6 +46,7 @@ public class NurseService extends BaseReadOnlyService<Nurse, NurseFilter>
         this.accessValidator = accessValidator;
         this.nurseProvider = nurseProvider;
         this.clinicService = clinicService;
+        this.payrollGenerator = payrollGenerator;
     }
 
     @Transactional
@@ -51,7 +54,11 @@ public class NurseService extends BaseReadOnlyService<Nurse, NurseFilter>
         clinicService.getAccessibleClinic(createDto.getClinicId());
 
         var nurse = nurseProvider.create(createDto);
-        return save(nurse);
+        nurse = save(nurse);
+
+        payrollGenerator.generateInitialPayrolls(nurse);
+
+        return nurse;
     }
 
     @Transactional(propagation = Propagation.NEVER)

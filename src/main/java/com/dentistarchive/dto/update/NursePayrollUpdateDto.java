@@ -1,8 +1,7 @@
 package com.dentistarchive.dto.update;
 
-import com.dentistarchive.dto.NurseWorkLogDto;
-import com.dentistarchive.dto.create.BaseCreateDto;
-import com.dentistarchive.enums.NurseWorkType;
+import com.dentistarchive.dto.NursePayrollDto;
+import com.dentistarchive.enums.NursePayrollStatus;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +12,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Data
 @SuperBuilder
@@ -21,17 +19,20 @@ import java.time.LocalTime;
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
-public class NurseWorkLogUpdateDto extends BaseCreateDto<NurseWorkLogDto> {
+public class NursePayrollUpdateDto extends BaseUpdateDto<NursePayrollDto> {
 
-    NurseWorkType workType;
+    NursePayrollStatus status;
 
-    LocalDate date;
+    BigDecimal regularAmount;
 
-    LocalTime startTime;
+    BigDecimal overtimeAmount;
 
-    LocalTime endTime;
+    BigDecimal bonus;
 
-    BigDecimal hourlyRate;
+    BigDecimal deduction;
+
+    LocalDate paymentDate;
 
     String notes;
+
 }

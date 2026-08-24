@@ -24,7 +24,6 @@ public class NurseWorkLogProvider {
 
     public NurseWorkLog update(NurseWorkLog nurseWorkLog, NurseWorkLogUpdateDto updateDto) {
 
-        nurseWorkLog.setNurseId(updateDto.getNurseId());
         nurseWorkLog.setWorkType(updateDto.getWorkType());
         nurseWorkLog.setDate(updateDto.getDate());
         nurseWorkLog.setStartTime(updateDto.getStartTime());
