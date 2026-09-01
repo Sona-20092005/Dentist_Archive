@@ -45,7 +45,6 @@ public class NurseWorkLog extends ArchivableBaseEntity {
     @Column(name = "end_time", nullable = false)
     LocalTime endTime;
 
-    @NotNull
     @Column(name = "hourly_rate")
     BigDecimal hourlyRate;
 

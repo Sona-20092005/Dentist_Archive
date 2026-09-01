@@ -85,7 +85,9 @@ public class AppointmentService extends BaseReadOnlyService<Appointment, Appoint
         var workSchedule = workScheduleService.getAccessibleWorkSchedule(appointment.getScheduleId());
         appointmentValidator.validateUnarchive(appointment, workSchedule);
         unarchive(appointment);
-        return save(appointment);
+        appointment = save(appointment);
+        afterUnarchive(appointment);
+        return  save(appointment);
     }
 
     @Override

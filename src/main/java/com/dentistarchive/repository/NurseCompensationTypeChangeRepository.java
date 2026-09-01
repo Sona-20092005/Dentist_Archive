@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.YearMonth;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -29,6 +30,11 @@ public class NurseCompensationTypeChangeRepository extends BaseReadOnlyRepositor
     @Transactional(readOnly = true)
     public boolean existsByNurseIdAndEffectiveFrom(UUID nurseId, YearMonth effectiveFrom) {
         return jpaRepository.existsByNurseIdAndEffectiveFrom(nurseId, effectiveFrom);
+    }
+
+    @Transactional(readOnly = true)
+    public List<NurseCompensationTypeChange> findByEffectiveFrom(YearMonth effectiveFrom) {
+        return jpaRepository.findByEffectiveFrom(effectiveFrom);
     }
 
     @Transactional

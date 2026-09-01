@@ -1,6 +1,6 @@
 package com.dentistarchive.utils;
 
-import com.dentistarchive.service.NursePayrollGenerator;
+import com.dentistarchive.service.NursePayrollService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -11,10 +11,11 @@ import java.time.YearMonth;
 @RequiredArgsConstructor
 public class NursePayrollScheduler {
 
-    private final NursePayrollGenerator generator;
+    private final NursePayrollService nursePayrollService;
 
     @Scheduled(cron = "0 0 0 1 * *")
     public void generateCurrentMonth() {
-        generator.generatePayrolls(YearMonth.now());
+        nursePayrollService.processCurrentMonth(YearMonth.now());
     }
+
 }

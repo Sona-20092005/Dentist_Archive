@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.YearMonth;
 import java.util.UUID;
 
 @Service
@@ -25,14 +26,14 @@ public class NursePayrollService extends BaseReadOnlyService<NursePayroll, Nurse
     NursePayrollAccessValidator accessValidator;
     NursePayrollProvider nursePayrollProvider;
     NursePayrollGenerator payrollGenerator;
-    NurseRepository nurseRepository;
+    NurseCompensationTypeChangeService nurseCompensationTypeChangeService;
 
     public NursePayrollService(
             NursePayrollRepository nursePayrollRepository,
             NursePayrollAccessValidator accessValidator,
             NursePayrollProvider nursePayrollProvider,
             NursePayrollGenerator payrollGenerator,
-            NurseRepository nurseRepository
+            NurseCompensationTypeChangeService nurseCompensationTypeChangeService
     ) {
         super(
                 NursePayroll.class,
@@ -44,7 +45,7 @@ public class NursePayrollService extends BaseReadOnlyService<NursePayroll, Nurse
         this.accessValidator = accessValidator;
         this.nursePayrollProvider = nursePayrollProvider;
         this.payrollGenerator = payrollGenerator;
-        this.nurseRepository = nurseRepository;
+        this.nurseCompensationTypeChangeService = nurseCompensationTypeChangeService;
     }
 
     @Transactional(propagation = Propagation.NEVER)
@@ -71,6 +72,13 @@ public class NursePayrollService extends BaseReadOnlyService<NursePayroll, Nurse
         accessValidator.validateAccess(nursePayroll);
 
         return nursePayroll;
+    }
+
+
+    @Transactional
+    public void processCurrentMonth(YearMonth month) {
+        nurseCompensationTypeChangeService.applyChangesFor(month);
+        payrollGenerator.generatePayrolls(month);
     }
 
 }

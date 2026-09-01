@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.time.YearMonth;
+
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Component
@@ -20,6 +22,9 @@ public class NurseCompensationTypeChangeValidator {
         if (nurseCompensationTypeChangeRepository.existsByNurseIdAndEffectiveFrom(createDto.getNurseId(), createDto.getEffectiveFrom())) {
             throw new NurseCompensationTypeChangeAlreadyExistsException();
         }
+    }
+    public boolean checkCurrentMonthCompensationTypeChange(NurseCompensationTypeChangeCreateDto createDto) {
+        return createDto.getEffectiveFrom().equals(YearMonth.now());
     }
     public void validateUpdate(NurseCompensationTypeChange entity, NurseCompensationTypeChangeUpdateDto updateDto) {
         if (nurseCompensationTypeChangeRepository.existsByNurseIdAndEffectiveFrom(entity.getNurseId(), updateDto.getEffectiveFrom())) {

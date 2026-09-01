@@ -14,7 +14,7 @@ create table nurse_work_log
     date                  date        not null,
     start_time            time        not null,
     end_time              time        not null,
-    hourly_rate           numeric(19, 2) not null,
+    hourly_rate           numeric(19, 2),
 
     notes                 text,
 

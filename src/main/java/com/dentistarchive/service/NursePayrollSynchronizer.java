@@ -8,6 +8,7 @@ import com.dentistarchive.enums.NurseWorkType;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.repository.NursePayrollRepository;
 import com.dentistarchive.repository.NurseRepository;
+import com.dentistarchive.repository.NurseWorkLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.YearMonth;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class NursePayrollSynchronizer {
     private final NurseRepository nurseRepository;
     private final NursePayrollRepository nursePayrollRepository;
     private final NursePayrollGenerator nursePayrollGenerator;
+    private final NurseWorkLogRepository nurseWorkLogRepository;
 
 
     @Transactional
@@ -34,11 +38,14 @@ public class NursePayrollSynchronizer {
 
         NursePayroll payroll = getOrCreatePayroll(nurse, log);
 
+        boolean regularAmountManuallyAdjusted = payroll.isRegularAmountManuallyAdjusted();
+        boolean overtimeAmountManuallyAdjusted = payroll.isOvertimeAmountManuallyAdjusted();
+
         validatePayrollCanBeModified(payroll);
 
         addMinutes(payroll, log);
         addAmounts(payroll, log);
-        updateDisplayedAmounts(payroll);
+        updateDisplayedAmounts(payroll, regularAmountManuallyAdjusted, overtimeAmountManuallyAdjusted);
 
         nursePayrollRepository.save(payroll);
     }
@@ -52,12 +59,15 @@ public class NursePayrollSynchronizer {
 
         NursePayroll payroll = getExistingPayroll(nurse, log);
 
+        boolean regularAmountManuallyAdjusted = payroll.isRegularAmountManuallyAdjusted();
+        boolean overtimeAmountManuallyAdjusted = payroll.isOvertimeAmountManuallyAdjusted();
+
         validatePayrollCanBeModified(payroll);
 
         removeMinutes(payroll, log);
         removeAmounts(payroll, log);
 
-        updateDisplayedAmounts(payroll);
+        updateDisplayedAmounts(payroll, regularAmountManuallyAdjusted, overtimeAmountManuallyAdjusted);
 
         validatePayrollValues(payroll);
 
@@ -85,6 +95,9 @@ public class NursePayrollSynchronizer {
 
         NursePayroll payroll = getExistingPayroll(nurse, newLog);
 
+        boolean regularAmountManuallyAdjusted = payroll.isRegularAmountManuallyAdjusted();
+        boolean overtimeAmountManuallyAdjusted = payroll.isOvertimeAmountManuallyAdjusted();
+
         validatePayrollCanBeModified(payroll);
 
         removeMinutes(payroll, oldLog);
@@ -93,7 +106,7 @@ public class NursePayrollSynchronizer {
         addMinutes(payroll, newLog);
         addAmounts(payroll, newLog);
 
-        updateDisplayedAmounts(payroll);
+        updateDisplayedAmounts(payroll, regularAmountManuallyAdjusted, overtimeAmountManuallyAdjusted);
 
         validatePayrollValues(payroll);
 
@@ -108,16 +121,21 @@ public class NursePayrollSynchronizer {
         NursePayroll oldPayroll = getExistingPayroll(nurse, oldLog);
         NursePayroll newPayroll = getExistingPayroll(nurse, newLog);
 
+        boolean oldRegularAmountManuallyAdjusted = oldPayroll.isRegularAmountManuallyAdjusted();
+        boolean oldOvertimeAmountManuallyAdjusted = oldPayroll.isOvertimeAmountManuallyAdjusted();
+        boolean newRegularAmountManuallyAdjusted = newPayroll.isRegularAmountManuallyAdjusted();
+        boolean newOvertimeAmountManuallyAdjusted = newPayroll.isOvertimeAmountManuallyAdjusted();
+
         validatePayrollCanBeModified(oldPayroll);
         validatePayrollCanBeModified(newPayroll);
 
         removeMinutes(oldPayroll, oldLog);
         removeAmounts(oldPayroll, oldLog);
-        updateDisplayedAmounts(oldPayroll);
+        updateDisplayedAmounts(oldPayroll, oldRegularAmountManuallyAdjusted, oldOvertimeAmountManuallyAdjusted);
 
         addMinutes(newPayroll, newLog);
         addAmounts(newPayroll, newLog);
-        updateDisplayedAmounts(newPayroll);
+        updateDisplayedAmounts(newPayroll, newRegularAmountManuallyAdjusted, newOvertimeAmountManuallyAdjusted);
 
         validatePayrollValues(oldPayroll);
         validatePayrollValues(newPayroll);
@@ -189,11 +207,11 @@ public class NursePayrollSynchronizer {
         }
     }
 
-    private void updateDisplayedAmounts(NursePayroll payroll) {
-        if (!payroll.isRegularAmountManuallyAdjusted()) {
+    private void updateDisplayedAmounts(NursePayroll payroll, boolean isRegularAmountManuallyAdjusted, boolean isOvertimeAmountManuallyAdjusted) {
+        if (!isRegularAmountManuallyAdjusted) {
             payroll.setRegularAmount(payroll.getCalculatedRegularAmount());
         }
-        if (!payroll.isOvertimeAmountManuallyAdjusted()) {
+        if (!isOvertimeAmountManuallyAdjusted) {
             payroll.setOvertimeAmount(payroll.getCalculatedOvertimeAmount());
         }
     }
@@ -208,6 +226,7 @@ public class NursePayrollSynchronizer {
                         RoundingMode.HALF_UP
                 );
     }
+
 
     private void validatePayrollCanBeModified(NursePayroll payroll) {
         if (payroll.getLocked()) {
@@ -227,4 +246,74 @@ public class NursePayrollSynchronizer {
             throw new IllegalStateException("Payroll values became negative: " + payroll.getId());
         }
     }
+
+    @Transactional
+    public void applyCurrentMonthCompensationTypeChange(Nurse nurse, CompensationType newCompensationType, YearMonth effectiveFrom) {
+
+        List<NurseWorkLog> regularWorkLogs =
+                nurseWorkLogRepository.findByNurseIdAndDateBetweenAndWorkType(
+                        nurse.getId(), effectiveFrom.atDay(1),
+                        effectiveFrom.atEndOfMonth(), NurseWorkType.REGULAR
+                        );
+
+        NursePayroll payroll = getPayroll(nurse.getId(), effectiveFrom);
+
+        validatePayrollCanBeModified(payroll);
+
+        if (newCompensationType == CompensationType.SALARY) {
+
+            setRegularWorkLogHourlyRates(regularWorkLogs, null);
+
+            BigDecimal salary = nurse.getBaseSalary();
+
+            payroll.setCalculatedRegularAmount(salary);
+            payroll.setRegularAmount(salary);
+        }
+        else if (newCompensationType == CompensationType.HOURLY) {
+
+            BigDecimal regularHourlyRate = nurse.getHourlyRate();
+
+            setRegularWorkLogHourlyRates(regularWorkLogs, regularHourlyRate);
+
+            BigDecimal calculatedRegularAmount = calculateHourlyRegularAmount(
+                            payroll.getRegularMinutesWorked(),
+                            regularHourlyRate
+                    );
+
+            payroll.setCalculatedRegularAmount(calculatedRegularAmount);
+            payroll.setRegularAmount(calculatedRegularAmount);
+        }
+
+        validatePayrollValues(payroll);
+
+        nurseWorkLogRepository.saveAll(regularWorkLogs);
+
+        payroll.setCompensationType(newCompensationType);
+        nursePayrollRepository.save(payroll);
+
+    }
+
+    private void setRegularWorkLogHourlyRates(List<NurseWorkLog> regularWorkLogs, BigDecimal regularHourlyRate) {
+        for (NurseWorkLog log : regularWorkLogs) {
+            log.setHourlyRate(regularHourlyRate);
+        }
+    }
+
+
+    private BigDecimal calculateHourlyRegularAmount(int regularMinutesWorked, BigDecimal hourlyRate) {
+
+        return BigDecimal.valueOf(regularMinutesWorked)
+                .multiply(hourlyRate)
+                .divide(
+                        BigDecimal.valueOf(60),
+                        2,
+                        RoundingMode.HALF_UP
+                );
+    }
+
+    private NursePayroll getPayroll(UUID nurseId, YearMonth yearMonth) {
+        return nursePayrollRepository.findByNurseIdAndYearAndMonth(nurseId, yearMonth.getYear(), yearMonth.getMonth())
+                .orElseThrow(() -> new EntityNotFoundByIdException(NursePayroll.class, nurseId));
+    }
+
 }
