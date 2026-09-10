@@ -95,9 +95,26 @@ public class WorkCalendarService {
                                 session.getEndTime()));
     }
 
-    public boolean hasOverlappingSession(UUID doctorId, LocalDate date, LocalTime startTime, LocalTime endTime, UUID ignoredModificationId) {
+    public boolean hasOverlappingSessionExceptModification(UUID doctorId, LocalDate date, LocalTime startTime, LocalTime endTime, UUID ignoredModificationId) {
         return getDoctorSessions(doctorId, date).stream()
                 .filter(session -> !ignoredModificationId.equals(session.getModificationId()))
+                .anyMatch(session ->
+                        ScheduleUtils.timesOverlap(
+                                startTime,
+                                endTime,
+                                session.getStartTime(),
+                                session.getEndTime()));
+    }
+
+    public boolean hasOverlappingSession(UUID doctorId, LocalDate date, LocalTime startTime,
+            LocalTime endTime, LocalDate ignoredSourceDate,
+            LocalTime ignoredSourceStartTime, LocalTime ignoredSourceEndTime) {
+
+        return getDoctorSessions(doctorId, date).stream()
+                .filter(session ->
+                        !session.getDate().equals(ignoredSourceDate)
+                                || !session.getStartTime().equals(ignoredSourceStartTime)
+                                || !session.getEndTime().equals(ignoredSourceEndTime))
                 .anyMatch(session ->
                         ScheduleUtils.timesOverlap(
                                 startTime,

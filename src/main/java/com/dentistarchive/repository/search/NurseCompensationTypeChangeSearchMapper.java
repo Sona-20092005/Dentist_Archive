@@ -21,6 +21,7 @@ import static com.querydsl.jpa.JPAExpressions.select;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class NurseCompensationTypeChangeSearchMapper extends SearchMapper<NurseCompensationTypeChangeFilter, NurseCompensationTypeChangeSort> {
 
+    // TODO: 9/10/2026 add yearMonth filtration
     @Override
     protected Predicate toPredicateExceptSubFilters(NurseCompensationTypeChangeFilter filter) {
         PredicateBuilder builder = PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
@@ -51,6 +52,7 @@ public class NurseCompensationTypeChangeSearchMapper extends SearchMapper<NurseC
     protected Sort.Order toOrder(NurseCompensationTypeChangeSort sortName, SortDirection direction) {
         return switch (sortName) {
             case YEARMONTH -> SortBuilder.buildOrder(nurseCompensationTypeChange.effectiveFrom, direction);
+            case CREATED_AT -> SortBuilder.buildOrder(nurseCompensationTypeChange.createdAt, direction);
             case UPDATED_AT -> SortBuilder.buildOrder(nurseCompensationTypeChange.updatedAt, direction);
         };
     }

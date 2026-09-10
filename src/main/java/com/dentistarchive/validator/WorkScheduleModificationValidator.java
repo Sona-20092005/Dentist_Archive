@@ -156,9 +156,22 @@ public class WorkScheduleModificationValidator {
         CustomUserDetails details = AuthHolder.getUserDetailsOrElseThrow();
 
         switch (modification.getModificationType()) {
-            case ADD, MODIFY -> {
+            case ADD -> {
                 if(workCalendarService.hasOverlappingSession(details.getUserId(), modification.getDate(),
                         modification.getStartTime(), modification.getEndTime())) {
+                    throw new WorkScheduleModificationTargetOverlapException();
+                }
+            }
+            case MODIFY -> {
+                if (workCalendarService.hasOverlappingSession(
+                        details.getUserId(),
+                        modification.getDate(),
+                        modification.getStartTime(),
+                        modification.getEndTime(),
+                        modification.getSourceDate(),
+                        modification.getSourceStartTime(),
+                        modification.getSourceEndTime())) {
+
                     throw new WorkScheduleModificationTargetOverlapException();
                 }
             }
@@ -170,7 +183,7 @@ public class WorkScheduleModificationValidator {
     private void validateUpdateTarget(WorkScheduleModification modification) {
         CustomUserDetails details = AuthHolder.getUserDetailsOrElseThrow();
 
-        if(workCalendarService.hasOverlappingSession(details.getUserId(), modification.getDate(),
+        if(workCalendarService.hasOverlappingSessionExceptModification(details.getUserId(), modification.getDate(),
                         modification.getStartTime(), modification.getEndTime(), modification.getId())) {
             throw new WorkScheduleModificationTargetOverlapException();
         }

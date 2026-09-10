@@ -23,6 +23,7 @@ public class TechnicianMonthlyReportSearchMapper extends SearchMapper<Technician
     public TechnicianMonthlyReportSearchMapper() {
     }
 
+    // TODO: 9/10/2026 add yearMonth filtration 
     @Override
     protected Predicate toPredicateExceptSubFilters(TechnicianMonthlyReportFilter filter) {
         PredicateBuilder builder = PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)

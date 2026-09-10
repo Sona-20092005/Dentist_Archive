@@ -31,3 +31,5 @@ databaseChangeLog:
       file: db/changelog/changes/2026-09_04_add_technician_work_log.sql
   - include:
       file: db/changelog/changes/2026-09_08_add_technician_monthly_report_update_technician_and_technician_work_log.sql
+  - include:
+      file: db/changelog/changes/2026-09_10_add_clinic_rent_agreement.sql
