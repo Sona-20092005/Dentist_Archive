@@ -1,4 +1,4 @@
-package com.dentistarchive.entity.patient;
+package com.dentistarchive.entity.technician;
 
 import com.dentistarchive.entity.ArchivableBaseEntity;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
@@ -21,38 +21,47 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CompletedTreatment extends ArchivableBaseEntity {
+public class TechnicianWorkLog extends ArchivableBaseEntity {
+
+    @NonNull
+    @Column(name = "technician_id", nullable = false)
+    UUID technicianId;
 
     @NotNull
-    @Column(nullable = false)
-    LocalDate date;
+    @Column(name = "requested_date", nullable = false)
+    LocalDate requestedDate;
+
+    @Column(name = "completed_date")
+    LocalDate completedDate;
 
     @Column(name = "unit_price")
     BigDecimal unitPrice;
+
+    @Column(name = "quantity")
+    Integer quantity;
 
     @Type(JsonType.class)
     @Column(name = "tooth_numbers", columnDefinition = "jsonb")
     List<Integer> toothNumbers;
 
-    String notes;
-
     @NotNull
-    @Column(name = "procedure_id", nullable = false)
-    UUID procedureId;
+    @Column(name = "technician_procedure_id", nullable = false)
+    UUID technicianProcedureId;
 
-    @Column(name = "appointment_id")
-    UUID appointmentId;
-
-    @Column(name = "treatment_plan_item_id")
-    UUID treatmentPlanItemId;
-
-    @NotNull
+    @NonNull
     @Column(name = "patient_id", nullable = false)
     UUID patientId;
 
-    // TODO: 6/1/2026 decide if we want to also have many to many with payment
+    @NonNull
+    @Column(name = "is_paid", nullable = false)
+    Boolean isPaid;
 
-    // TODO: 9/4/2026 add a field for the quantity
+    @Column(name = "paymentDate")
+    LocalDate paymentDate;
+
+    String notes;
+
 }
+
 
 

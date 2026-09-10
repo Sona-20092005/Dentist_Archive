@@ -2,7 +2,6 @@ package com.dentistarchive.service;
 
 import com.dentistarchive.dto.create.ProcedureCreateDto;
 import com.dentistarchive.dto.update.ProcedureUpdateDto;
-import com.dentistarchive.entity.patient.Patient;
 import com.dentistarchive.entity.pricelist.Procedure;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.repository.ProcedureRepository;
@@ -54,7 +53,7 @@ public class ProcedureService extends BaseReadOnlyService<Procedure, ProcedureFi
     @Transactional(propagation = Propagation.NEVER)
     public Procedure update(UUID id, @Valid ProcedureUpdateDto updateDto) {
         Procedure procedure = procedureRepository.getByIdAndNotArchived(id)
-                .orElseThrow(() -> new EntityNotFoundByIdException(Patient.class, id));
+                .orElseThrow(() -> new EntityNotFoundByIdException(Procedure.class, id));
         accessValidator.validateAccess(procedure);
         procedureProvider.update(procedure, updateDto);
         return procedureRepository.save(procedure);

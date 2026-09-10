@@ -71,5 +71,6 @@ public class Nurse extends ArchivableBaseEntity {
     UUID clinicId;
 }
 
+// TODO: 9/4/2026 combine year and month into a single field
 
 

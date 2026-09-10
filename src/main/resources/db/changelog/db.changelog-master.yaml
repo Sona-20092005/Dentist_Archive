@@ -25,3 +25,9 @@ databaseChangeLog:
       file: db/changelog/changes/2026-07-31_add_nurse_work_log.sql
   - include:
       file: db/changelog/changes/2026-08_06_add_nurse_payroll_and_compensation_change.sql
+  - include:
+      file: db/changelog/changes/2026-09_04_add_technician_and_technician_procedure.sql
+  - include:
+      file: db/changelog/changes/2026-09_04_add_technician_work_log.sql
+  - include:
+      file: db/changelog/changes/2026-09_08_add_technician_monthly_report_update_technician_and_technician_work_log.sql

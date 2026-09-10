@@ -59,6 +59,7 @@ public class NursePayrollGenerator {
     }
 
     // to be run when a new nurse is created or when a nurse's payroll start date is updated
+    // TODO: add the start date change
     @Transactional
     public void generateInitialPayrolls(Nurse nurse) {
 
