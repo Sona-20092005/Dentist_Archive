@@ -20,9 +20,6 @@ import static com.querydsl.jpa.JPAExpressions.select;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TechnicianMonthlyReportSearchMapper extends SearchMapper<TechnicianMonthlyReportFilter, TechnicianMonthlyReportSort> {
 
-    public TechnicianMonthlyReportSearchMapper() {
-    }
-
     // TODO: 9/10/2026 add yearMonth filtration 
     @Override
     protected Predicate toPredicateExceptSubFilters(TechnicianMonthlyReportFilter filter) {

@@ -9,6 +9,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,15 +34,27 @@ public class ClinicRentAgreementRepository extends BaseReadOnlyRepository<Clinic
         return jpaRepository.findByIdAndArchivedFalse((id));
     }
 
-//    @Transactional(readOnly = true)
-//    public boolean existsByNurseIdAndEffectiveFrom(UUID nurseId, YearMonth effectiveFrom) {
-//        return jpaRepository.existsByNurseIdAndEffectiveFrom(nurseId, effectiveFrom);
-//    }
-//
+    @Transactional(readOnly = true)
+    public Optional<UUID> getClinicIdByClinicRentAgreementId(UUID rentAgreementId) {
+        return jpaRepository.findClinicIdByClinicRentAgreementId(rentAgreementId);
+    }
+
+
+    @Transactional(readOnly = true)
+    public Optional<ClinicRentAgreement> findEffectiveAgreement(UUID nurseId, YearMonth month) {
+        return jpaRepository.findEffectiveAgreement(nurseId, month);
+    }
+
 //    @Transactional(readOnly = true)
 //    public List<ClinicRentAgreement> findByEffectiveFrom(YearMonth effectiveFrom) {
 //        return jpaRepository.findByEffectiveFrom(effectiveFrom);
 //    }
+
+
+    @Transactional(readOnly = true)
+    public List<ClinicRentAgreement> findAllForReportGeneration(LocalDate reportMonth) {
+        return jpaRepository.findAllForReportGeneration(reportMonth);
+    }
 
     @Transactional
     public ClinicRentAgreement save(ClinicRentAgreement change) {

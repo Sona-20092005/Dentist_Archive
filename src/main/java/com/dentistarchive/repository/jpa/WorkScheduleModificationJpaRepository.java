@@ -28,4 +28,13 @@ public interface WorkScheduleModificationJpaRepository
     order by m.createdAt asc
     """)
     List<WorkScheduleModification> findEffectiveModifications(@Param("scheduleId") UUID scheduleId, @Param("date") LocalDate date);
+
+    @Query(nativeQuery = true,
+            value = """
+            select work_schedule_id
+            from work_schedule_modification
+            where id = :modificationId
+            """
+    )
+    Optional<UUID> findScheduleIdByModificationId(@Param("modificationId") UUID modificationId);
 }

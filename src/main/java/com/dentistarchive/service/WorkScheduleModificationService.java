@@ -29,13 +29,15 @@ public class WorkScheduleModificationService extends BaseReadOnlyService<WorkSch
     WorkScheduleModificationProvider workScheduleModificationProvider;
     WorkScheduleModificationValidator workScheduleModificationValidator;
     WorkScheduleService workScheduleService;
+    RentOvertimeSynchronizer rentOvertimeSynchronizer;
 
     public WorkScheduleModificationService(
             WorkScheduleModificationRepository workScheduleModificationRepository,
             WorkScheduleModificationAccessValidator accessValidator,
             WorkScheduleModificationProvider workScheduleModificationProvider,
             WorkScheduleService workScheduleService,
-            WorkScheduleModificationValidator workScheduleModificationValidator
+            WorkScheduleModificationValidator workScheduleModificationValidator,
+            RentOvertimeSynchronizer rentOvertimeSynchronizer
     ) {
         super(
                 WorkScheduleModification.class,
@@ -48,7 +50,9 @@ public class WorkScheduleModificationService extends BaseReadOnlyService<WorkSch
         this.workScheduleModificationProvider = workScheduleModificationProvider;
         this.workScheduleService = workScheduleService;
         this.workScheduleModificationValidator = workScheduleModificationValidator;
+        this.rentOvertimeSynchronizer = rentOvertimeSynchronizer;
     }
+
     // TODO: 7/3/2026 finish the service and validation as soon as the calendar is done
 
     @Transactional
@@ -57,7 +61,12 @@ public class WorkScheduleModificationService extends BaseReadOnlyService<WorkSch
 
         var modification = workScheduleModificationProvider.create(createDto);
         workScheduleModificationValidator.validate(modification, workSchedule);
-        return save(modification);
+
+        modification = save(modification);
+
+        rentOvertimeSynchronizer.applyModificationCreate(modification);
+
+        return modification;
     }
 
     @Transactional(propagation = Propagation.NEVER)
@@ -74,10 +83,15 @@ public class WorkScheduleModificationService extends BaseReadOnlyService<WorkSch
         return workScheduleModificationRepository.save(modification);
     }
 
-
     @Override
     public WorkScheduleModification save(WorkScheduleModification entity) {
         return workScheduleModificationRepository.save(entity);
+    }
+
+    @Override
+    @Transactional
+    public void archiveById(UUID id) {
+        ArchivableService.super.archiveById(id);
     }
 
     @Override
@@ -93,10 +107,14 @@ public class WorkScheduleModificationService extends BaseReadOnlyService<WorkSch
     }
 
     @Override
-    public void afterArchive(WorkScheduleModification entity) {}
+    public void afterArchive(WorkScheduleModification entity) {
+        rentOvertimeSynchronizer.applyModificationDelete(entity);
+    }
 
     @Override
-    public void afterUnarchive(WorkScheduleModification entity) {}
+    public void afterUnarchive(WorkScheduleModification entity) {
+        rentOvertimeSynchronizer.applyModificationCreate(entity);
+    }
 
     public WorkScheduleModification getAccessibleWorkSchedule(UUID id) {
         if (id == null) {
@@ -115,7 +133,5 @@ public class WorkScheduleModificationService extends BaseReadOnlyService<WorkSch
 
 
     // TODO: 7/3/2026 think also about the session type in modification
-
-
 
 }

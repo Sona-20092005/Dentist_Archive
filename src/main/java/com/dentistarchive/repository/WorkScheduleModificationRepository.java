@@ -38,6 +38,11 @@ public class WorkScheduleModificationRepository extends BaseReadOnlyRepository<W
         return jpaRepository.findEffectiveModifications(scheduleId, date);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<UUID> getScheduleIdByModificationId(UUID modificationId) {
+        return jpaRepository.findScheduleIdByModificationId(modificationId);
+    }
+
     @Transactional
     public WorkScheduleModification save(WorkScheduleModification modification) {
         return jpaRepository.save(modification);

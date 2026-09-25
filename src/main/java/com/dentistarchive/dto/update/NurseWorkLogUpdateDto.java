@@ -1,7 +1,6 @@
 package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.NurseWorkLogDto;
-import com.dentistarchive.dto.create.BaseCreateDto;
 import com.dentistarchive.enums.NurseWorkType;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -21,7 +20,7 @@ import java.time.LocalTime;
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
-public class NurseWorkLogUpdateDto extends BaseCreateDto<NurseWorkLogDto> {
+public class NurseWorkLogUpdateDto extends BaseUpdateDto<NurseWorkLogDto> {
 
     NurseWorkType workType;
 

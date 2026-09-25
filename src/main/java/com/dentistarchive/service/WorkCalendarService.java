@@ -6,6 +6,7 @@ import com.dentistarchive.entity.schedule.WorkScheduleModification;
 import com.dentistarchive.entity.schedule.WorkScheduleRule;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.mapper.WorkSessionMapper;
+import com.dentistarchive.repository.ClinicRepository;
 import com.dentistarchive.repository.WorkScheduleModificationRepository;
 import com.dentistarchive.repository.WorkScheduleRepository;
 import com.dentistarchive.repository.WorkScheduleRuleRepository;
@@ -32,6 +33,7 @@ public class WorkCalendarService {
     WorkScheduleRuleRepository workScheduleRuleRepository;
     WorkScheduleModificationRepository workScheduleModificationRepository;
     WorkSessionMapper workSessionMapper;
+    private final ClinicRepository clinicRepository;
 
     public List<WorkSessionDto> getScheduleSessions(UUID scheduleId, LocalDate date) {
         return getScheduleSessions(scheduleId, date, date);
@@ -67,6 +69,18 @@ public class WorkCalendarService {
         List<WorkSessionDto> sessions = new ArrayList<>();
 
         List<WorkSchedule> schedules = workScheduleRepository.findEffectiveSchedules(doctorId, from, until);
+
+        for (WorkSchedule schedule : schedules) {
+            sessions.addAll(getScheduleSessions(schedule, from, until));
+        }
+
+        return sessions;
+    }
+
+    public List<WorkSessionDto> getClinicSessions(UUID clinicId, LocalDate from, LocalDate until) {
+        List<WorkSessionDto> sessions = new ArrayList<>();
+
+        List<WorkSchedule> schedules = workScheduleRepository.findEffectiveSchedulesByClinic(clinicId, from, until);
 
         for (WorkSchedule schedule : schedules) {
             sessions.addAll(getScheduleSessions(schedule, from, until));

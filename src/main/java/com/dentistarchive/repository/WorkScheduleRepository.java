@@ -68,5 +68,12 @@ public class WorkScheduleRepository extends BaseReadOnlyRepository<WorkSchedule,
         return jpaRepository.findByDoctorIdAndEffectivePeriod(doctorId, from, until);
     }
 
+    @Transactional(readOnly = true)
+    public List<WorkSchedule> findEffectiveSchedulesByClinic(UUID clinicId, LocalDate from, LocalDate until) {
+        return jpaRepository.findByClinicIdAndEffectivePeriod(clinicId, from, until);
+    }
+
+
+
 
 }

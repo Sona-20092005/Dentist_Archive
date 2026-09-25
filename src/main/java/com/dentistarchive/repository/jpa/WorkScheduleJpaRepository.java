@@ -32,6 +32,18 @@ public interface WorkScheduleJpaRepository
     """)
     List<WorkSchedule> findByDoctorIdAndEffectivePeriod(UUID doctorId, LocalDate from, LocalDate until);
 
+    @Query("""
+    select ws
+    from WorkSchedule ws
+    where ws.clinicId = :clinicId
+      and ws.effectiveFrom <= :until
+      and (
+            ws.effectiveUntil is null
+            or ws.effectiveUntil >= :from
+      )
+    """)
+    List<WorkSchedule> findByClinicIdAndEffectivePeriod(UUID clinicId, LocalDate from, LocalDate until);
+
     @Query(nativeQuery = true,
             value = """
             select doctor_id
