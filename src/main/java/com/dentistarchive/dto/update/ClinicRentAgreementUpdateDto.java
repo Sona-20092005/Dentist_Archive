@@ -23,6 +23,7 @@ import java.util.UUID;
 @FieldNameConstants
 public class ClinicRentAgreementUpdateDto extends BaseCreateDto<NurseDto> {
 
+    // TODO: 10/2/2026 don't change the clinicId, remove
     UUID clinicId;
 
     YearMonth effectiveFrom;

@@ -47,44 +47,12 @@ public class ClinicRentAgreementService extends BaseReadOnlyService<ClinicRentAg
     public ClinicRentAgreement create(ClinicRentAgreementCreateDto createDto) {
         ClinicRentAgreement clinicRentAgreement = clinicRentAgreementProvider.create(createDto);
         return clinicRentAgreementRepository.save(clinicRentAgreement);
-
-//        nurseCompensationTypeChangeValidator.validateCreate(createDto);
-//        if(nurseCompensationTypeChangeValidator.checkCurrentMonthCompensationTypeChange(createDto)) {
-//            if(!nurse.getCompensationType().equals(createDto.getCompensationType())) {
-//                nursePayrollSynchronizer.applyCurrentMonthCompensationTypeChange(nurse, createDto.getCompensationType(), createDto.getEffectiveFrom());
-//
-//                nurse.setCompensationType(createDto.getCompensationType());
-//                nurseRepository.save(nurse);
-//            }
-//
-//            return nurseCompensationTypeChangeProvider.create(createDto);
-//        }
-//        else {
-//            var note = nurseCompensationTypeChangeProvider.create(createDto);
-//            return nurseCompensationTypeChangeRepository.save(note);
-//        }
     }
 
     @Transactional(propagation = Propagation.NEVER)
     public ClinicRentAgreement update(UUID id, @Valid ClinicRentAgreementUpdateDto updateDto) {
         ClinicRentAgreement clinicRentAgreement = getByIdOrElseThrow(id);
         accessValidator.validateAccess(clinicRentAgreement);
-
-//        nurseCompensationTypeChangeValidator.validateUpdate(change, updateDto);
-//
-//        if (updateDto.getEffectiveFrom().equals(YearMonth.now())) {
-//
-//            Nurse nurse = nurseService.getAccessibleNurse(change.getNurseId());
-//
-//            nursePayrollSynchronizer.applyCurrentMonthCompensationTypeChange(nurse, change.getCompensationType(), updateDto.getEffectiveFrom());
-//
-//            nurse.setCompensationType(change.getCompensationType());
-//            nurseRepository.save(nurse);
-//
-//            nurseCompensationTypeChangeRepository.delete(change);
-//
-//            return null;
-//        }
 
         clinicRentAgreementProvider.update(clinicRentAgreement, updateDto);
 

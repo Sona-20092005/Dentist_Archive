@@ -28,7 +28,6 @@ public class WorkScheduleModificationValidator {
 
     WorkCalendarService  workCalendarService;
 
-
     public void validate(WorkScheduleModification modification, WorkSchedule workSchedule) {
         validateInputs(modification);
 
