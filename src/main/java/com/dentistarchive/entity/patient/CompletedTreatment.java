@@ -30,6 +30,10 @@ public class CompletedTreatment extends ArchivableBaseEntity {
     @Column(name = "unit_price")
     BigDecimal unitPrice;
 
+    @NonNull
+    @Column(nullable = false)
+    Integer quantity;
+
     @Type(JsonType.class)
     @Column(name = "tooth_numbers", columnDefinition = "jsonb")
     List<Integer> toothNumbers;
@@ -51,8 +55,6 @@ public class CompletedTreatment extends ArchivableBaseEntity {
     UUID patientId;
 
     // TODO: 6/1/2026 decide if we want to also have many to many with payment
-
-    // TODO: 9/4/2026 add a field for the quantity
 }
 
 

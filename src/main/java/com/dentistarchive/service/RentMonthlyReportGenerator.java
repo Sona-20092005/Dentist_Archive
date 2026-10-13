@@ -115,7 +115,7 @@ public class RentMonthlyReportGenerator {
         setOvertimeUsedMinutesAndAmounts(report, rentAgreement, yearMonth);;
     }
 
-    private int setOvertimeUsedMinutesAndAmounts(RentMonthlyReport report, ClinicRentAgreement rentAgreement, YearMonth yearMonth) {
+    private void setOvertimeUsedMinutesAndAmounts(RentMonthlyReport report, ClinicRentAgreement rentAgreement, YearMonth yearMonth) {
         int overtimeMinutes = 0;
         BigDecimal overtimeAmount = BigDecimal.ZERO;
 
@@ -137,7 +137,6 @@ public class RentMonthlyReportGenerator {
         }
         report.setOvertimeMinutesUsed(overtimeMinutes);
         report.setOvertimeAmount(overtimeAmount);
-        return overtimeMinutes;
     }
 
     private int calculateRegularUsedMinutes(RentMonthlyReport report, ClinicRentAgreement rentAgreement, YearMonth yearMonth) {

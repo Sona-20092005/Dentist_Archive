@@ -3,6 +3,7 @@ package com.dentistarchive.service;
 import com.dentistarchive.dto.create.WorkScheduleModificationCreateDto;
 import com.dentistarchive.dto.update.WorkScheduleModificationUpdateDto;
 import com.dentistarchive.entity.schedule.WorkScheduleModification;
+import com.dentistarchive.enums.WorkSessionType;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.repository.WorkScheduleModificationRepository;
 import com.dentistarchive.search.filter.WorkScheduleModificationFilter;
@@ -74,12 +75,23 @@ public class WorkScheduleModificationService extends BaseReadOnlyService<WorkSch
         WorkScheduleModification modification = workScheduleModificationRepository.getByIdAndNotArchived(id)
                 .orElseThrow(() -> new EntityNotFoundByIdException(WorkScheduleModification.class, id));
         accessValidator.validateAccess(modification);
+
+        WorkSessionType orginalType = modification.getWorkSessionType();
+
         workScheduleModificationValidator.validateUpdatable(modification);
         var workSchedule = workScheduleService.getAccessibleWorkSchedule(updateDto.getScheduleId());
 
         UUID previousScheduleId = modification.getScheduleId();
         workScheduleModificationProvider.update(modification, updateDto);
         workScheduleModificationValidator.validateUpdate(modification, previousScheduleId, workSchedule);
+
+        if(orginalType == WorkSessionType.OVERTIME && modification.getWorkSessionType() == WorkSessionType.REGULAR) {
+            rentOvertimeSynchronizer.applyModificationDelete(modification);
+        }
+        else if(orginalType == WorkSessionType.REGULAR && modification.getWorkSessionType() == WorkSessionType.OVERTIME) {
+            rentOvertimeSynchronizer.applyModificationCreate(modification);
+        }
+
         return workScheduleModificationRepository.save(modification);
     }
 

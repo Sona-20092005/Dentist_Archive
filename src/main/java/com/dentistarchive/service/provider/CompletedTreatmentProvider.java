@@ -13,6 +13,7 @@ public class CompletedTreatmentProvider {
         CompletedTreatment treatment = new CompletedTreatment();
         treatment.setDate(createDto.getDate());
         treatment.setUnitPrice(createDto.getUnitPrice());
+        treatment.setQuantity(createDto.getQuantity());
         treatment.setNotes(createDto.getNotes());
         treatment.setToothNumbers(createDto.getToothNumbers());
         treatment.setProcedureId(createDto.getProcedureId());
@@ -28,6 +29,7 @@ public class CompletedTreatmentProvider {
 
         treatment.setDate(updateDto.getDate());
         treatment.setUnitPrice(updateDto.getUnitPrice());
+        treatment.setQuantity(updateDto.getQuantity());
         treatment.setNotes(updateDto.getNotes());
         treatment.setToothNumbers(updateDto.getToothNumbers());
         treatment.setProcedureId(updateDto.getProcedureId());

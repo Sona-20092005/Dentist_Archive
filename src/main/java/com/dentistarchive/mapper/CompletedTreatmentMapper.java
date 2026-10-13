@@ -26,6 +26,7 @@ public class CompletedTreatmentMapper implements EntityMapper<CompletedTreatment
         dto.setArchived(treatment.isArchived());
         dto.setDate(treatment.getDate());
         dto.setUnitPrice(treatment.getUnitPrice());
+        dto.setQuantity(treatment.getQuantity());
         dto.setNotes(treatment.getNotes());
         dto.setToothNumbers(treatment.getToothNumbers());
         dto.setProcedureId(treatment.getProcedureId());

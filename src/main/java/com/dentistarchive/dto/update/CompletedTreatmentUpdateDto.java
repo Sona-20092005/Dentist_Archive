@@ -26,6 +26,8 @@ public class CompletedTreatmentUpdateDto extends BaseUpdateDto<CompletedTreatmen
 
     BigDecimal unitPrice;
 
+    Integer quantity;
+
     List<Integer> toothNumbers;
 
     String notes;

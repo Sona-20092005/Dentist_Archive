@@ -252,7 +252,7 @@ public class RentMonthlyReportSynchronizer {
                 rentMonthlyReportRepository.save(oldReport);
                 rentMonthlyReportRepository.save(newReport);
             }
-            default -> throw new IllegalStateException("Cancel Modification was updates by mistake");
+            default -> throw new IllegalStateException("Cancel Modification was updated by mistake");
         }
     }
 
@@ -296,7 +296,9 @@ public class RentMonthlyReportSynchronizer {
         rentMonthlyReportRepository.save(report);
     }
 
-    // TODO: 10/2/2026 apply updates to clinicRentAgreement syncronizer method 
+    // TODO: 10/2/2026 apply updates to clinicRentAgreement syncronizer method
+
+
     
     private RentMonthlyReport getOrCreateReport(ClinicRentAgreement rentAgreement, WorkScheduleModification modification, boolean useSource) {
         YearMonth month;
