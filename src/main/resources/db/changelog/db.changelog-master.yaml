@@ -37,3 +37,7 @@ databaseChangeLog:
       file: db/changelog/changes/2026-09_15_add_rent_overtime.sql
   - include:
       file: db/changelog/changes/2026-09_25_add_rent_monthly_report.sql
+  - include:
+      file: db/changelog/changes/2026-10_06_add_material_category_and_material_and_supplier.sql
+  - include:
+      file: db/changelog/changes/2026-10_13_add_material_supplier_and_material_purchase.sql

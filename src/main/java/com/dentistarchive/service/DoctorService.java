@@ -27,14 +27,20 @@ public class DoctorService extends BaseReadOnlyService<Doctor, DoctorFilter>
     DoctorRepository doctorRepository;
     DoctorProvider doctorProvider;
     DoctorAccessValidator doctorAccessValidator;
+    MaterialCategoryService materialCategoryService;
 
     public DoctorService(DoctorRepository doctorRepository,
                          DoctorAccessValidator doctorAccessValidator,
-                         DoctorProvider doctorProvider) {
-        super(Doctor.class, DoctorFilter.class, doctorRepository, doctorAccessValidator);
+                         DoctorProvider doctorProvider,
+                         MaterialCategoryService materialCategoryService) {
+        super(Doctor.class,
+                DoctorFilter.class,
+                doctorRepository,
+                doctorAccessValidator);
         this.doctorRepository = doctorRepository;
         this.doctorProvider = doctorProvider;
         this.doctorAccessValidator = doctorAccessValidator;
+        this.materialCategoryService = materialCategoryService;
     }
 
 
@@ -42,6 +48,7 @@ public class DoctorService extends BaseReadOnlyService<Doctor, DoctorFilter>
     public Doctor create(@NotNull @Valid DoctorCreateDto createDto) {
         var doctor = doctorProvider.create(createDto);
         save(doctor);
+        materialCategoryService.createDefaultMaterialCategory();
         return doctor;
     }
 
