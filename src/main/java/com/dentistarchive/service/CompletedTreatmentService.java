@@ -87,4 +87,20 @@ public class CompletedTreatmentService extends BaseReadOnlyService<CompletedTrea
     @Override
     public void afterUnarchive(CompletedTreatment entity) {}
 
+    public CompletedTreatment getAccessibleCompletedTreatment(UUID id) {
+        if (id == null) {
+            return null;
+        }
+
+        CompletedTreatment treatment = treatmentRepository
+                .getByIdAndNotArchived(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundByIdException(CompletedTreatment.class, id));
+
+        accessValidator.validateAccess(treatment);
+
+        return treatment;
+    }
+
+
 }
