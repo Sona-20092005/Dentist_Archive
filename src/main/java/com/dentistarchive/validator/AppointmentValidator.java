@@ -2,6 +2,7 @@ package com.dentistarchive.validator;
 
 import com.dentistarchive.entity.schedule.Appointment;
 import com.dentistarchive.entity.schedule.WorkSchedule;
+import com.dentistarchive.enums.AppointmentStatus;
 import com.dentistarchive.repository.AppointmentRepository;
 import com.dentistarchive.service.WorkCalendarService;
 import com.dentistarchive.utils.ScheduleUtils;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.dentistarchive.utils.ScheduleUtils.isDateWithinPeriod;
@@ -26,6 +29,8 @@ public class AppointmentValidator {
     public void validate(Appointment appointment, WorkSchedule workSchedule) {
         validateTimeRanges(appointment);
         validateDates(appointment, workSchedule);
+        validateDateConstraint(appointment);
+        validateNotCompletedInFuture(appointment);
 
         validateAvailability(appointment);
         validateNoOverlap(appointment, workSchedule);
@@ -34,6 +39,8 @@ public class AppointmentValidator {
     public void validateUpdate(Appointment appointment, WorkSchedule workSchedule) {
         validateTimeRanges(appointment);
         validateDates(appointment, workSchedule);
+        validateDateConstraint(appointment);
+        validateNotCompletedInFuture(appointment);
 
         validateAvailability(appointment);
         validateNoOverlapUpdate(appointment, workSchedule);
@@ -53,6 +60,15 @@ public class AppointmentValidator {
     private void validateDates(Appointment appointment, WorkSchedule workSchedule) {
         if (!isDateWithinPeriod(appointment.getDate(), workSchedule.getEffectiveFrom(), workSchedule.getEffectiveUntil())) {
             throw new IllegalStateException("Target date is not within a valid period");
+        }
+    }
+
+    private void validateDateConstraint(Appointment appointment) {
+        LocalDate today = LocalDate.now();
+        LocalDate maxDate = today.plusMonths(2);
+
+        if (appointment.getDate().isAfter(maxDate)) {
+            throw new IllegalStateException("Date can't be after the two months window");
         }
     }
 
@@ -80,6 +96,21 @@ public class AppointmentValidator {
             if (ScheduleUtils.timesOverlap(existing.getStartTime(), existing.getEndTime(), appointment.getStartTime(), appointment.getEndTime())) {
                 throw new IllegalStateException("Appointment overlaps another appointment");
             }
+        }
+    }
+
+    public void validateNotCompletedInFuture(Appointment appointment) {
+        if (appointment.getAppointmentStatus() != AppointmentStatus.COMPLETED) {
+            return;
+        }
+
+        LocalDate today = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        if (appointment.getDate().isAfter(today)
+                || (appointment.getDate().isEqual(today)
+                && appointment.getStartTime().isAfter(currentTime))) {
+            throw new IllegalStateException("Future appointments can't be marked completed");
         }
     }
 

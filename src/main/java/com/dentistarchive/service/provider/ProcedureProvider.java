@@ -2,7 +2,7 @@ package com.dentistarchive.service.provider;
 
 import com.dentistarchive.dto.create.ProcedureCreateDto;
 import com.dentistarchive.dto.update.ProcedureUpdateDto;
-import com.dentistarchive.entity.pricelist.Procedure;
+import com.dentistarchive.entity.Procedure;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

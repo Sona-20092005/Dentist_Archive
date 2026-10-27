@@ -2,6 +2,7 @@ package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.WorkScheduleDto;
 import com.dentistarchive.dto.create.BaseCreateDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,9 +26,11 @@ public class WorkScheduleUpdateDto extends BaseCreateDto<WorkScheduleDto> {
 
     String notes;
 
+    @NotNull
     LocalDate effectiveFrom;
 
     LocalDate effectiveUntil;
 
+    @NotNull
     UUID clinicId;
 }

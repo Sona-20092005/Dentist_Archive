@@ -1,5 +1,6 @@
 package com.dentistarchive.dto;
 
+import com.dentistarchive.enums.PaymentMethod;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +26,10 @@ public class ClinicDto extends ArchivingBaseDto {
     List<String> emails;
 
     String address;
+
+    BigDecimal commissionPercent;
+
+    List<PaymentMethod> commissionPaymentMethods;
 
     String notes;
 

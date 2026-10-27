@@ -24,6 +24,10 @@ public interface PaymentAllocationJpaRepository
             PaymentAllocationArchiveReason archiveReason
     );
 
+    boolean existsByTreatmentPlanIdAndArchivedFalse(UUID treatmentPlanId);
+
+    boolean existsByCompletedTreatmentIdAndArchivedFalse(UUID completedTreatmentId);
+
     @Query("""
         select coalesce(sum(pa.amount), 0)
         from PaymentAllocation pa

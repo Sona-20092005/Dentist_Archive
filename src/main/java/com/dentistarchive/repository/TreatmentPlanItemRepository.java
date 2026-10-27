@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +30,10 @@ public class TreatmentPlanItemRepository extends BaseReadOnlyRepository<Treatmen
     @Transactional(readOnly = true)
     public Optional<TreatmentPlanItem> getByIdAndNotArchived(UUID id) {
         return jpaRepository.findByIdAndArchivedFalse((id));
+    }
+
+    public List<TreatmentPlanItem> findAllByTreatmentPlanIdAndArchivedFalse(UUID treatmentPlanId) {
+        return jpaRepository.findAllByTreatmentPlanIdAndArchivedFalse(treatmentPlanId);
     }
 
     @Transactional

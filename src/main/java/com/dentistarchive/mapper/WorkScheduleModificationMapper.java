@@ -33,6 +33,7 @@ public class WorkScheduleModificationMapper implements EntityMapper<WorkSchedule
         dto.setSourceStartTime(modification.getSourceStartTime());
         dto.setSourceEndTime(modification.getSourceEndTime());
         dto.setScheduleId(modification.getScheduleId());
+        dto.setArchiveReason(modification.getArchiveReason());
 
         return dto;
     }

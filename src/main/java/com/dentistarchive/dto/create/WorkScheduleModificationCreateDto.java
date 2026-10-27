@@ -3,6 +3,7 @@ package com.dentistarchive.dto.create;
 import com.dentistarchive.dto.WorkScheduleModificationDto;
 import com.dentistarchive.enums.ModificationType;
 import com.dentistarchive.enums.WorkSessionType;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,8 +30,10 @@ public class WorkScheduleModificationCreateDto extends BaseCreateDto<WorkSchedul
 
     LocalTime endTime;
 
+    @NotNull
     ModificationType modificationType;
 
+    @NotNull
     WorkSessionType workSessionType;
 
     LocalDate sourceDate;
@@ -39,5 +42,6 @@ public class WorkScheduleModificationCreateDto extends BaseCreateDto<WorkSchedul
 
     LocalTime sourceEndTime;
 
+    @NotNull
     UUID scheduleId;
 }

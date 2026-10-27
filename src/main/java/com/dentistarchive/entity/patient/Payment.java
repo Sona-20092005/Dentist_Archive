@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -28,6 +30,7 @@ public class Payment extends ArchivableBaseEntity {
     LocalDate date;
 
     @NotNull
+    @Positive
     @Column(nullable = false)
     BigDecimal amount;
 
@@ -37,6 +40,7 @@ public class Payment extends ArchivableBaseEntity {
     PaymentMethod paymentMethod;
 
     @NotNull
+    @PositiveOrZero
     @Builder.Default
     @Column(name = "commission_amount", nullable = false)
     BigDecimal commissionAmount = BigDecimal.ZERO;

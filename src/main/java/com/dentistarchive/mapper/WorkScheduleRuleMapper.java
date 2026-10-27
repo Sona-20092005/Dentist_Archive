@@ -29,6 +29,7 @@ public class WorkScheduleRuleMapper implements EntityMapper<WorkScheduleRule, Wo
         dto.setStartTime(rule.getStartTime());
         dto.setEndTime(rule.getEndTime());
         dto.setScheduleId(rule.getScheduleId());
+        dto.setArchiveReason(rule.getArchiveReason());
 
         return dto;
     }

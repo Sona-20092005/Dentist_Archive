@@ -47,3 +47,9 @@ databaseChangeLog:
       file: db/changelog/changes/2026-10_13_add_payment.sql
   - include:
       file: db/changelog/changes/2026-10_15_payment_allocation.sql
+  - include:
+      file: db/changelog/changes/2026-10_22_update_treatment_plan_treatment_plan_item.sql
+  - include:
+      file: db/changelog/changes/2026-10_22_update_clinic.sql
+  - include:
+      file: db/changelog/changes/2026-10_27_work_schedule_modification_and_rule.sql

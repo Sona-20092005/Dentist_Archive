@@ -57,7 +57,7 @@ public class WorkScheduleModificationService extends BaseReadOnlyService<WorkSch
     // TODO: 7/3/2026 finish the service and validation as soon as the calendar is done
 
     @Transactional
-    public WorkScheduleModification create(WorkScheduleModificationCreateDto createDto) {
+    public WorkScheduleModification create(@Valid WorkScheduleModificationCreateDto createDto) {
         var workSchedule = workScheduleService.getAccessibleWorkSchedule(createDto.getScheduleId());
 
         var modification = workScheduleModificationProvider.create(createDto);

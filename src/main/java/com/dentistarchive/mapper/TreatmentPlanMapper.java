@@ -28,6 +28,7 @@ public class TreatmentPlanMapper implements EntityMapper<TreatmentPlan, Treatmen
         dto.setPlanStatus(plan.getPlanStatus());
         dto.setDiscountPercent(plan.getDiscountPercent());
         dto.setDiscountAmount(plan.getDiscountAmount());
+        dto.setFinalAmount(plan.getFinalAmount());
         dto.setNotes(plan.getNotes());
         dto.setPatientId(plan.getPatientId());
 

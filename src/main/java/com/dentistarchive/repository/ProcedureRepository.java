@@ -1,6 +1,6 @@
 package com.dentistarchive.repository;
 
-import com.dentistarchive.entity.pricelist.Procedure;
+import com.dentistarchive.entity.Procedure;
 import com.dentistarchive.repository.jpa.ProcedureJpaRepository;
 import com.dentistarchive.repository.search.ProcedureSearchMapper;
 import com.dentistarchive.search.filter.ProcedureFilter;

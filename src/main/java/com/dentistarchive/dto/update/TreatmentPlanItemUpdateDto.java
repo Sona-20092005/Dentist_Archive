@@ -2,6 +2,9 @@ package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.TreatmentPlanItemDto;
 import com.dentistarchive.enums.TreatmentPlanItemStatus;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,13 +25,21 @@ import java.util.UUID;
 @FieldNameConstants
 public class TreatmentPlanItemUpdateDto extends BaseUpdateDto<TreatmentPlanItemDto> {
 
+    @NotNull
     TreatmentPlanItemStatus itemStatus;
 
+    @NotNull
+    @Positive
+    Integer quantity;
+
+    @NotNull
+    @PositiveOrZero
     BigDecimal unitPrice;
 
-    List<Integer> toothNumbers;
+    List<@NotNull Integer> toothNumbers;
 
     String notes;
 
+    @NotNull
     UUID procedureId;
 }

@@ -60,8 +60,7 @@ public class WorkScheduleRuleValidator {
         List<WorkSchedule> overlappingSchedules = findOverlappingSchedules(schedule);
         List<WorkScheduleRule> existingRules = findRules(overlappingSchedules);
 
-        List<WorkScheduleRule> currentRules =
-                workScheduleRuleRepository.findByScheduleId(schedule.getId());
+        List<WorkScheduleRule> currentRules = workScheduleRuleRepository.findByScheduleId(schedule.getId());
 
         for (WorkScheduleRule rule : currentRules) {
             validateExternalConflicts(rule, existingRules);

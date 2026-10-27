@@ -1,6 +1,7 @@
 package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.ToothConditionNoteDto;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,5 +18,7 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @FieldNameConstants
 public class ToothConditionNoteUpdateDto extends BaseUpdateDto<ToothConditionNoteDto> {
+
+    @NotBlank
     String description;
 }

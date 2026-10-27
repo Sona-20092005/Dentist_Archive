@@ -3,11 +3,16 @@ package com.dentistarchive.service;
 import com.dentistarchive.dto.create.PatientCreateDto;
 import com.dentistarchive.dto.update.PatientUpdateDto;
 import com.dentistarchive.entity.patient.Patient;
+import com.dentistarchive.enums.AppointmentSchedulingStatus;
+import com.dentistarchive.enums.AppointmentStatus;
 import com.dentistarchive.enums.PatientStatus;
+import com.dentistarchive.enums.TreatmentPlanStatus;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.exception.PatientAlreadyInactiveException;
 import com.dentistarchive.exception.PatientNotInactiveException;
+import com.dentistarchive.repository.AppointmentRepository;
 import com.dentistarchive.repository.PatientRepository;
+import com.dentistarchive.repository.TreatmentPlanRepository;
 import com.dentistarchive.search.filter.PatientFilter;
 import com.dentistarchive.security.AuthHolder;
 import com.dentistarchive.service.access.PatientAccessValidator;
@@ -20,6 +25,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -30,11 +36,16 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
     PatientRepository patientRepository;
     PatientAccessValidator accessValidator;
     PatientProvider patientProvider;
+    AppointmentRepository appointmentRepository;
+    TreatmentPlanRepository treatmentPlanRepository;
+
 
     public PatientService(
             PatientRepository patientRepository,
             PatientAccessValidator accessValidator,
-            PatientProvider patientProvider
+            PatientProvider patientProvider,
+            AppointmentRepository appointmentRepository,
+            TreatmentPlanRepository treatmentPlanRepository
     ) {
         super(
                 Patient.class,
@@ -45,10 +56,14 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
         this.patientRepository = patientRepository;
         this.accessValidator = accessValidator;
         this.patientProvider = patientProvider;
+        this.treatmentPlanRepository = treatmentPlanRepository;
+        this.appointmentRepository = appointmentRepository;
     }
 
+    // TODO: 10/20/2026 come back after reviewing patient and scheduling and take care of patient status
+
     @Transactional
-    public Patient create(PatientCreateDto createDto) {
+    public Patient create(@Valid PatientCreateDto createDto) {
 
         var patient = patientProvider.create(createDto, AuthHolder.getUserId().orElseThrow());
         return save(patient);
@@ -69,8 +84,7 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
         if (patient.getPatientStatus() == PatientStatus.INACTIVE) {
             throw new PatientAlreadyInactiveException(patient.getId());
         }
-        patient.setPatientStatus(PatientStatus.INACTIVE);
-        patient.setPatientStatusSortOrder(PatientStatus.INACTIVE.getSortOrder());
+        updatePatientStatus(patient, PatientStatus.INACTIVE);
         return save(patient);
     }
 
@@ -80,8 +94,7 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
         if (patient.getPatientStatus() != PatientStatus.INACTIVE) {
             throw new PatientNotInactiveException(patient.getId());
         }
-        patient.setPatientStatus(PatientStatus.NEW);
-        patient.setPatientStatusSortOrder(PatientStatus.NEW.getSortOrder());
+        updatePatientStatus(patient, PatientStatus.ACTIVE);
         return save(patient);
     }
 
@@ -96,6 +109,37 @@ public class PatientService extends BaseReadOnlyService<Patient, PatientFilter>
 
     @Override
     public void afterUnarchive(Patient entity) {}
+
+    public void recalculatePatientStatus(Patient patient) {
+        UUID patientId = patient.getId();
+
+        PatientStatus newStatus;
+
+        if (hasFutureAppointment(patientId)) {
+            newStatus = PatientStatus.WAITING_FOR_APPOINTMENT;
+        }
+        else if (hasOngoingTreatment(patientId)) {
+            newStatus = PatientStatus.IN_TREATMENT;
+        }
+        else {
+            newStatus = PatientStatus.ACTIVE;
+        }
+
+        updatePatientStatus(patient, newStatus);
+    }
+
+    public void updatePatientStatus(Patient patient, PatientStatus patientStatus) {
+        patient.setPatientStatus(patientStatus);
+        patient.setPatientStatusSortOrder(patientStatus.getSortOrder());
+    }
+
+    public boolean hasFutureAppointment(UUID patientId) {
+        return appointmentRepository.hasFutureAppointments(patientId, LocalDate.now(), AppointmentSchedulingStatus.NORMAL, AppointmentStatus.SCHEDULED);
+    }
+
+    private boolean hasOngoingTreatment(UUID patientId) {
+        return treatmentPlanRepository.existsByPatientIdAndPlanStatusAndArchivedFalse(patientId, TreatmentPlanStatus.ACTIVE);
+    }
 
     public Patient getAccessiblePatient(UUID id) {
         if (id == null) {

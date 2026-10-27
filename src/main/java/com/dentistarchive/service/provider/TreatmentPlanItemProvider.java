@@ -15,6 +15,7 @@ public class TreatmentPlanItemProvider {
         item.setItemStatus(TreatmentPlanItemStatus.ACTIVE);
         item.setItemStatusSortOrder(TreatmentPlanItemStatus.ACTIVE.getSortOrder());
         item.setUnitPrice(createDto.getUnitPrice());
+        item.setQuantity(createDto.getQuantity());
         item.setNotes(createDto.getNotes());
         item.setToothNumbers(createDto.getToothNumbers());
         item.setProcedureId(createDto.getProcedureId());
@@ -23,12 +24,13 @@ public class TreatmentPlanItemProvider {
         return item;
     }
 
-
     public TreatmentPlanItem update(TreatmentPlanItem item, TreatmentPlanItemUpdateDto updateDto) {
 
         item.setItemStatus(updateDto.getItemStatus());
+        item.setItemStatusSortOrder(updateDto.getItemStatus().getSortOrder());
         item.setUnitPrice(updateDto.getUnitPrice());
         item.setNotes(updateDto.getNotes());
+        item.setQuantity(updateDto.getQuantity());
         item.setToothNumbers(updateDto.getToothNumbers());
         item.setProcedureId(updateDto.getProcedureId());
 

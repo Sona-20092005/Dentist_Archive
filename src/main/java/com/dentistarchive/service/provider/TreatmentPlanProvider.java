@@ -21,13 +21,13 @@ public class TreatmentPlanProvider {
         return plan;
     }
 
-
     public TreatmentPlan update(TreatmentPlan plan, TreatmentPlanUpdateDto updateDto) {
 
         plan.setDate(updateDto.getDate());
         plan.setPlanStatus(updateDto.getPlanStatus());
         plan.setDiscountPercent(updateDto.getDiscountPercent());
         plan.setDiscountAmount(updateDto.getDiscountAmount());
+        plan.setFinalAmount(updateDto.getFinalAmount());
         plan.setNotes(updateDto.getNotes());
 
         return plan;

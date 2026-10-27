@@ -1,6 +1,7 @@
 package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.WorkScheduleRuleDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,13 +22,17 @@ import java.util.UUID;
 @FieldNameConstants
 public class WorkScheduleRuleCreateDto extends BaseCreateDto<WorkScheduleRuleDto>{
 
+    @NotNull
     DayOfWeek dayOfWeek;
 
+    @NotNull
     LocalTime startTime;
 
+    @NotNull
     LocalTime endTime;
 
     String notes;
 
+    @NotNull
     UUID scheduleId;
 }

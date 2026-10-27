@@ -1,6 +1,8 @@
 package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.ToothConditionNoteDto;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,10 +21,13 @@ import java.util.UUID;
 @FieldNameConstants
 public class ToothConditionNoteCreateDto extends BaseCreateDto<ToothConditionNoteDto>{
 
-    int toothNumber;
+    @NotNull
+    Integer toothNumber;
 
+    @NotBlank
     String description;
 
+    @NotNull
     UUID patientId;
 
 }

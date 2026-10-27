@@ -2,6 +2,7 @@ package com.dentistarchive.entity.schedule;
 
 import com.dentistarchive.entity.ArchivableBaseEntity;
 import com.dentistarchive.enums.ModificationType;
+import com.dentistarchive.enums.WorkScheduleModificationArchiveReason;
 import com.dentistarchive.enums.WorkSessionType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +25,6 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkScheduleModification extends ArchivableBaseEntity {
 
-    @Column()
     LocalDate date;
 
     @Column(name = "start_time")
@@ -42,12 +42,12 @@ public class WorkScheduleModification extends ArchivableBaseEntity {
     @Column(name = "modification_type_sort_order", nullable = false)
     Integer modificationTypeSortOrder;
 
-    @NonNull
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "work_session_type", nullable = false)
     WorkSessionType workSessionType;
 
-    @NonNull
+    @NotNull
     @Column(name = "work_session_type_sort_order", nullable = false)
     Integer workSessionTypeSortOrder;
 
@@ -63,6 +63,10 @@ public class WorkScheduleModification extends ArchivableBaseEntity {
     @NotNull
     @Column(name = "schedule_id", nullable = false)
     UUID scheduleId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "archive_reason")
+    WorkScheduleModificationArchiveReason archiveReason;
 }
 
 

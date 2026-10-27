@@ -1,6 +1,6 @@
 package com.dentistarchive.repository.jpa;
 
-import com.dentistarchive.entity.pricelist.Procedure;
+import com.dentistarchive.entity.Procedure;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 

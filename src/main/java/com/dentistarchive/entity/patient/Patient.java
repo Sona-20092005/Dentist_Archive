@@ -7,6 +7,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -24,7 +26,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Patient extends ArchivableBaseEntity {
 
-    @NotNull
+    @NotBlank
     @Column(nullable = false)
     String name;
 
@@ -39,11 +41,11 @@ public class Patient extends ArchivableBaseEntity {
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    List<String> phones;
+    List<@NotBlank String> phones;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    List<String> emails;
+    List<@NotBlank @Email String> emails;
 
     String address;
 

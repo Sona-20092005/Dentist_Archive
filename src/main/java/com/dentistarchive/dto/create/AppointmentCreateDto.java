@@ -2,6 +2,7 @@ package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.AppointmentDto;
 import com.dentistarchive.enums.AppointmentStatus;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,19 +23,25 @@ import java.util.UUID;
 @FieldNameConstants
 public class AppointmentCreateDto extends BaseCreateDto<AppointmentDto>{
 
+    @NotNull
     LocalDate date;
 
+    @NotNull
     LocalTime startTime;
 
+    @NotNull
     LocalTime endTime;
 
+    @NotNull
     AppointmentStatus appointmentStatus;
 
     String notes;
 
     UUID nurseId;
 
+    @NotNull
     UUID patientId;
 
+    @NotNull
     UUID scheduleId;
 }

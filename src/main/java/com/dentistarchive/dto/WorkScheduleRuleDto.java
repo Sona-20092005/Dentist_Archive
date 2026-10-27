@@ -1,5 +1,6 @@
 package com.dentistarchive.dto;
 
+import com.dentistarchive.enums.WorkScheduleRuleArchiveReason;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,8 @@ public class WorkScheduleRuleDto extends ArchivingBaseDto {
     String notes;
 
     UUID scheduleId;
+
+    WorkScheduleRuleArchiveReason archiveReason;
 }
 
 

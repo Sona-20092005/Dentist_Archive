@@ -18,12 +18,13 @@ public class ClinicProvider {
         clinic.setPhones(createDto.getPhones());
         clinic.setEmails(createDto.getEmails());
         clinic.setAddress(createDto.getAddress());
+        clinic.setCommissionPercent(createDto.getCommissionPercent());
+        clinic.setCommissionPaymentMethods(createDto.getCommissionPaymentMethods());
         clinic.setNotes(createDto.getNotes());
         clinic.setDoctorId(doctorId);
 
         return clinic;
     }
-
 
     public Clinic update(Clinic clinic, ClinicUpdateDto updateDto) {
 
@@ -31,6 +32,8 @@ public class ClinicProvider {
         clinic.setPhones(updateDto.getPhones());
         clinic.setEmails(updateDto.getEmails());
         clinic.setAddress(updateDto.getAddress());
+        clinic.setCommissionPercent(updateDto.getCommissionPercent());
+        clinic.setCommissionPaymentMethods(updateDto.getCommissionPaymentMethods());
         clinic.setNotes(updateDto.getNotes());
 
         return clinic;

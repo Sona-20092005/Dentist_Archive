@@ -1,6 +1,9 @@
 package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.TreatmentPlanItemDto;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,14 +24,22 @@ import java.util.UUID;
 @FieldNameConstants
 public class TreatmentPlanItemCreateDto extends BaseCreateDto<TreatmentPlanItemDto>{
 
+    @NotNull
+    @PositiveOrZero
     BigDecimal unitPrice;
 
-    List<Integer> toothNumbers;
+    @NotNull
+    @Positive
+    Integer quantity;
+
+    List<@NotNull Integer> toothNumbers;
 
     String notes;
 
+    @NotNull
     UUID procedureId;
 
+    @NotNull
     UUID treatmentPlanId;
 
 }

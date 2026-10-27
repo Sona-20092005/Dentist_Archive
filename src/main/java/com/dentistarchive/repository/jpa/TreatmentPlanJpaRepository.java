@@ -1,6 +1,7 @@
 package com.dentistarchive.repository.jpa;
 
 import com.dentistarchive.entity.patient.TreatmentPlan;
+import com.dentistarchive.enums.TreatmentPlanStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -22,4 +23,8 @@ public interface TreatmentPlanJpaRepository
             """
     )
     Optional<UUID> findPatientIdByPlanId(@Param("planId") UUID planId);
+
+    boolean existsByPatientIdAndPlanStatusAndArchivedFalse(UUID patientId, TreatmentPlanStatus planStatus);
+
+    boolean existsByPatientIdAndPlanStatusAndArchivedFalseAndIdNot(UUID patientId, TreatmentPlanStatus planStatus, UUID excludedTreatmentPlanId);
 }

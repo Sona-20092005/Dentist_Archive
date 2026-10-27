@@ -6,7 +6,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -27,16 +30,24 @@ public class TreatmentPlan extends ArchivableBaseEntity {
     @Column(nullable = false)
     LocalDate date;
 
-    @NonNull
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "plan_status", nullable = false)
     TreatmentPlanStatus planStatus;
 
+    @DecimalMin("0.00")
+    @DecimalMax("100.00")
     @Column(name = "discount_percent")
     BigDecimal discountPercent;
 
+    @DecimalMin("0.00")
     @Column(name = "discount_amount")
     BigDecimal discountAmount;
+
+    @NotNull
+    @PositiveOrZero
+    @Column(name = "final_amount", nullable = false)
+    BigDecimal finalAmount;
 
     // TODO: 6/1/2026 add logic
     @Column(name = "completed_date")
@@ -44,11 +55,10 @@ public class TreatmentPlan extends ArchivableBaseEntity {
 
     String notes;
 
-    @NonNull
+    @NotNull
     @Column(name = "patient_id", nullable = false)
     UUID patientId;
 
-    // TODO: 6/1/2026 decide if we want to also have many to many with payment
 }
 
 

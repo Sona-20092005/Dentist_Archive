@@ -28,7 +28,7 @@ public class CompletedTreatmentRepository extends BaseReadOnlyRepository<Complet
 
     @Transactional(readOnly = true)
     public Optional<CompletedTreatment> getByIdAndNotArchived(UUID id) {
-        return jpaRepository.findByIdAndArchivedFalse((id));
+        return jpaRepository.findByIdAndArchivedFalse(id);
     }
 
     @Transactional

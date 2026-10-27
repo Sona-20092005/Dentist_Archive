@@ -2,6 +2,7 @@ package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.WorkScheduleRuleDto;
 import com.dentistarchive.dto.create.BaseCreateDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,10 +22,13 @@ import java.time.LocalTime;
 @FieldNameConstants
 public class WorkScheduleRuleCorrectDto extends BaseCreateDto<WorkScheduleRuleDto> {
 
+    @NotNull
     DayOfWeek dayOfWeek;
 
+    @NotNull
     LocalTime startTime;
 
+    @NotNull
     LocalTime endTime;
 
     String notes;

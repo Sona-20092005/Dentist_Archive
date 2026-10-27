@@ -1,6 +1,7 @@
 package com.dentistarchive.repository;
 
 import com.dentistarchive.entity.patient.TreatmentPlan;
+import com.dentistarchive.enums.TreatmentPlanStatus;
 import com.dentistarchive.repository.jpa.TreatmentPlanJpaRepository;
 import com.dentistarchive.repository.search.TreatmentPlanSearchMapper;
 import com.dentistarchive.search.filter.TreatmentPlanFilter;
@@ -29,6 +30,14 @@ public class TreatmentPlanRepository extends BaseReadOnlyRepository<TreatmentPla
     @Transactional(readOnly = true)
     public Optional<TreatmentPlan> getByIdAndNotArchived(UUID id) {
         return jpaRepository.findByIdAndArchivedFalse((id));
+    }
+
+    public boolean existsByPatientIdAndPlanStatusAndArchivedFalse(UUID patientId, TreatmentPlanStatus planStatus) {
+        return jpaRepository.existsByPatientIdAndPlanStatusAndArchivedFalse(patientId, planStatus);
+    }
+
+    public boolean existsByPatientIdAndPlanStatusAndArchivedFalseAndIdNot(UUID patientId, TreatmentPlanStatus planStatus, UUID excludedTreatmentPlanId) {
+        return jpaRepository.existsByPatientIdAndPlanStatusAndArchivedFalseAndIdNot(patientId, planStatus, excludedTreatmentPlanId);
     }
 
     @Transactional

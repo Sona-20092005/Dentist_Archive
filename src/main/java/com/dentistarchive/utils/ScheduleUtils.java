@@ -1,9 +1,11 @@
 package com.dentistarchive.utils;
 
+import com.dentistarchive.entity.schedule.Appointment;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -45,6 +47,11 @@ public class ScheduleUtils {
 
     public static boolean areAdjacent(LocalTime firstEnd, LocalTime secondStart) {
         return firstEnd.equals(secondStart);
+    }
+
+    public static boolean isInFuture(Appointment appointment) {
+        LocalDateTime appointmentDateTime = LocalDateTime.of(appointment.getDate(), appointment.getStartTime());
+        return appointmentDateTime.isAfter(LocalDateTime.now());
     }
 
 }

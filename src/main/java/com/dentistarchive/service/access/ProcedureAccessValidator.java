@@ -1,6 +1,6 @@
 package com.dentistarchive.service.access;
 
-import com.dentistarchive.entity.pricelist.Procedure;
+import com.dentistarchive.entity.Procedure;
 import com.dentistarchive.search.filter.ProcedureFilter;
 import com.dentistarchive.security.AuthHolder;
 import com.dentistarchive.security.CustomUserDetails;

@@ -23,6 +23,8 @@ public class TreatmentPlanItemDto extends ArchivingBaseDto {
 
     BigDecimal unitPrice;
 
+    Integer quantity;
+
     List<Integer> toothNumbers;
 
     String notes;

@@ -45,7 +45,7 @@ public class ClinicService extends BaseReadOnlyService<Clinic, ClinicFilter>
     }
 
     @Transactional
-    public Clinic create(ClinicCreateDto createDto) {
+    public Clinic create(@Valid ClinicCreateDto createDto) {
 
         var clinic = clinicProvider.create(createDto, AuthHolder.getUserId().orElseThrow());
         return save(clinic);

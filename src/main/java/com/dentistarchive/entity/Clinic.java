@@ -1,14 +1,15 @@
 package com.dentistarchive.entity;
 
+import com.dentistarchive.enums.PaymentMethod;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,13 +28,22 @@ public class Clinic extends ArchivableBaseEntity {
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    List<String> phones;
+    List<@NotBlank String> phones;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    List<String> emails;
+    List<@NotBlank @Email String> emails;
 
     String address;
+
+    @DecimalMin("0.00")
+    @DecimalMax("100.00")
+    @Column(name = "commission_percent", nullable = false)
+    BigDecimal commissionPercent;
+
+    @Type(JsonType.class)
+    @Column(name = "commission_payment_methods", columnDefinition = "jsonb")
+    List<PaymentMethod> commissionPaymentMethods;
 
     String notes;
 

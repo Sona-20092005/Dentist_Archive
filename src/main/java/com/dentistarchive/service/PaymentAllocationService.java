@@ -3,11 +3,14 @@ package com.dentistarchive.service;
 import com.dentistarchive.dto.create.PaymentAllocationCreateDto;
 import com.dentistarchive.dto.update.PaymentAllocationUpdateDto;
 import com.dentistarchive.entity.patient.PaymentAllocation;
+import com.dentistarchive.enums.PaymentAllocationArchiveReason;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.repository.PaymentAllocationRepository;
 import com.dentistarchive.search.filter.PaymentAllocationFilter;
+import com.dentistarchive.security.AuthHolder;
 import com.dentistarchive.service.access.PaymentAllocationAccessValidator;
 import com.dentistarchive.service.provider.PaymentAllocationProvider;
+import com.dentistarchive.utils.ClockUtils;
 import com.dentistarchive.validator.PaymentAllocationValidator;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -28,7 +31,7 @@ public class PaymentAllocationService extends BaseReadOnlyService<PaymentAllocat
     PaymentAllocationAccessValidator accessValidator;
     PaymentAllocationProvider paymentAllocationProvider;
     PaymentAllocationValidator paymentAllocationValidation;
-    PaymentService paymentService;
+    PaymentLookupService paymentLookupService;
     CompletedTreatmentService completedTreatmentService;
     TreatmentPlanService treatmentPlanService;
 
@@ -37,7 +40,7 @@ public class PaymentAllocationService extends BaseReadOnlyService<PaymentAllocat
             PaymentAllocationAccessValidator accessValidator,
             PaymentAllocationProvider paymentAllocationProvider,
             PaymentAllocationValidator paymentAllocationValidation,
-            PaymentService paymentService,
+            PaymentLookupService paymentLookupService,
             CompletedTreatmentService completedTreatmentService,
             TreatmentPlanService treatmentPlanService
     ) {
@@ -51,40 +54,17 @@ public class PaymentAllocationService extends BaseReadOnlyService<PaymentAllocat
         this.accessValidator = accessValidator;
         this.paymentAllocationProvider = paymentAllocationProvider;
         this.paymentAllocationValidation = paymentAllocationValidation;
-        this.paymentService = paymentService;
+        this.paymentLookupService = paymentLookupService;
         this.completedTreatmentService = completedTreatmentService;
         this.treatmentPlanService = treatmentPlanService;
     }
 
     @Transactional
     public PaymentAllocation create(PaymentAllocationCreateDto createDto) {
-        var payment = paymentService.getAccessiblePayment(createDto.getPaymentId());
-
-        if (createDto.getTreatmentPlanId() != null) {
-            var treatmentPlan = treatmentPlanService
-                    .getAccessibleTreatmentPlan(createDto.getTreatmentPlanId());
-
-            if (!payment.getPatientId().equals(treatmentPlan.getPatientId())) {
-                throw new IllegalArgumentException(
-                        "Payment and treatment plan must belong to the same patient"
-                );
-            }
-        }
-
-        if (createDto.getCompletedTreatmentId() != null) {
-            var completedTreatment = completedTreatmentService
-                    .getAccessibleCompletedTreatment(createDto.getCompletedTreatmentId());
-
-            if (!payment.getPatientId().equals(completedTreatment.getPatientId())) {
-                throw new IllegalArgumentException(
-                        "Payment and completed treatment must belong to the same patient"
-                );
-            }
-        }
-
+        var payment = paymentLookupService.getAccessiblePayment(createDto.getPaymentId());
 
         var allocation = paymentAllocationProvider.create(createDto);
-//        paymentAllocationValidation.validate(allocation);
+        paymentAllocationValidation.validate(allocation, payment);
         return save(allocation);
     }
 
@@ -102,7 +82,54 @@ public class PaymentAllocationService extends BaseReadOnlyService<PaymentAllocat
 
         accessValidator.validateAccess(allocation);
         paymentAllocationProvider.update(allocation, updateDto);
+        paymentAllocationValidation.validate(allocation, paymentLookupService.getAccessiblePayment(allocation.getPaymentId()));
         return paymentAllocationRepository.save(allocation);
+    }
+
+    @Transactional
+    @Override
+    public void archiveById(UUID id) {
+        PaymentAllocation entity = getByIdOrElseThrow(id);
+        validateArchive(entity);
+        archive(entity, PaymentAllocationArchiveReason.USER);
+        save(entity);
+        afterArchive(entity);
+    }
+
+    @Transactional
+    public void archiveById(UUID id, PaymentAllocationArchiveReason archiveReason) {
+        PaymentAllocation entity = getByIdOrElseThrow(id);
+        validateArchive(entity);
+        archive(entity, archiveReason);
+        save(entity);
+        afterArchive(entity);
+    }
+
+    @Transactional
+    @Override
+    public PaymentAllocation unarchiveById(UUID id) {
+        PaymentAllocation entity = getByIdOrElseThrow(id);
+        validateUnarchive(entity);
+        unarchive(entity);
+        paymentAllocationValidation.validateUnarchive(entity, paymentLookupService.getAccessiblePayment(entity.getPaymentId()));
+        entity = save(entity);
+        afterUnarchive(entity);
+        return entity;
+    }
+
+    public void archive(PaymentAllocation entity, PaymentAllocationArchiveReason archiveReason) {
+        entity.setArchived(true);
+        entity.setArchivedAt(ClockUtils.now());
+        entity.setArchivedBy(AuthHolder.getUserIdOrElseThrow());
+        entity.setArchiveReason(archiveReason);
+    }
+
+    @Override
+    public void unarchive(PaymentAllocation entity) {
+        entity.setArchived(false);
+        entity.setArchivedAt(null);
+        entity.setArchivedBy(null);
+        entity.setArchiveReason(null);
     }
 
     @Override

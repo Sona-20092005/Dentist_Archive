@@ -24,6 +24,7 @@ import java.util.UUID;
 public class TreatmentPlanItemService extends BaseReadOnlyService<TreatmentPlanItem, TreatmentPlanItemFilter>
         implements ArchivableService<TreatmentPlanItem, TreatmentPlanItemFilter> {
     TreatmentPlanService planService;
+    PatientService patientService;
     ProcedureService procedureService;
     TreatmentPlanItemRepository itemRepository;
     TreatmentPlanItemAccessValidator accessValidator;
@@ -31,6 +32,7 @@ public class TreatmentPlanItemService extends BaseReadOnlyService<TreatmentPlanI
 
     public TreatmentPlanItemService(
             TreatmentPlanService planService,
+            PatientService patientService,
             ProcedureService procedureService,
             TreatmentPlanItemRepository itemRepository,
             TreatmentPlanItemAccessValidator accessValidator,
@@ -44,6 +46,7 @@ public class TreatmentPlanItemService extends BaseReadOnlyService<TreatmentPlanI
                 accessValidator
         );
         this.planService = planService;
+        this.patientService = patientService;
         this.procedureService = procedureService;
         this.itemRepository = itemRepository;
         this.accessValidator = accessValidator;
@@ -51,11 +54,13 @@ public class TreatmentPlanItemService extends BaseReadOnlyService<TreatmentPlanI
     }
 
     @Transactional
-    public TreatmentPlanItem create(TreatmentPlanItemCreateDto createDto) {
-        planService.getAccessibleTreatmentPlan(createDto.getTreatmentPlanId());
+    public TreatmentPlanItem create(@Valid TreatmentPlanItemCreateDto createDto) {
+        var plan = planService.getAccessibleTreatmentPlan(createDto.getTreatmentPlanId());
+        patientService.getAccessiblePatient(plan.getPatientId());
         procedureService.getAccessibleProcedure(createDto.getProcedureId());
 
         var item = itemProvider.create(createDto);
+        planService.recalculateFinalAmount(item.getTreatmentPlanId());
         return save(item);
     }
 
@@ -66,6 +71,11 @@ public class TreatmentPlanItemService extends BaseReadOnlyService<TreatmentPlanI
         TreatmentPlanItem item = itemRepository.getByIdAndNotArchived(id)
                 .orElseThrow(() -> new EntityNotFoundByIdException(TreatmentPlanItem.class, id));
         accessValidator.validateAccess(item);
+
+        if(!item.getQuantity().equals(updateDto.getQuantity()) || !item.getUnitPrice().equals(updateDto.getUnitPrice())) {
+            planService.recalculateFinalAmount(item.getTreatmentPlanId());
+        }
+
         itemProvider.update(item, updateDto);
         return itemRepository.save(item);
     }
@@ -76,10 +86,14 @@ public class TreatmentPlanItemService extends BaseReadOnlyService<TreatmentPlanI
     }
 
     @Override
-    public void afterArchive(TreatmentPlanItem entity) {}
+    public void afterArchive(TreatmentPlanItem entity) {
+        planService.recalculateFinalAmount(entity.getTreatmentPlanId());
+    }
 
     @Override
-    public void afterUnarchive(TreatmentPlanItem entity) {}
+    public void afterUnarchive(TreatmentPlanItem entity) {
+        planService.recalculateFinalAmount(entity.getTreatmentPlanId());
+    }
 
     public TreatmentPlanItem getAccessibleTreatmentPlanItem(UUID id) {
         if (id == null) {

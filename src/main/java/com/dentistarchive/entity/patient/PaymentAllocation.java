@@ -6,8 +6,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -28,7 +28,7 @@ public class PaymentAllocation extends ArchivableBaseEntity {
     UUID paymentId;
 
     @NotNull
-    @DecimalMin(value = "0.00", inclusive = false)
+    @Positive
     @Column(nullable = false)
     BigDecimal amount;
 

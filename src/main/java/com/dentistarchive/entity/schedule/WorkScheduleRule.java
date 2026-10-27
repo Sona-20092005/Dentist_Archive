@@ -1,6 +1,7 @@
 package com.dentistarchive.entity.schedule;
 
 import com.dentistarchive.entity.ArchivableBaseEntity;
+import com.dentistarchive.enums.WorkScheduleRuleArchiveReason;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -44,6 +45,10 @@ public class WorkScheduleRule extends ArchivableBaseEntity {
     @NotNull
     @Column(name = "schedule_id", nullable = false)
     UUID scheduleId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "archive_reason")
+    WorkScheduleRuleArchiveReason archiveReason;
 }
 
 

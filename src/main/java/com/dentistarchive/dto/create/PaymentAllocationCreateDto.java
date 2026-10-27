@@ -1,6 +1,8 @@
 package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.PaymentAllocationDto;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,8 +22,11 @@ import java.util.UUID;
 @FieldNameConstants
 public class PaymentAllocationCreateDto extends BaseCreateDto<PaymentAllocationDto>{
 
+    @NotNull
     UUID paymentId;
 
+    @NotNull
+    @Positive
     BigDecimal amount;
 
     UUID treatmentPlanId;

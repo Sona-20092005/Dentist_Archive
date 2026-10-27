@@ -1,7 +1,7 @@
 package com.dentistarchive.mapper;
 
 import com.dentistarchive.dto.ProcedureDto;
-import com.dentistarchive.entity.pricelist.Procedure;
+import com.dentistarchive.entity.Procedure;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

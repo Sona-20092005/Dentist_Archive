@@ -1,6 +1,8 @@
 package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.PatientDto;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,11 +21,12 @@ import java.util.List;
 @FieldNameConstants
 public class PatientUpdateDto extends BaseUpdateDto<PatientDto> {
 
+    @NotBlank
     String name;
 
-    List<String> phones;
+    List<@NotBlank String> phones;
 
-    List<String> emails;
+    List<@NotBlank @Email String> emails;
 
     String address;
 

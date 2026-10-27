@@ -2,6 +2,9 @@ package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.PaymentDto;
 import com.dentistarchive.enums.PaymentMethod;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,16 +25,23 @@ import java.util.UUID;
 @FieldNameConstants
 public class PaymentCreateDto extends BaseCreateDto<PaymentDto>{
 
+    @NotNull
     LocalDate date;
 
+    @NotNull
+    @Positive
     BigDecimal amount;
 
+    @NotNull
     PaymentMethod paymentMethod;
 
+    @NotNull
+    @PositiveOrZero
     BigDecimal commissionAmount;
 
     String notes;
 
+    @NotNull
     UUID patientId;
 
 }

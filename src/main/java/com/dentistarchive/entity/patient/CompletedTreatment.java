@@ -5,6 +5,8 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
@@ -27,16 +29,18 @@ public class CompletedTreatment extends ArchivableBaseEntity {
     @Column(nullable = false)
     LocalDate date;
 
+    @PositiveOrZero
     @Column(name = "unit_price")
     BigDecimal unitPrice;
 
-    @NonNull
+    @NotNull
+    @Positive
     @Column(nullable = false)
     Integer quantity;
 
     @Type(JsonType.class)
     @Column(name = "tooth_numbers", columnDefinition = "jsonb")
-    List<Integer> toothNumbers;
+    List<@NotNull Integer> toothNumbers;
 
     String notes;
 
@@ -54,7 +58,6 @@ public class CompletedTreatment extends ArchivableBaseEntity {
     @Column(name = "patient_id", nullable = false)
     UUID patientId;
 
-    // TODO: 6/1/2026 decide if we want to also have many to many with payment
 }
 
 

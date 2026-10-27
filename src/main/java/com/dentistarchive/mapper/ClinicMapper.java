@@ -28,6 +28,8 @@ public class ClinicMapper implements EntityMapper<Clinic, ClinicDto>{
         dto.setPhones(clinic.getPhones());
         dto.setEmails(clinic.getEmails());
         dto.setAddress(clinic.getAddress());
+        dto.setCommissionPercent(clinic.getCommissionPercent());
+        dto.setCommissionPaymentMethods(clinic.getCommissionPaymentMethods());
         dto.setNotes(clinic.getNotes());
         dto.setDoctorId(clinic.getDoctorId());
 

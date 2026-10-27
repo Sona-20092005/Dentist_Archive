@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
@@ -25,7 +27,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TreatmentPlanItem extends ArchivableBaseEntity {
 
-    @NonNull
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "item_status", nullable = false)
     TreatmentPlanItemStatus itemStatus;
@@ -35,12 +37,18 @@ public class TreatmentPlanItem extends ArchivableBaseEntity {
     Integer itemStatusSortOrder;
 
     @NotNull
+    @PositiveOrZero
     @Column(name = "unit_price", nullable = false)
     BigDecimal unitPrice;
 
+    @NotNull
+    @Positive
+    @Column(nullable = false)
+    Integer quantity;
+
     @Type(JsonType.class)
     @Column(name = "tooth_numbers", columnDefinition = "jsonb")
-    List<Integer> toothNumbers;
+    List<@NotNull Integer> toothNumbers;
 
     String notes;
 

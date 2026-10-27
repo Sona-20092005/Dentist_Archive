@@ -2,7 +2,7 @@ package com.dentistarchive.service;
 
 import com.dentistarchive.dto.create.ProcedureCreateDto;
 import com.dentistarchive.dto.update.ProcedureUpdateDto;
-import com.dentistarchive.entity.pricelist.Procedure;
+import com.dentistarchive.entity.Procedure;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.repository.ProcedureRepository;
 import com.dentistarchive.search.filter.ProcedureFilter;
@@ -45,7 +45,7 @@ public class ProcedureService extends BaseReadOnlyService<Procedure, ProcedureFi
     }
 
     @Transactional
-    public Procedure create(ProcedureCreateDto createDto) {
+    public Procedure create(@Valid ProcedureCreateDto createDto) {
         var procedure = procedureProvider.create(createDto, AuthHolder.getUserId().orElseThrow());
         return save(procedure);
     }
@@ -58,8 +58,6 @@ public class ProcedureService extends BaseReadOnlyService<Procedure, ProcedureFi
         procedureProvider.update(procedure, updateDto);
         return procedureRepository.save(procedure);
     }
-
-
 
     @Override
     public Procedure save(Procedure entity) {

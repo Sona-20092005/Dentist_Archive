@@ -26,6 +26,7 @@ public class TreatmentPlanItemMapper implements EntityMapper<TreatmentPlanItem, 
         dto.setArchived(item.isArchived());
         dto.setItemStatus(item.getItemStatus());
         dto.setUnitPrice(item.getUnitPrice());
+        dto.setQuantity(item.getQuantity());
         dto.setNotes(item.getNotes());
         dto.setToothNumbers(item.getToothNumbers());
         dto.setProcedureId(item.getProcedureId());

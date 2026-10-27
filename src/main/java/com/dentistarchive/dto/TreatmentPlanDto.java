@@ -27,6 +27,8 @@ public class TreatmentPlanDto extends ArchivingBaseDto {
 
     BigDecimal discountAmount;
 
+    BigDecimal finalAmount;
+
     String notes;
 
     UUID patientId;

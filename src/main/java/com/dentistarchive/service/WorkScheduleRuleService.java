@@ -51,7 +51,7 @@ public class WorkScheduleRuleService extends BaseReadOnlyService<WorkScheduleRul
     }
 
     @Transactional
-    public WorkScheduleRule create(WorkScheduleRuleCreateDto createDto) {
+    public WorkScheduleRule create(@Valid WorkScheduleRuleCreateDto createDto) {
         workScheduleService.getAccessibleWorkSchedule(createDto.getScheduleId());
 
         var workSchedule = workScheduleRuleProvider.create(createDto);

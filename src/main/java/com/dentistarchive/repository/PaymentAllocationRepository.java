@@ -1,6 +1,7 @@
 package com.dentistarchive.repository;
 
 import com.dentistarchive.entity.patient.PaymentAllocation;
+import com.dentistarchive.enums.PaymentAllocationArchiveReason;
 import com.dentistarchive.repository.jpa.PaymentAllocationJpaRepository;
 import com.dentistarchive.repository.search.PaymentAllocationSearchMapper;
 import com.dentistarchive.search.filter.PaymentAllocationFilter;
@@ -41,6 +42,18 @@ public class PaymentAllocationRepository extends BaseReadOnlyRepository<PaymentA
     @Transactional(readOnly = true)
     public List<PaymentAllocation> getPaymentAllocationsByPaymentId(UUID paymentId) {
         return jpaRepository.findAllByPaymentIdAndArchivedFalse(paymentId);
+    }
+
+    public List<PaymentAllocation> getAllArchivedByPaymentIdAndReason(UUID paymentId, PaymentAllocationArchiveReason archiveReason) {
+        return jpaRepository.findAllByPaymentIdAndArchivedTrueAndArchiveReason(paymentId, archiveReason);
+    }
+
+    public boolean existsByTreatmentPlanIdAndArchivedFalse(UUID treatmentPlanId) {
+        return jpaRepository.existsByTreatmentPlanIdAndArchivedFalse(treatmentPlanId);
+    }
+
+    public boolean existsByCompletedTreatmentIdAndArchivedFalse(UUID completedTreatmentId) {
+        return jpaRepository.existsByCompletedTreatmentIdAndArchivedFalse(completedTreatmentId);
     }
 
     @Transactional(readOnly = true)

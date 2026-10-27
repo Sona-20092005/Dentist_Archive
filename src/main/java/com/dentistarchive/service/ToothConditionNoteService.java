@@ -50,7 +50,7 @@ public class ToothConditionNoteService extends BaseReadOnlyService<ToothConditio
     }
 
     @Transactional
-    public ToothConditionNote create(ToothConditionNoteCreateDto createDto) {
+    public ToothConditionNote create(@Valid ToothConditionNoteCreateDto createDto) {
         patientService.getAccessiblePatient(createDto.getPatientId());
 
         toothConditionNoteValidator.validate(createDto);
@@ -63,6 +63,9 @@ public class ToothConditionNoteService extends BaseReadOnlyService<ToothConditio
         ToothConditionNote note = getByIdOrElseThrow(id);
         accessValidator.validateAccess(note);
         toothConditionNoteProvider.update(note, updateDto);
+
+        patientService.getAccessiblePatient(note.getPatientId());
+
         return toothConditionNoteRepository.save(note);
     }
 }

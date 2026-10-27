@@ -27,17 +27,20 @@ public class AppointmentService extends BaseReadOnlyService<Appointment, Appoint
     AppointmentRepository appointmentRepository;
     AppointmentAccessValidator accessValidator;
     AppointmentProvider appointmentProvider;
-    WorkScheduleService workScheduleService;
+    WorkScheduleLookupService workScheduleLookupService;
     AppointmentValidator appointmentValidator;
     PatientService patientService;
+    NurseService nurseService;
 
     public AppointmentService(
             AppointmentRepository appointmentRepository,
             AppointmentAccessValidator accessValidator,
             AppointmentProvider appointmentProvider,
-            WorkScheduleService workScheduleService,
+            WorkScheduleLookupService workScheduleLookupService,
             AppointmentValidator appointmentValidator,
-            PatientService patientService) {
+            PatientService patientService,
+            NurseService nurseService
+    ) {
         super(
                 Appointment.class,
                 AppointmentFilter.class,
@@ -47,20 +50,23 @@ public class AppointmentService extends BaseReadOnlyService<Appointment, Appoint
         this.appointmentRepository = appointmentRepository;
         this.accessValidator = accessValidator;
         this.appointmentProvider = appointmentProvider;
-        this.workScheduleService = workScheduleService;
+        this.workScheduleLookupService = workScheduleLookupService;
         this.appointmentValidator = appointmentValidator;
         this.patientService = patientService;
+        this.nurseService = nurseService;
     }
 
     @Transactional
-    public Appointment create(AppointmentCreateDto createDto) {
-        // TODO: 7/17/2026 add nurse later
-        var workSchedule = workScheduleService.getAccessibleWorkSchedule(createDto.getScheduleId());
-        patientService.getAccessiblePatient(createDto.getPatientId());
-
+    public Appointment create(@Valid AppointmentCreateDto createDto) {
+        nurseService.getAccessibleNurse(createDto.getNurseId());
+        var workSchedule = workScheduleLookupService.getAccessibleWorkSchedule(createDto.getScheduleId());
+        var patient = patientService.getAccessiblePatient(createDto.getPatientId());
         var appointment = appointmentProvider.create(createDto);
         appointmentValidator.validate(appointment, workSchedule);
-        return save(appointment);
+
+        appointment = save(appointment);
+        patientService.recalculatePatientStatus(patient);
+        return appointment;
     }
 
     @Transactional(propagation = Propagation.NEVER)
@@ -68,13 +74,16 @@ public class AppointmentService extends BaseReadOnlyService<Appointment, Appoint
         Appointment appointment = appointmentRepository.getByIdAndNotArchived(id)
                 .orElseThrow(() -> new EntityNotFoundByIdException(Appointment.class, id));
 
-        var workSchedule = workScheduleService.getAccessibleWorkSchedule(updateDto.getScheduleId());
-        patientService.getAccessiblePatient(updateDto.getPatientId());
-
+        nurseService.getAccessibleNurse(updateDto.getNurseId());
+        var workSchedule = workScheduleLookupService.getAccessibleWorkSchedule(updateDto.getScheduleId());
+        var patient = patientService.getAccessiblePatient(updateDto.getPatientId());
         accessValidator.validateAccess(appointment);
         appointmentProvider.update(appointment, updateDto);
         appointmentValidator.validateUpdate(appointment, workSchedule);
-        return appointmentRepository.save(appointment);
+
+        appointment = save(appointment);
+        patientService.recalculatePatientStatus(patient);
+        return appointment;
     }
 
     @Override
@@ -82,12 +91,12 @@ public class AppointmentService extends BaseReadOnlyService<Appointment, Appoint
     public Appointment unarchiveById(UUID id) {
         Appointment appointment = getByIdOrElseThrow(id);
         validateUnarchive(appointment);
-        var workSchedule = workScheduleService.getAccessibleWorkSchedule(appointment.getScheduleId());
+        var workSchedule = workScheduleLookupService.getAccessibleWorkSchedule(appointment.getScheduleId());
         appointmentValidator.validateUnarchive(appointment, workSchedule);
         unarchive(appointment);
         appointment = save(appointment);
         afterUnarchive(appointment);
-        return  save(appointment);
+        return save(appointment);
     }
 
     @Override
@@ -96,10 +105,18 @@ public class AppointmentService extends BaseReadOnlyService<Appointment, Appoint
     }
 
     @Override
-    public void afterArchive(Appointment entity) {}
+    public void afterArchive(Appointment entity) {
+        var patient = patientService.getAccessiblePatient(entity.getPatientId());
+
+        patientService.recalculatePatientStatus(patient);
+    }
 
     @Override
-    public void afterUnarchive(Appointment entity) {}
+    public void afterUnarchive(Appointment entity) {
+        var patient = patientService.getAccessiblePatient(entity.getPatientId());
+
+        patientService.recalculatePatientStatus(patient);
+    }
 
     public Appointment getAccessibleAppointment(UUID id) {
         if (id == null) {

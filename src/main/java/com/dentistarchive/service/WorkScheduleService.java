@@ -4,9 +4,13 @@ import com.dentistarchive.dto.create.WorkScheduleCreateDto;
 import com.dentistarchive.dto.update.WorkScheduleRevisionCommand;
 import com.dentistarchive.dto.update.WorkScheduleRuleRevisionCreateDto;
 import com.dentistarchive.dto.update.WorkScheduleUpdateDto;
+import com.dentistarchive.entity.schedule.Appointment;
 import com.dentistarchive.entity.schedule.WorkSchedule;
 import com.dentistarchive.entity.schedule.WorkScheduleRule;
+import com.dentistarchive.enums.AppointmentSchedulingStatus;
+import com.dentistarchive.enums.AppointmentStatus;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
+import com.dentistarchive.repository.AppointmentRepository;
 import com.dentistarchive.repository.WorkScheduleRepository;
 import com.dentistarchive.repository.WorkScheduleRuleRepository;
 import com.dentistarchive.search.filter.WorkScheduleFilter;
@@ -25,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +49,8 @@ public class WorkScheduleService extends BaseReadOnlyService<WorkSchedule, WorkS
     WorkScheduleRuleProvider workScheduleRuleProvider;
     WorkScheduleRuleValidator workScheduleRuleValidator;
     WorkScheduleRuleRepository workScheduleRuleRepository;
+    AppointmentRepository appointmentRepository;
+    AppointmentService appointmentService;
 
     public WorkScheduleService(
             WorkScheduleRepository workScheduleRepository,
@@ -53,7 +60,9 @@ public class WorkScheduleService extends BaseReadOnlyService<WorkSchedule, WorkS
             ClinicService clinicService,
             WorkScheduleRuleProvider workScheduleRuleProvider,
             WorkScheduleRuleValidator workScheduleRuleValidator,
-            WorkScheduleRuleRepository workScheduleRuleRepository
+            WorkScheduleRuleRepository workScheduleRuleRepository,
+            AppointmentRepository appointmentRepository,
+            AppointmentService appointmentService
     ) {
         super(
                 WorkSchedule.class,
@@ -69,10 +78,12 @@ public class WorkScheduleService extends BaseReadOnlyService<WorkSchedule, WorkS
         this.workScheduleRuleProvider = workScheduleRuleProvider;
         this.workScheduleRuleValidator = workScheduleRuleValidator;
         this.workScheduleRuleRepository = workScheduleRuleRepository;
+        this.appointmentRepository = appointmentRepository;
+        this.appointmentService = appointmentService;
     }
 
     @Transactional
-    public WorkSchedule create(WorkScheduleCreateDto createDto) {
+    public WorkSchedule create(@Valid WorkScheduleCreateDto createDto) {
         clinicService.getAccessibleClinic(createDto.getClinicId());
 
         var workSchedule = workScheduleProvider.create(createDto, AuthHolder.getUserId().orElseThrow());
@@ -94,7 +105,7 @@ public class WorkScheduleService extends BaseReadOnlyService<WorkSchedule, WorkS
     }
 
     @Transactional
-    public WorkSchedule revise(UUID scheduleId, WorkScheduleRevisionCommand command) {
+    public WorkSchedule revise(UUID scheduleId, @Valid WorkScheduleRevisionCommand command) {
         WorkSchedule original = getAccessibleWorkSchedule(scheduleId);
 
         if (!isDateWithinPeriod(command.getEffectiveFrom(), original.getEffectiveFrom(), original.getEffectiveUntil())) {
@@ -128,7 +139,43 @@ public class WorkScheduleService extends BaseReadOnlyService<WorkSchedule, WorkS
     }
 
     @Override
-    public void afterArchive(WorkSchedule entity) {}
+    public void archiveById(UUID id) {
+        WorkSchedule entity = getByIdOrElseThrow(id);
+        validateArchive(entity);
+        archive(entity);
+        workScheduleValidator.validateArchive(entity);
+        save(entity);
+        afterArchive(entity);
+    }
+
+    @Override
+    public WorkSchedule unarchiveById(UUID id) {
+        WorkSchedule entity = getByIdOrElseThrow(id);
+        validateUnarchive(entity);
+        unarchive(entity);
+        workScheduleValidator.validate(entity);
+        entity = save(entity);
+        afterUnarchive(entity);
+        return entity;
+    }
+
+    @Override
+    public void afterArchive(WorkSchedule entity) {
+        LocalDate today = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        List<Appointment> appointments = appointmentRepository.findFutureActiveAppointments(entity.getId(), today, currentTime);
+
+        for (Appointment appointment : appointments) {
+            if (appointment.getAppointmentStatus() == AppointmentStatus.SCHEDULED) {
+                appointment.setAppointmentSchedulingStatus(AppointmentSchedulingStatus.NEEDS_RESCHEDULING);
+                appointmentRepository.save(appointment);
+            }
+            else {
+                appointmentService.archiveById(appointment.getId());
+            }
+        }
+    }
 
     @Override
     public void afterUnarchive(WorkSchedule entity) {}

@@ -1,6 +1,9 @@
 package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.ProcedureDto;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,8 +22,11 @@ import java.math.BigDecimal;
 @FieldNameConstants
 public class ProcedureCreateDto extends BaseCreateDto<ProcedureDto>{
 
+    @NotBlank
     String name;
 
+    @NotNull
+    @PositiveOrZero
     BigDecimal price;
 
     String description;

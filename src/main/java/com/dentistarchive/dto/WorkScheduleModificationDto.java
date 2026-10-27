@@ -1,6 +1,7 @@
 package com.dentistarchive.dto;
 
 import com.dentistarchive.enums.ModificationType;
+import com.dentistarchive.enums.WorkScheduleModificationArchiveReason;
 import com.dentistarchive.enums.WorkSessionType;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -37,6 +38,8 @@ public class WorkScheduleModificationDto extends ArchivingBaseDto {
     LocalTime sourceEndTime;
 
     UUID scheduleId;
+
+    WorkScheduleModificationArchiveReason archiveReason;
 }
 
 

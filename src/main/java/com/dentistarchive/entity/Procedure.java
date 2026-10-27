@@ -1,9 +1,9 @@
-package com.dentistarchive.entity.pricelist;
+package com.dentistarchive.entity;
 
-import com.dentistarchive.entity.ArchivableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -24,6 +24,7 @@ public class Procedure extends ArchivableBaseEntity {
     String name;
 
     @NotNull
+    @PositiveOrZero
     @Column(nullable = false)
     BigDecimal price;
 
