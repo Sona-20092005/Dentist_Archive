@@ -1,6 +1,7 @@
 package com.dentistarchive.controller;
 
 import com.dentistarchive.dto.WorkScheduleDto;
+import com.dentistarchive.dto.WorkSchedulePeriodChangePreviewDto;
 import com.dentistarchive.dto.create.WorkScheduleCreateDto;
 import com.dentistarchive.dto.update.WorkScheduleRevisionCommand;
 import com.dentistarchive.dto.update.WorkScheduleUpdateDto;
@@ -78,6 +79,11 @@ public class WorkScheduleController extends BaseController {
         return ResponseEntity.ok(
                 scheduleMapper.toDto(scheduleService.unarchiveById(id))
         );
+    }
+
+    @PostMapping("/{id}/period-change-preview")
+    public WorkSchedulePeriodChangePreviewDto previewPeriodChange(@PathVariable UUID id, @Valid @RequestBody WorkScheduleUpdateDto updateDto) {
+        return scheduleService.previewPeriodChange(id, updateDto);
     }
 
 }

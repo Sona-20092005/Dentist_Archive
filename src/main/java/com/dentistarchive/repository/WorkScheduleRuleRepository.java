@@ -1,6 +1,7 @@
 package com.dentistarchive.repository;
 
 import com.dentistarchive.entity.schedule.WorkScheduleRule;
+import com.dentistarchive.enums.WorkScheduleRuleArchiveReason;
 import com.dentistarchive.repository.jpa.WorkScheduleRuleJpaRepository;
 import com.dentistarchive.repository.search.WorkScheduleRuleSearchMapper;
 import com.dentistarchive.search.filter.WorkScheduleRuleFilter;
@@ -63,4 +64,10 @@ public class WorkScheduleRuleRepository extends BaseReadOnlyRepository<WorkSched
     public List<WorkScheduleRule> findByScheduleIdAndDayOfWeek(UUID scheduleId, DayOfWeek dayOfWeek) {
         return jpaRepository.findByScheduleIdAndDayOfWeekAndArchivedFalse(scheduleId, dayOfWeek);
     }
+
+    @Transactional(readOnly = true)
+    public List<WorkScheduleRule> findByScheduleIdAndArchiveReason(UUID scheduleId, WorkScheduleRuleArchiveReason archiveReason) {
+        return jpaRepository.findByScheduleIdAndArchiveReason(scheduleId, archiveReason);
+    }
+
 }

@@ -45,6 +45,7 @@ public class RentOvertimeSynchronizer {
         rentOvertimeRepository.save(overtime);
     }
 
+    // TODO: 10/29/2026 not every modification has a non-null date (e.g. cancel), hence this logic is faulty look through it.
     private RentOvertime createRentOvertime(WorkScheduleModification modification) {
         WorkSchedule schedule = workScheduleRepository
                 .getByIdAndNotArchived(modification.getScheduleId())

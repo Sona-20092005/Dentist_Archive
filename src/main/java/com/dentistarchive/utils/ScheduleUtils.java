@@ -54,4 +54,15 @@ public class ScheduleUtils {
         return appointmentDateTime.isAfter(LocalDateTime.now());
     }
 
+    public static boolean isPeriodShortened(LocalDate oldEffectiveFrom, LocalDate oldEffectiveUntil, LocalDate newEffectiveFrom, LocalDate newEffectiveUntil) {
+        boolean startMovedForward = newEffectiveFrom.isAfter(oldEffectiveFrom);
+
+        boolean endMovedBackward = oldEffectiveUntil == null
+                ? newEffectiveUntil != null
+                : newEffectiveUntil != null
+                && newEffectiveUntil.isBefore(oldEffectiveUntil);
+
+        return startMovedForward || endMovedBackward;
+    }
+
 }

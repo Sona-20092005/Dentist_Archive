@@ -1,6 +1,7 @@
 package com.dentistarchive.repository.jpa;
 
 import com.dentistarchive.entity.schedule.WorkScheduleRule;
+import com.dentistarchive.enums.WorkScheduleRuleArchiveReason;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
@@ -20,4 +21,7 @@ public interface WorkScheduleRuleJpaRepository
     List<WorkScheduleRule> findByScheduleIdInAndArchivedFalse(Collection<UUID> scheduleIds);
 
     List<WorkScheduleRule> findByScheduleIdAndDayOfWeekAndArchivedFalse(UUID scheduleId, DayOfWeek dayOfWeek);
+
+    List<WorkScheduleRule> findByScheduleIdAndArchiveReason(UUID scheduleId, WorkScheduleRuleArchiveReason archiveReason);
+
 }

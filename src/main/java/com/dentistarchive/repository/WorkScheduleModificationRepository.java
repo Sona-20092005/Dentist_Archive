@@ -1,6 +1,7 @@
 package com.dentistarchive.repository;
 
 import com.dentistarchive.entity.schedule.WorkScheduleModification;
+import com.dentistarchive.enums.WorkScheduleModificationArchiveReason;
 import com.dentistarchive.repository.jpa.WorkScheduleModificationJpaRepository;
 import com.dentistarchive.repository.search.WorkScheduleModificationSearchMapper;
 import com.dentistarchive.search.filter.WorkScheduleModificationFilter;
@@ -41,6 +42,17 @@ public class WorkScheduleModificationRepository extends BaseReadOnlyRepository<W
     @Transactional(readOnly = true)
     public Optional<UUID> getScheduleIdByModificationId(UUID modificationId) {
         return jpaRepository.findScheduleIdByModificationId(modificationId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<WorkScheduleModification> findByScheduleId(UUID scheduleId) {
+        return jpaRepository.findByScheduleIdAndArchivedFalse(scheduleId);
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<WorkScheduleModification> findByScheduleIdAndArchiveReason(UUID scheduleId, WorkScheduleModificationArchiveReason archiveReason) {
+        return jpaRepository.findByScheduleIdAndArchiveReason(scheduleId, archiveReason);
     }
 
     @Transactional

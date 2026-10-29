@@ -3,11 +3,14 @@ package com.dentistarchive.service;
 import com.dentistarchive.dto.create.WorkScheduleRuleCreateDto;
 import com.dentistarchive.dto.update.WorkScheduleRuleCorrectDto;
 import com.dentistarchive.entity.schedule.WorkScheduleRule;
+import com.dentistarchive.enums.WorkScheduleRuleArchiveReason;
 import com.dentistarchive.exception.EntityNotFoundByIdException;
 import com.dentistarchive.repository.WorkScheduleRuleRepository;
 import com.dentistarchive.search.filter.WorkScheduleRuleFilter;
+import com.dentistarchive.security.AuthHolder;
 import com.dentistarchive.service.access.WorkScheduleRuleAccessValidator;
 import com.dentistarchive.service.provider.WorkScheduleRuleProvider;
+import com.dentistarchive.utils.ClockUtils;
 import com.dentistarchive.validator.WorkScheduleRuleValidator;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -28,14 +31,14 @@ public class WorkScheduleRuleService extends BaseReadOnlyService<WorkScheduleRul
     WorkScheduleRuleAccessValidator accessValidator;
     WorkScheduleRuleProvider workScheduleRuleProvider;
     WorkScheduleRuleValidator workScheduleRuleValidator;
-    WorkScheduleService workScheduleService;
+    WorkScheduleLookupService WorkScheduleLookupService;
 
     public WorkScheduleRuleService(
             WorkScheduleRuleRepository workScheduleRuleRepository,
             WorkScheduleRuleAccessValidator accessValidator,
             WorkScheduleRuleProvider workScheduleRuleProvider,
             WorkScheduleRuleValidator workScheduleRuleValidator,
-            WorkScheduleService workScheduleService
+            WorkScheduleLookupService WorkScheduleLookupService
     ) {
         super(
                 WorkScheduleRule.class,
@@ -47,12 +50,12 @@ public class WorkScheduleRuleService extends BaseReadOnlyService<WorkScheduleRul
         this.accessValidator = accessValidator;
         this.workScheduleRuleProvider = workScheduleRuleProvider;
         this.workScheduleRuleValidator = workScheduleRuleValidator;
-        this.workScheduleService = workScheduleService;
+        this.WorkScheduleLookupService = WorkScheduleLookupService;
     }
 
     @Transactional
     public WorkScheduleRule create(@Valid WorkScheduleRuleCreateDto createDto) {
-        workScheduleService.getAccessibleWorkSchedule(createDto.getScheduleId());
+        WorkScheduleLookupService.getAccessibleWorkSchedule(createDto.getScheduleId());
 
         var workSchedule = workScheduleRuleProvider.create(createDto);
         workScheduleRuleValidator.validate(workSchedule);
@@ -68,6 +71,40 @@ public class WorkScheduleRuleService extends BaseReadOnlyService<WorkScheduleRul
         workScheduleRuleProvider.update(workScheduleRule, correctDto);
         workScheduleRuleValidator.validate(workScheduleRule);
         return workScheduleRuleRepository.save(workScheduleRule);
+    }
+
+    @Transactional
+    @Override
+    public void archiveById(UUID id) {
+        WorkScheduleRule entity = getByIdOrElseThrow(id);
+        validateArchive(entity);
+        archive(entity, WorkScheduleRuleArchiveReason.USER);
+        save(entity);
+        afterArchive(entity);
+    }
+
+    @Transactional
+    public void archiveById(UUID id, WorkScheduleRuleArchiveReason archiveReason) {
+        WorkScheduleRule entity = getByIdOrElseThrow(id);
+        validateArchive(entity);
+        archive(entity, archiveReason);
+        save(entity);
+        afterArchive(entity);
+    }
+
+    public void archive(WorkScheduleRule entity, WorkScheduleRuleArchiveReason archiveReason) {
+        entity.setArchived(true);
+        entity.setArchivedAt(ClockUtils.now());
+        entity.setArchivedBy(AuthHolder.getUserIdOrElseThrow());
+        entity.setArchiveReason(archiveReason);
+    }
+
+    @Override
+    public void unarchive(WorkScheduleRule entity) {
+        entity.setArchived(false);
+        entity.setArchivedAt(null);
+        entity.setArchivedBy(null);
+        entity.setArchiveReason(null);
     }
 
     @Override

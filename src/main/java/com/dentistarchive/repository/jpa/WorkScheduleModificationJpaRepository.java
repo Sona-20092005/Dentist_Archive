@@ -1,6 +1,7 @@
 package com.dentistarchive.repository.jpa;
 
 import com.dentistarchive.entity.schedule.WorkScheduleModification;
+import com.dentistarchive.enums.WorkScheduleModificationArchiveReason;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -37,4 +38,9 @@ public interface WorkScheduleModificationJpaRepository
             """
     )
     Optional<UUID> findScheduleIdByModificationId(@Param("modificationId") UUID modificationId);
+
+    List<WorkScheduleModification> findByScheduleIdAndArchivedFalse(UUID scheduleId);
+
+    List<WorkScheduleModification> findByScheduleIdAndArchiveReason(UUID scheduleId, WorkScheduleModificationArchiveReason archiveReason);
+
 }

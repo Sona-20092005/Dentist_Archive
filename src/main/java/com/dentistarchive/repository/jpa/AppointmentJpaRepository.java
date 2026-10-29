@@ -52,6 +52,7 @@ public interface AppointmentJpaRepository
         select case when count(a) > 0 then true else false end
         from Appointment a
         where a.scheduleId = :scheduleId
+          and a.archived = false
           and (
               a.date < :today
               or (a.date = :today and a.startTime <= :currentTime)
