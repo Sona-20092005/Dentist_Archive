@@ -48,7 +48,7 @@ public class TechnicianService extends BaseReadOnlyService<Technician, Technicia
     }
 
     @Transactional
-    public Technician create(TechnicianCreateDto createDto) {
+    public Technician create(@Valid TechnicianCreateDto createDto) {
 
         var technician = technicianProvider.create(createDto, AuthHolder.getUserId().orElseThrow());
         technician = save(technician);

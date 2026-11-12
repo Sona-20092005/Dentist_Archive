@@ -1,6 +1,8 @@
 package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.MaterialDto;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,11 +21,13 @@ import java.util.UUID;
 @FieldNameConstants
 public class MaterialUpdateDto extends BaseUpdateDto<MaterialDto> {
 
+    @NotBlank
     String name;
 
     String description;
 
     String notes;
 
+    @NotNull
     UUID categoryId;
 }

@@ -50,7 +50,7 @@ public class MaterialSupplierService extends BaseReadOnlyService<MaterialSupplie
     }
 
     @Transactional
-    public MaterialSupplier create(MaterialSupplierCreateDto createDto) {
+    public MaterialSupplier create(@Valid MaterialSupplierCreateDto createDto) {
         supplierService.getAccessibleSupplier(createDto.getSupplierId());
         materialService.getAccessibleMaterial(createDto.getMaterialId());
 

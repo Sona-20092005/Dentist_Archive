@@ -5,6 +5,7 @@ import com.dentistarchive.enums.TechnicianMonthlyReportStatus;
 import com.dentistarchive.utils.YearMonthDateConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -21,7 +22,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TechnicianMonthlyReport extends MutableBaseEntity {
 
-    @NonNull
+    @NotNull
     @Column(name = "technician_id", nullable = false)
     UUID technicianId;
 
@@ -37,26 +38,31 @@ public class TechnicianMonthlyReport extends MutableBaseEntity {
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(name = "total_amount", nullable = false)
     BigDecimal totalAmount = BigDecimal.ZERO;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(name = "paid_amount", nullable = false)
     BigDecimal paidAmount = BigDecimal.ZERO;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(nullable = false)
     BigDecimal bonus = BigDecimal.ZERO;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(nullable = false)
     BigDecimal deduction = BigDecimal.ZERO;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(name = "number_of_work_logs", nullable = false)
     Integer numberOfWorkLogs = 0;
 

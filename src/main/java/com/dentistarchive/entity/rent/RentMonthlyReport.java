@@ -5,6 +5,7 @@ import com.dentistarchive.enums.RentMonthlyReportStatus;
 import com.dentistarchive.utils.YearMonthDateConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -36,27 +37,31 @@ public class RentMonthlyReport extends MutableBaseEntity {
     RentMonthlyReportStatus status;
 
     @NotNull
+    @PositiveOrZero
     @Builder.Default
     @Column(name = "regular_amount", nullable = false)
     BigDecimal regularAmount = BigDecimal.ZERO;
 
     @NotNull
+    @PositiveOrZero
     @Builder.Default
     @Column(name = "overtime_amount", nullable = false)
     BigDecimal overtimeAmount = BigDecimal.ZERO;
 
-    @Builder.Default
     @NotNull
+    @PositiveOrZero
+    @Builder.Default
     @Column(name = "regular_minutes_used", nullable = false)
     Integer regularMinutesUsed = 0;
 
-    @Builder.Default
     @NotNull
+    @PositiveOrZero
+    @Builder.Default
     @Column(name = "overtime_minutes_used", nullable = false)
     Integer overtimeMinutesUsed = 0;
 
-    @Builder.Default
     @NotNull
+    @Builder.Default
     @Column(name = "manual_adjustment", nullable = false)
     BigDecimal manualAdjustment = BigDecimal.ZERO;
 

@@ -44,7 +44,7 @@ public class ClinicRentAgreementService extends BaseReadOnlyService<ClinicRentAg
     }
 
     @Transactional
-    public ClinicRentAgreement create(ClinicRentAgreementCreateDto createDto) {
+    public ClinicRentAgreement create(@Valid ClinicRentAgreementCreateDto createDto) {
         ClinicRentAgreement clinicRentAgreement = clinicRentAgreementProvider.create(createDto);
         return clinicRentAgreementRepository.save(clinicRentAgreement);
     }

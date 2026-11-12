@@ -4,6 +4,8 @@ import com.dentistarchive.entity.ArchivableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -25,14 +27,17 @@ public class MaterialPurchase extends ArchivableBaseEntity {
     UUID materialSupplierId;
 
     @NonNull
+    @Positive
     @Column(nullable = false)
     Integer quantity;
 
     @NotNull
+    @PositiveOrZero
     @Column(name = "unit_price", nullable = false)
     BigDecimal unitPrice;
 
     @NotNull
+    @PositiveOrZero
     @Column(name = "total_Amount", nullable = false)
     BigDecimal totalAmount;
 

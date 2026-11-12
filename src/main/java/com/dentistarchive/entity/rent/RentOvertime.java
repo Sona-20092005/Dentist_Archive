@@ -3,6 +3,7 @@ package com.dentistarchive.entity.rent;
 import com.dentistarchive.entity.ArchivableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -23,6 +24,7 @@ public class RentOvertime extends ArchivableBaseEntity {
     UUID workScheduleModificationId;
 
     @NonNull
+    @PositiveOrZero
     @Column(name = "hourly_rent", nullable = false)
     BigDecimal hourlyRent;
 

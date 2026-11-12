@@ -175,6 +175,14 @@ public class WorkCalendarService {
     }
 
     private List<WorkSessionDto> buildSchedule(WorkSchedule schedule, LocalDate date) {
+        List<WorkScheduleRule> rules = workScheduleRuleRepository.findByScheduleIdAndDayOfWeek(schedule.getId(), date.getDayOfWeek());
+
+        List<WorkScheduleModification> modifications = workScheduleModificationRepository.findEffectiveModifications(schedule.getId(), date);
+
+        return buildSchedule(schedule, date, rules, modifications);
+    }
+
+    private List<WorkSessionDto> buildSchedule(WorkSchedule schedule, LocalDate date, List<WorkScheduleRule> rules, List<WorkScheduleModification> modifications) {
 
         if (date.isBefore(schedule.getEffectiveFrom()) || (schedule.getEffectiveUntil() != null
                 && date.isAfter(schedule.getEffectiveUntil()))) {
@@ -183,14 +191,19 @@ public class WorkCalendarService {
 
         List<WorkSessionDto> sessions = new ArrayList<>();
 
-        addRules(schedule, date, sessions);
-        addModifications(schedule, date, sessions);
+        addRules(sessions, rules, date);
+        addModifications(sessions, modifications, date);
 
         return sessions;
     }
 
-    private void addModifications(WorkSchedule schedule, LocalDate date, List<WorkSessionDto> sessions) {
-        List<WorkScheduleModification> modifications = workScheduleModificationRepository.findEffectiveModifications(schedule.getId(), date);
+    private void addRules(List<WorkSessionDto> sessions, List<WorkScheduleRule> rules, LocalDate date) {
+        for (WorkScheduleRule rule : rules) {
+            sessions.add(workSessionMapper.toWorkSession(rule, date));
+        }
+    }
+
+    private void addModifications(List<WorkSessionDto> sessions, List<WorkScheduleModification> modifications, LocalDate date) {
 
         for (WorkScheduleModification modification : modifications) {
             switch (modification.getModificationType()) {
@@ -214,16 +227,6 @@ public class WorkCalendarService {
         }
     }
 
-    private void addRules(WorkSchedule schedule, LocalDate date, List<WorkSessionDto> sessions) {
-        List<WorkScheduleRule> rules = workScheduleRuleRepository.findByScheduleIdAndDayOfWeek(
-                        schedule.getId(),
-                        date.getDayOfWeek());
-
-        for (WorkScheduleRule rule : rules) {
-            sessions.add(workSessionMapper.toWorkSession(rule, date));
-        }
-    }
-
     private boolean removeSessions(WorkScheduleModification modification, List<WorkSessionDto> sessions) {
         return sessions.removeIf(session -> session.getDate().equals(modification.getSourceDate())
                 && session.getStartTime().equals(modification.getSourceStartTime())
@@ -231,5 +234,31 @@ public class WorkCalendarService {
                 && session.getModificationId() == null);
 
     }
+
+//    private boolean sourceExists(List<WorkSessionDto> baseSessions, WorkScheduleModification modification) {
+//        for(WorkSessionDto session : baseSessions) {
+//            if (session.getDate().equals(modification.getSourceDate())
+//                    && session.getStartTime().equals(modification.getSourceStartTime())
+//                    && session.getEndTime().equals(modification.getSourceEndTime())) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
+//
+//    private ModificationChangeAction determineInitialAction(WorkScheduleModification modification, boolean sourceExists) {
+//        return switch (modification.getModificationType()) {
+//            case ADD -> ModificationChangeAction.KEEP;
+//
+//            case CANCEL -> sourceExists
+//                    ? ModificationChangeAction.KEEP
+//                    : ModificationChangeAction.ARCHIVE;
+//
+//            case MODIFY -> sourceExists
+//                    ? ModificationChangeAction.KEEP
+//                    : ModificationChangeAction.REQUIRES_RESOLUTION;
+//        };
+//    }
 
 }

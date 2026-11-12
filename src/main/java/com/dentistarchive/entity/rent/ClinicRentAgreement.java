@@ -4,7 +4,10 @@ import com.dentistarchive.entity.ArchivableBaseEntity;
 import com.dentistarchive.enums.RentCalculationType;
 import com.dentistarchive.utils.YearMonthDateConverter;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -39,15 +42,20 @@ public class ClinicRentAgreement extends ArchivableBaseEntity {
     @Column(name = "calculation_type", nullable = false)
     RentCalculationType rentCalculationType;
 
+    @PositiveOrZero
     @Column(name = "fixed_monthly_rent")
     BigDecimal fixedMonthlyRent;
 
+    @PositiveOrZero
     @Column(name = "hourly_rate")
     BigDecimal hourlyRate;
 
+    @PositiveOrZero
     @Column(name = "overtime_hourly_rate")
     BigDecimal overtimeHourlyRate;
 
+    @DecimalMin("0.00")
+    @DecimalMax("100.00")
     @Column(name = "collection_percentage")
     Integer collectionPercentage;
 

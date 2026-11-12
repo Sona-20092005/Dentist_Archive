@@ -1,6 +1,7 @@
 package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.MaterialCategoryDto;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 public class MaterialCategoryCreateDto extends BaseCreateDto<MaterialCategoryDto>{
 
+    @NotBlank
     String name;
 
     String description;

@@ -25,5 +25,7 @@ public class WorkSessionDto {
 
     UUID scheduleId;
 
+    UUID ruleId;
+
     UUID modificationId;
 }

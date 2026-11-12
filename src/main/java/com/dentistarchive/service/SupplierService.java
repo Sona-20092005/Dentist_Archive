@@ -45,7 +45,7 @@ public class SupplierService extends BaseReadOnlyService<Supplier, SupplierFilte
     }
 
     @Transactional
-    public Supplier create(SupplierCreateDto createDto) {
+    public Supplier create(@Valid SupplierCreateDto createDto) {
 
         var supplier = supplierProvider.create(createDto, AuthHolder.getUserId().orElseThrow());
         supplier = save(supplier);

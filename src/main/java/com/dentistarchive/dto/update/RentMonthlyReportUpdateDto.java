@@ -2,6 +2,7 @@ package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.RentMonthlyReportDto;
 import com.dentistarchive.enums.RentMonthlyReportStatus;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,8 +21,10 @@ import java.math.BigDecimal;
 @FieldNameConstants
 public class RentMonthlyReportUpdateDto extends BaseUpdateDto<RentMonthlyReportDto> {
 
+    @NotNull
     BigDecimal manualAdjustment;
 
+    @NotNull
     RentMonthlyReportStatus status;
 
     String notes;

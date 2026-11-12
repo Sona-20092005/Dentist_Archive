@@ -4,6 +4,8 @@ import com.dentistarchive.entity.ArchivableBaseEntity;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -27,11 +29,11 @@ public class Technician extends ArchivableBaseEntity {
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    List<String> phones;
+    List<@NotBlank String> phones;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    List<String> emails;
+    List<@NotBlank @Email String> emails;
 
     String address;
 

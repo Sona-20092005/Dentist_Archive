@@ -47,7 +47,7 @@ public class TechnicianProcedureService extends BaseReadOnlyService<TechnicianPr
     }
 
     @Transactional
-    public TechnicianProcedure create(TechnicianProcedureCreateDto createDto) {
+    public TechnicianProcedure create(@Valid TechnicianProcedureCreateDto createDto) {
         technicianService.getAccessibleTechnician(createDto.getTechnicianId());
 
         var procedure = procedureProvider.create(createDto);

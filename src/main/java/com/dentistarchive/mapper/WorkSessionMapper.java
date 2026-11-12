@@ -24,6 +24,7 @@ public class WorkSessionMapper{
                 .endTime(rule.getEndTime())
                 .workSessionType(WorkSessionType.REGULAR)
                 .scheduleId(rule.getScheduleId())
+                .ruleId(rule.getId())
                 .build();
     }
 

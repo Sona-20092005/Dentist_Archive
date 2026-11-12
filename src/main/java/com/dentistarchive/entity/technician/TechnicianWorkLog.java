@@ -5,6 +5,8 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
@@ -34,25 +36,28 @@ public class TechnicianWorkLog extends ArchivableBaseEntity {
     @Column(name = "completed_date")
     LocalDate completedDate;
 
+    // TODO: 11/12/2026 should this be not null
+    @PositiveOrZero
     @Column(name = "unit_price")
     BigDecimal unitPrice;
 
+    @Positive
     @Column(name = "quantity")
     Integer quantity;
 
     @Type(JsonType.class)
     @Column(name = "tooth_numbers", columnDefinition = "jsonb")
-    List<Integer> toothNumbers;
+    List<@NotNull Integer> toothNumbers;
 
     @NotNull
     @Column(name = "technician_procedure_id", nullable = false)
     UUID technicianProcedureId;
 
-    @NonNull
+    @NotNull
     @Column(name = "patient_id", nullable = false)
     UUID patientId;
 
-    @NonNull
+    @NotNull
     @Column(name = "is_paid", nullable = false)
     Boolean isPaid;
 

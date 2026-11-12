@@ -173,7 +173,7 @@ public class WorkScheduleService extends BaseReadOnlyService<WorkSchedule, WorkS
         List<WorkScheduleModification> modifications = workScheduleModificationRepository.findByScheduleId(schedule.getId());
 
         for (WorkScheduleModification modification : modifications) {
-            ModificationPeriodChangeAction action = getModificationPeriodChangeAction(modification, newEffectiveFrom, newEffectiveUntil);
+            ModificationChangeAction action = getModificationPeriodChangeAction(modification, newEffectiveFrom, newEffectiveUntil);
 
             if (action == null) {
                 continue;
@@ -293,7 +293,7 @@ public class WorkScheduleService extends BaseReadOnlyService<WorkSchedule, WorkS
     }
 
     private void handleModificationPeriodChange(WorkScheduleModification modification, LocalDate effectiveFrom, LocalDate effectiveUntil) {
-        ModificationPeriodChangeAction action = getModificationPeriodChangeAction(modification, effectiveFrom, effectiveUntil);
+        ModificationChangeAction action = getModificationPeriodChangeAction(modification, effectiveFrom, effectiveUntil);
 
         if (action == null) {
             return;
@@ -311,15 +311,15 @@ public class WorkScheduleService extends BaseReadOnlyService<WorkSchedule, WorkS
         }
     }
 
-    private ModificationPeriodChangeAction getModificationPeriodChangeAction(WorkScheduleModification modification, LocalDate effectiveFrom, LocalDate effectiveUntil) {
+    private ModificationChangeAction getModificationPeriodChangeAction(WorkScheduleModification modification, LocalDate effectiveFrom, LocalDate effectiveUntil) {
         if (modification.getModificationType() == ModificationType.ADD) {
             if (!isDateWithinPeriod(modification.getDate(), effectiveFrom, effectiveUntil)) {
-                return ModificationPeriodChangeAction.ARCHIVE;
+                return ModificationChangeAction.ARCHIVE;
             }
         }
         else if (modification.getModificationType() == ModificationType.CANCEL) {
             if (!isDateWithinPeriod(modification.getSourceDate(), effectiveFrom, effectiveUntil)) {
-                return ModificationPeriodChangeAction.ARCHIVE;
+                return ModificationChangeAction.ARCHIVE;
             }
         }
         else {
@@ -327,13 +327,13 @@ public class WorkScheduleService extends BaseReadOnlyService<WorkSchedule, WorkS
             boolean targetInside = isDateWithinPeriod(modification.getDate(), effectiveFrom, effectiveUntil);
 
             if (!sourceInside && !targetInside) {
-                return ModificationPeriodChangeAction.ARCHIVE;
+                return ModificationChangeAction.ARCHIVE;
             }
             else if (!sourceInside) {
-                return ModificationPeriodChangeAction.CONVERT_TO_ADD;
+                return ModificationChangeAction.CONVERT_TO_ADD;
             }
             else if (!targetInside) {
-                return ModificationPeriodChangeAction.CONVERT_TO_CANCEL;
+                return ModificationChangeAction.CONVERT_TO_CANCEL;
             }
         }
 

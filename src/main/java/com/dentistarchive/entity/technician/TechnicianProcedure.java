@@ -3,7 +3,9 @@ package com.dentistarchive.entity.technician;
 import com.dentistarchive.entity.ArchivableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,11 +21,12 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TechnicianProcedure extends ArchivableBaseEntity {
 
-    @NotNull
+    @NotBlank
     @Column(nullable = false)
     String name;
 
     @NotNull
+    @PositiveOrZero
     @Column(nullable = false)
     BigDecimal price;
 

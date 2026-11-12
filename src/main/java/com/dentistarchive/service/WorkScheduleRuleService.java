@@ -73,6 +73,51 @@ public class WorkScheduleRuleService extends BaseReadOnlyService<WorkScheduleRul
         return workScheduleRuleRepository.save(workScheduleRule);
     }
 
+//    @Transactional(readOnly = true)
+//    public WorkSchedulePeriodChangePreviewDto previewPeriodChange(UUID id, WorkScheduleRuleCorrectDto updateDto) {
+//
+//        WorkScheduleRule rule = workScheduleRuleRepository.getByIdAndNotArchived(id).orElseThrow(() ->
+//                new EntityNotFoundByIdException(WorkScheduleRule.class, id));
+//
+//        accessValidator.validateAccess(rule);
+//        workScheduleRuleProvider.update(rule, updateDto);
+//        workScheduleRuleValidator.validate(rule);
+//
+//        var schedule = WorkScheduleLookupService.getAccessibleWorkSchedule(rule.getScheduleId());
+//
+//        workScheduleRuleValidator.validateUpdate(schedule);
+
+//        LocalDate newEffectiveFrom = updateDto.getEffectiveFrom();
+//        LocalDate newEffectiveUntil = updateDto.getEffectiveUntil();
+//
+//        List<WorkScheduleModificationImpactDto> affectedModifications = new ArrayList<>();
+//
+//        List<WorkScheduleModification> modifications = workScheduleModificationRepository.findByScheduleId(schedule.getId());
+//
+//        for (WorkScheduleModification modification : modifications) {
+//            ModificationChangeAction action = getModificationPeriodChangeAction(modification, newEffectiveFrom, newEffectiveUntil);
+//
+//            if (action == null) {
+//                continue;
+//            }
+//
+//            affectedModifications.add(WorkScheduleModificationImpactDto.builder()
+//                    .modificationId(modification.getId())
+//                    .currentType(modification.getModificationType())
+//                    .action(action)
+//                    .sourceDate(modification.getSourceDate())
+//                    .targetDate(modification.getDate())
+//                    .build()
+//            );
+//        }
+//
+//        return WorkSchedulePeriodChangePreviewDto.builder()
+//                .confirmationRequired(!affectedModifications.isEmpty())
+//                .affectedModifications(affectedModifications)
+//                .build();
+//    }
+
+
     @Transactional
     @Override
     public void archiveById(UUID id) {

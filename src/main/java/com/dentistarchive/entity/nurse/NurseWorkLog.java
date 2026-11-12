@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -24,7 +25,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NurseWorkLog extends ArchivableBaseEntity {
 
-    @NonNull
+    @NotNull
     @Column(name = "nurse_id", nullable = false)
     UUID nurseId;
 
@@ -45,6 +46,7 @@ public class NurseWorkLog extends ArchivableBaseEntity {
     @Column(name = "end_time", nullable = false)
     LocalTime endTime;
 
+    @PositiveOrZero
     @Column(name = "hourly_rate")
     BigDecimal hourlyRate;
 

@@ -2,6 +2,10 @@ package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.ClinicRentAgreementDto;
 import com.dentistarchive.enums.RentCalculationType;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,20 +26,28 @@ import java.util.UUID;
 @FieldNameConstants
 public class ClinicRentAgreementCreateDto extends BaseCreateDto<ClinicRentAgreementDto> {
 
+    @NotNull
     UUID clinicId;
 
+    @NotNull
     YearMonth effectiveFrom;
 
     YearMonth effectiveUntil;
 
+    @NotNull
     RentCalculationType rentCalculationType;
 
+    @PositiveOrZero
     BigDecimal fixedMonthlyRent;
 
+    @PositiveOrZero
     BigDecimal hourlyRate;
 
+    @PositiveOrZero
     BigDecimal overtimeHourlyRate;
 
+    @DecimalMin("0.00")
+    @DecimalMax("100.00")
     Integer collectionPercentage;
 
     String notes;

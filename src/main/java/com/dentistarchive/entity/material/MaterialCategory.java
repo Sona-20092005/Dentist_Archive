@@ -3,6 +3,7 @@ package com.dentistarchive.entity.material;
 import com.dentistarchive.entity.ArchivableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MaterialCategory extends ArchivableBaseEntity {
 
-    @NotNull
+    @NotBlank
     @Column(nullable = false)
     String name;
 

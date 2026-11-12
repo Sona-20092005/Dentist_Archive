@@ -54,7 +54,7 @@ public class NurseWorkLogService extends BaseReadOnlyService<NurseWorkLog, Nurse
     }
 
     @Transactional
-    public NurseWorkLog create(NurseWorkLogCreateDto createDto) {
+    public NurseWorkLog create(@Valid NurseWorkLogCreateDto createDto) {
         Nurse nurse = nurseService.getAccessibleNurse(createDto.getNurseId());
 
         var nurseWorkLog = nurseWorkLogProvider.create(createDto);

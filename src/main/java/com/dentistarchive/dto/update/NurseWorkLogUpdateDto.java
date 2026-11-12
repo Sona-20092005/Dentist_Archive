@@ -2,6 +2,8 @@ package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.NurseWorkLogDto;
 import com.dentistarchive.enums.NurseWorkType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,14 +24,19 @@ import java.time.LocalTime;
 @FieldNameConstants
 public class NurseWorkLogUpdateDto extends BaseUpdateDto<NurseWorkLogDto> {
 
+    @NotNull
     NurseWorkType workType;
 
+    @NotNull
     LocalDate date;
 
+    @NotNull
     LocalTime startTime;
 
+    @NotNull
     LocalTime endTime;
 
+    @PositiveOrZero
     BigDecimal hourlyRate;
 
     String notes;
