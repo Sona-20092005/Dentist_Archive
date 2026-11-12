@@ -47,7 +47,7 @@ public class MaterialPurchaseService extends BaseReadOnlyService<MaterialPurchas
     }
 
     @Transactional
-    public MaterialPurchase create(MaterialPurchaseCreateDto createDto) {
+    public MaterialPurchase create(@Valid MaterialPurchaseCreateDto createDto) {
         materialSupplierService.getAccessibleMaterialSupplier(createDto.getMaterialSupplierId());
 
         var materialPurchase = materialPurchaseProvider.create(createDto);

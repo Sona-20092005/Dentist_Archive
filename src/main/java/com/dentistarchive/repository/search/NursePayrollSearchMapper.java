@@ -24,6 +24,7 @@ import static com.querydsl.jpa.JPAExpressions.select;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class NursePayrollSearchMapper extends SearchMapper<NursePayrollFilter, NursePayrollSort> {
 
+    // TODO: 9/10/2026 add yearMonth filtration
     @Override
     protected Predicate toPredicateExceptSubFilters(NursePayrollFilter filter) {
         PredicateBuilder builder = PredicateBuilder.builder(PredicateBuilder.Aggregation.AND)
@@ -32,7 +33,7 @@ public class NursePayrollSearchMapper extends SearchMapper<NursePayrollFilter, N
                 .in(nursePayroll.compensationType, filter.getCompensationType())
                 .eq(nursePayroll.nurseId, filter.getNurseId())
                 .inRange(nursePayroll.createdAt, filter.getCreatedAt())
-                .inRange(nursePayroll.year, filter.getYear())
+//                .inRange(nursePayroll.yearMonth.getYear(), filter.getYear())
                 .inRange(nursePayroll.paymentDate, filter.getPaymentDate());
 
         BooleanExpression manuallyAdjusted =
@@ -81,9 +82,7 @@ public class NursePayrollSearchMapper extends SearchMapper<NursePayrollFilter, N
     @Override
     protected Sort.Order toOrder(NursePayrollSort sortName, SortDirection direction) {
         return switch (sortName) {
-
-            case YEAR -> SortBuilder.buildOrder(nursePayroll.year, direction);
-            case MONTH -> SortBuilder.buildOrder(nursePayroll.month, direction);
+            case YEARMONTH -> SortBuilder.buildOrder(nursePayroll.yearMonth, direction);
             case PAYMENT_DATE -> SortBuilder.buildOrder(nursePayroll.paymentDate, direction);
             case REGULAR_AMOUNT -> SortBuilder.buildOrder(nursePayroll.regularAmount, direction);
             case OVERTIME_AMOUNT -> SortBuilder.buildOrder(nursePayroll.overtimeAmount, direction);

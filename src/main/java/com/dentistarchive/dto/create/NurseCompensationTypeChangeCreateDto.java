@@ -2,6 +2,7 @@ package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.NurseCompensationTypeChangeDto;
 import com.dentistarchive.enums.CompensationType;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,9 +22,12 @@ import java.util.UUID;
 @FieldNameConstants
 public class NurseCompensationTypeChangeCreateDto extends BaseCreateDto<NurseCompensationTypeChangeDto>{
 
+    @NotNull
     UUID nurseId;
 
+    @NotNull
     CompensationType compensationType;
 
+    @NotNull
     YearMonth effectiveFrom;
 }

@@ -2,6 +2,8 @@ package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.NursePayrollDto;
 import com.dentistarchive.enums.NursePayrollStatus;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,14 +23,23 @@ import java.time.LocalDate;
 @FieldNameConstants
 public class NursePayrollUpdateDto extends BaseUpdateDto<NursePayrollDto> {
 
+    @NotNull
     NursePayrollStatus status;
 
+    @NotNull
+    @PositiveOrZero
     BigDecimal regularAmount;
 
+    @NotNull
+    @PositiveOrZero
     BigDecimal overtimeAmount;
 
+    @NotNull
+    @PositiveOrZero
     BigDecimal bonus;
 
+    @NotNull
+    @PositiveOrZero
     BigDecimal deduction;
 
     LocalDate paymentDate;

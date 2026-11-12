@@ -3,15 +3,16 @@ package com.dentistarchive.entity.nurse;
 import com.dentistarchive.entity.MutableBaseEntity;
 import com.dentistarchive.enums.CompensationType;
 import com.dentistarchive.enums.NursePayrollStatus;
-import com.dentistarchive.utils.MonthConverter;
+import com.dentistarchive.utils.YearMonthDateConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
+import java.time.YearMonth;
 import java.util.UUID;
 
 @Data
@@ -23,7 +24,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NursePayroll extends MutableBaseEntity {
 
-    @NonNull
+    @NotNull
     @Column(name = "nurse_id", nullable = false)
     UUID nurseId;
 
@@ -33,51 +34,55 @@ public class NursePayroll extends MutableBaseEntity {
     NursePayrollStatus status;
 
     @NotNull
+    @Convert(converter = YearMonthDateConverter.class)
     @Column(nullable = false)
-    Integer year;
-
-    @NotNull
-    @Convert(converter = MonthConverter.class)
-    @Column(nullable = false)
-    Month month;
+    YearMonth yearMonth;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(name = "calculated_regular_amount", nullable = false)
     BigDecimal calculatedRegularAmount = BigDecimal.ZERO;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(name = "regular_amount", nullable = false)
     BigDecimal regularAmount = BigDecimal.ZERO;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(name = "calculated_overtime_amount", nullable = false)
     BigDecimal calculatedOvertimeAmount = BigDecimal.ZERO;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(name = "overtime_amount", nullable = false)
     BigDecimal overtimeAmount = BigDecimal.ZERO;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(nullable = false)
     BigDecimal bonus = BigDecimal.ZERO;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(nullable = false)
     BigDecimal deduction = BigDecimal.ZERO;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(name = "regular_minutes_worked", nullable = false)
     Integer regularMinutesWorked = 0;
 
     @Builder.Default
     @NotNull
+    @PositiveOrZero
     @Column(name = "overtime_minutes_worked", nullable = false)
     Integer overtimeMinutesWorked = 0;
 

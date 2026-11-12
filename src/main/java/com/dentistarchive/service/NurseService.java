@@ -50,7 +50,7 @@ public class NurseService extends BaseReadOnlyService<Nurse, NurseFilter>
     }
 
     @Transactional
-    public Nurse create(NurseCreateDto createDto) {
+    public Nurse create(@Valid NurseCreateDto createDto) {
         clinicService.getAccessibleClinic(createDto.getClinicId());
 
         var nurse = nurseProvider.create(createDto);

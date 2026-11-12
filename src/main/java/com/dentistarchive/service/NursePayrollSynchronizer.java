@@ -155,7 +155,7 @@ public class NursePayrollSynchronizer {
         YearMonth month = YearMonth.from(log.getDate());
 
         return nursePayrollRepository
-                .findByNurseIdAndYearAndMonth(nurse.getId(), month.getYear(), month.getMonth())
+                .findByNurseIdAndYearAndMonth(nurse.getId(), month)
                 .orElseThrow(() ->
                         new EntityNotFoundByIdException(NursePayroll.class, nurse.getId())
                 );
@@ -312,7 +312,7 @@ public class NursePayrollSynchronizer {
     }
 
     private NursePayroll getPayroll(UUID nurseId, YearMonth yearMonth) {
-        return nursePayrollRepository.findByNurseIdAndYearAndMonth(nurseId, yearMonth.getYear(), yearMonth.getMonth())
+        return nursePayrollRepository.findByNurseIdAndYearAndMonth(nurseId, yearMonth)
                 .orElseThrow(() -> new EntityNotFoundByIdException(NursePayroll.class, nurseId));
     }
 

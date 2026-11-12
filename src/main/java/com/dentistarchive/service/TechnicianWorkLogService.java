@@ -57,7 +57,7 @@ public class TechnicianWorkLogService extends BaseReadOnlyService<TechnicianWork
     }
 
     @Transactional
-    public TechnicianWorkLog create(TechnicianWorkLogCreateDto createDto) {
+    public TechnicianWorkLog create(@Valid TechnicianWorkLogCreateDto createDto) {
         patientService.getAccessiblePatient(createDto.getPatientId());
         technicianProcedureService.getAccessibleTechnicianProcedure(createDto.getTechnicianProcedureId());
         technicianService.getAccessibleTechnician(createDto.getTechnicianId());

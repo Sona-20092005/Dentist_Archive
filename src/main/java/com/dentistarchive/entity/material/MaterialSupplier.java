@@ -4,6 +4,7 @@ import com.dentistarchive.entity.ArchivableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class MaterialSupplier extends ArchivableBaseEntity {
 
     @NotNull
+    @PositiveOrZero
     @Column(name = "unit_price", nullable = false)
     BigDecimal unitPrice;
 

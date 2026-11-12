@@ -1,8 +1,7 @@
 package com.dentistarchive.search.sort;
 
 public enum NursePayrollSort implements AvailableSorts {
-    YEAR,
-    MONTH,
+    YEARMONTH,
     PAYMENT_DATE,
     REGULAR_AMOUNT,
     OVERTIME_AMOUNT,

@@ -2,6 +2,7 @@ package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.NurseDto;
 import com.dentistarchive.enums.CompensationType;
+import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,29 +24,37 @@ import java.util.UUID;
 @FieldNameConstants
 public class NurseCreateDto extends BaseCreateDto<NurseDto>{
 
+    @NotBlank
     String name;
 
+    @PositiveOrZero
     BigDecimal baseSalary;
 
+    @PositiveOrZero
     BigDecimal hourlyRate;
 
+    @PositiveOrZero
     BigDecimal overtimeHourlyRate;
 
+    @Positive
     Integer contractedWeeklyHours;
 
     LocalDate hireDate;
 
     LocalDate terminationDate;
 
+    @NotNull
     LocalDate payrollStartDate;
 
+    @NotNull
     CompensationType compensationType;
 
-    List<String> phones;
+    List<@NotBlank String> phones;
 
-    List<String> emails;
+    List<@NotBlank @Email String> emails;
 
     String notes;
 
+    @NotNull
     UUID clinicId;
 }

@@ -28,7 +28,6 @@ public class ClinicRentAgreementProvider {
 
     public ClinicRentAgreement update(ClinicRentAgreement clinicRentAgreement, ClinicRentAgreementUpdateDto updateDto) {
 
-        clinicRentAgreement.setClinicId(updateDto.getClinicId());
         clinicRentAgreement.setEffectiveFrom(updateDto.getEffectiveFrom());
         clinicRentAgreement.setEffectiveUntil(updateDto.getEffectiveUntil());
         clinicRentAgreement.setRentCalculationType(updateDto.getRentCalculationType());

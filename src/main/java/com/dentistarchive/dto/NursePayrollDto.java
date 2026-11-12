@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
+import java.time.YearMonth;
 import java.util.UUID;
 
 
@@ -26,9 +26,7 @@ public class NursePayrollDto extends ArchivingBaseDto {
 
     NursePayrollStatus status;
 
-    Integer year;
-
-    Month month;
+    YearMonth yearMonth;
 
     BigDecimal calculatedRegularAmount;
 

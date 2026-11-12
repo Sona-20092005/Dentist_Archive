@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Month;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,23 +29,23 @@ public class NursePayrollRepository extends BaseReadOnlyRepository<NursePayroll,
     }
 
     @Transactional(readOnly = true)
-    public Optional<NursePayroll> findByNurseIdAndYearAndMonth(UUID nurseId, Integer year, Month month) {
-        return jpaRepository.findByNurseIdAndYearAndMonth(nurseId, year, month);
+    public Optional<NursePayroll> findByNurseIdAndYearAndMonth(UUID nurseId, YearMonth yearMonth) {
+        return jpaRepository.findByNurseIdAndYearMonth(nurseId, yearMonth);
     }
 
     @Transactional(readOnly = true)
-    public boolean existsByNurseIdAndYearAndMonth(UUID nurseId, Integer year, Month month) {
-        return jpaRepository.existsByNurseIdAndYearAndMonth(nurseId, year, month);
+    public boolean existsByNurseIdAndYearAndMonth(UUID nurseId, YearMonth yearMonth) {
+        return jpaRepository.existsByNurseIdAndYearMonth(nurseId, yearMonth);
     }
 
     @Transactional(readOnly = true)
     public List<NursePayroll> findAllByNurseIdOrderByYearDescMonthDesc(UUID nurseId) {
-        return jpaRepository.findAllByNurseIdOrderByYearDescMonthDesc(nurseId);
+        return jpaRepository.findAllByNurseIdOrderByYearMonthDesc(nurseId);
     }
 
     @Transactional(readOnly = true)
-    public List<NursePayroll> findAllByYearAndMonth(Integer year, Month month) {
-        return jpaRepository.findAllByYearAndMonth(year, month);
+    public List<NursePayroll> findAllByYearAndMonth(YearMonth yearMonth) {
+        return jpaRepository.findAllByYearMonth(yearMonth);
     }
 
 

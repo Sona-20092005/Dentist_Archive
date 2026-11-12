@@ -36,7 +36,7 @@ public class Appointment extends ArchivableBaseEntity {
     @Column(name = "end_time", nullable = false)
     LocalTime endTime;
 
-    @NonNull
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "appointment_status", nullable = false)
     AppointmentStatus appointmentStatus;
@@ -45,7 +45,7 @@ public class Appointment extends ArchivableBaseEntity {
     @Column(name = "appointment_status_sort_order", nullable = false)
     Integer appointmentStatusSortOrder;
 
-    @NonNull
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "appointment_scheduling_status", nullable = false)
     AppointmentSchedulingStatus appointmentSchedulingStatus;

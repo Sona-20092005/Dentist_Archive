@@ -47,7 +47,7 @@ public class MaterialService extends BaseReadOnlyService<Material, MaterialFilte
     }
 
     @Transactional
-    public Material create(MaterialCreateDto createDto) {
+    public Material create(@Valid MaterialCreateDto createDto) {
         materialCategoryService.getAccessibleMaterialCategory(createDto.getCategoryId());
         var material = materialProvider.create(createDto);
         material = save(material);

@@ -24,8 +24,7 @@ public class NursePayrollMapper implements EntityMapper<NursePayroll, NursePayro
 
         dto.setNurseId(nursePayroll.getNurseId());
         dto.setStatus(nursePayroll.getStatus());
-        dto.setYear(nursePayroll .getYear());
-        dto.setMonth(nursePayroll.getMonth());
+        dto.setYearMonth(nursePayroll.getYearMonth());
         dto.setCalculatedRegularAmount(nursePayroll.getCalculatedRegularAmount());
         dto.setRegularAmount(nursePayroll.getRegularAmount());
         dto.setCalculatedOvertimeAmount(nursePayroll.getCalculatedOvertimeAmount());

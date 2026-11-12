@@ -3,6 +3,10 @@ package com.dentistarchive.dto.update;
 import com.dentistarchive.dto.NurseDto;
 import com.dentistarchive.dto.create.BaseCreateDto;
 import com.dentistarchive.enums.RentCalculationType;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +17,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
-import java.util.UUID;
 
 @Data
 @SuperBuilder
@@ -23,21 +26,25 @@ import java.util.UUID;
 @FieldNameConstants
 public class ClinicRentAgreementUpdateDto extends BaseCreateDto<NurseDto> {
 
-    // TODO: 10/2/2026 don't change the clinicId, remove
-    UUID clinicId;
-
+    @NotNull
     YearMonth effectiveFrom;
 
     YearMonth effectiveUntil;
 
+    @NotNull
     RentCalculationType rentCalculationType;
 
+    @PositiveOrZero
     BigDecimal fixedMonthlyRent;
 
+    @PositiveOrZero
     BigDecimal hourlyRate;
 
+    @PositiveOrZero
     BigDecimal overtimeHourlyRate;
 
+    @DecimalMin("0.00")
+    @DecimalMax("100.00")
     Integer collectionPercentage;
 
     String notes;

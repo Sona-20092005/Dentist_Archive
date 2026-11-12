@@ -2,6 +2,8 @@ package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.RentOvertimeDto;
 import com.dentistarchive.dto.create.BaseCreateDto;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,6 +22,8 @@ import java.math.BigDecimal;
 @FieldNameConstants
 public class RentOvertimeUpdateDto extends BaseCreateDto<RentOvertimeDto> {
 
+    @NotNull
+    @PositiveOrZero
     BigDecimal hourlyRent;
 
     String notes;

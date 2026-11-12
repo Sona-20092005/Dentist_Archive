@@ -1,6 +1,8 @@
 package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.MaterialSupplierDto;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,8 +23,11 @@ import java.util.UUID;
 @FieldNameConstants
 public class MaterialSupplierCreateDto extends BaseCreateDto<MaterialSupplierDto>{
 
+    @NotNull
+    @PositiveOrZero
     BigDecimal unitPrice;
 
+    @NotNull
     OffsetDateTime lastPriceUpdate;
 
     String unitOfMeasure;
@@ -31,7 +36,9 @@ public class MaterialSupplierCreateDto extends BaseCreateDto<MaterialSupplierDto
 
     String notes;
 
+    @NotNull
     UUID materialId;
 
+    @NotNull
     UUID supplierId;
 }

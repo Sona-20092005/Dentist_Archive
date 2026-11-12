@@ -1,6 +1,7 @@
 package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.NurseCompensationTypeChangeDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +20,7 @@ import java.time.YearMonth;
 @FieldNameConstants
 public class NurseCompensationTypeChangeUpdateDto extends BaseUpdateDto<NurseCompensationTypeChangeDto> {
 
+    @NotNull
     YearMonth effectiveFrom;
 
 }

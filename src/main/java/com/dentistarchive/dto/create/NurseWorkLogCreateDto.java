@@ -2,6 +2,8 @@ package com.dentistarchive.dto.create;
 
 import com.dentistarchive.dto.NurseWorkLogDto;
 import com.dentistarchive.enums.NurseWorkType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,16 +25,22 @@ import java.util.UUID;
 @FieldNameConstants
 public class NurseWorkLogCreateDto extends BaseCreateDto<NurseWorkLogDto>{
 
+    @NotNull
     UUID nurseId;
 
+    @NotNull
     NurseWorkType workType;
 
+    @NotNull
     LocalDate date;
 
+    @NotNull
     LocalTime startTime;
 
+    @NotNull
     LocalTime endTime;
 
+    @PositiveOrZero
     BigDecimal hourlyRate;
 
     String notes;

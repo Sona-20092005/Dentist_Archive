@@ -60,7 +60,7 @@ public class NurseCompensationTypeChangeService extends BaseReadOnlyService<Nurs
 
     // TODO: 9/1/2026 maybe separate this whole create into two controller methods
     @Transactional
-    public NurseCompensationTypeChange create(NurseCompensationTypeChangeCreateDto createDto) {
+    public NurseCompensationTypeChange create(@Valid NurseCompensationTypeChangeCreateDto createDto) {
         Nurse nurse = nurseService.getAccessibleNurse(createDto.getNurseId());
 
         nurseCompensationTypeChangeValidator.validateCreate(createDto);

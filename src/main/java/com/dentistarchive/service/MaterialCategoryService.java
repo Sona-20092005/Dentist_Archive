@@ -52,7 +52,7 @@ public class MaterialCategoryService extends BaseReadOnlyService<MaterialCategor
     }
 
     @Transactional
-    public MaterialCategory create(MaterialCategoryCreateDto createDto) {
+    public MaterialCategory create(@Valid MaterialCategoryCreateDto createDto) {
 
         var materialCategory = materialCategoryProvider.create(createDto, AuthHolder.getUserId().orElseThrow());
         materialCategory = save(materialCategory);

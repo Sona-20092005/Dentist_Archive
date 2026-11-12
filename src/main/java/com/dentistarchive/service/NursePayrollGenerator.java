@@ -26,8 +26,7 @@ public class NursePayrollGenerator {
 
         return NursePayroll.builder()
                 .nurseId(nurse.getId())
-                .year(month.getYear())
-                .month(month.getMonth())
+                .yearMonth(month)
                 .status(NursePayrollStatus.DRAFT)
                 .compensationType(nurse.getCompensationType())
                 .regularAmount(nurse.getCompensationType() == CompensationType.SALARY
@@ -50,7 +49,7 @@ public class NursePayrollGenerator {
         List<Nurse> nurses = nurseRepository.findAllForPayrollGeneration(monthStart, monthEnd);
 
         for (Nurse nurse : nurses) {
-            if (payrollRepository.existsByNurseIdAndYearAndMonth(nurse.getId(), yearMonth.getYear(), yearMonth.getMonth())) {
+            if (payrollRepository.existsByNurseIdAndYearAndMonth(nurse.getId(), yearMonth)) {
                 continue;
             }
 
@@ -67,7 +66,7 @@ public class NursePayrollGenerator {
         YearMonth current = YearMonth.now();
 
         while (!start.isAfter(current)) {
-            if (!payrollRepository.existsByNurseIdAndYearAndMonth(nurse.getId(), start.getYear(), start.getMonth())) {
+            if (!payrollRepository.existsByNurseIdAndYearAndMonth(nurse.getId(), start)) {
                 payrollRepository.save(createPayroll(nurse, start));
             }
 
@@ -77,7 +76,7 @@ public class NursePayrollGenerator {
 
     public NursePayroll getOrCreatePayroll(Nurse nurse, YearMonth month) {
         return payrollRepository
-                .findByNurseIdAndYearAndMonth(nurse.getId(), month.getYear(), month.getMonth())
+                .findByNurseIdAndYearAndMonth(nurse.getId(), month)
                 .orElseGet(() -> payrollRepository.save(createPayroll(nurse, month)));
     }
 }

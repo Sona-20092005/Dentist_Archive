@@ -53,3 +53,5 @@ databaseChangeLog:
       file: db/changelog/changes/2026-10_22_update_clinic.sql
   - include:
       file: db/changelog/changes/2026-10_27_work_schedule_modification_and_rule.sql
+  - include:
+      file: db/changelog/changes/2026-11_12_update_nurse_payroll.sql

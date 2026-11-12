@@ -1,6 +1,9 @@
 package com.dentistarchive.dto.update;
 
 import com.dentistarchive.dto.TechnicianWorkLogDto;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,20 +25,26 @@ import java.util.UUID;
 @FieldNameConstants
 public class TechnicianWorkLogUpdateDto extends BaseUpdateDto<TechnicianWorkLogDto> {
 
+    @NotNull
     LocalDate requestedDate;
 
     LocalDate completedDate;
 
+    @PositiveOrZero
     BigDecimal unitPrice;
 
+    @Positive
     Integer quantity;
 
-    List<Integer> toothNumbers;
+    List<@NotNull Integer> toothNumbers;
 
+    @NotNull
     UUID technicianProcedureId;
 
+    @NotNull
     UUID patientId;
 
+    @NotNull
     Boolean isPaid;
 
     LocalDate paymentDate;

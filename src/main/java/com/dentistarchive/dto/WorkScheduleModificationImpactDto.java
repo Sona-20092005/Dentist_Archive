@@ -1,6 +1,7 @@
 package com.dentistarchive.dto;
 
-import com.dentistarchive.enums.ModificationPeriodChangeAction;
+import com.dentistarchive.enums.ModificationChangeAction;
+import com.dentistarchive.enums.ModificationChangeActionReason;
 import com.dentistarchive.enums.ModificationType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +19,8 @@ import java.util.UUID;
 public class WorkScheduleModificationImpactDto {
     UUID modificationId;
     ModificationType currentType;
-    ModificationPeriodChangeAction action;
+    ModificationChangeAction action;
     LocalDate sourceDate;
     LocalDate targetDate;
+    ModificationChangeActionReason reason;
 }

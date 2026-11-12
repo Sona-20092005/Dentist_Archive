@@ -7,7 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
@@ -26,22 +26,26 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Nurse extends ArchivableBaseEntity {
 
-    @NotNull
+    @NotBlank
     String name;
 
+    @PositiveOrZero
     @Column(name = "base_salary")
     BigDecimal baseSalary;
 
+    @PositiveOrZero
     @Column(name = "hourly_rate")
     BigDecimal hourlyRate;
 
+    @PositiveOrZero
     @Column(name = "overtime_hourly_rate")
     BigDecimal overtimeHourlyRate;
 
+    @Positive
     @Column(name = "contracted_weekly_hours")
     Integer contractedWeeklyHours;
 
-    @NonNull
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "compensation_type")
     CompensationType compensationType;
@@ -58,19 +62,17 @@ public class Nurse extends ArchivableBaseEntity {
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    List<String> phones;
+    List<@NotBlank String> phones;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
-    List<String> emails;
+    List<@NotBlank @Email String> emails;
 
     String notes;
 
-    @NonNull
+    @NotNull
     @Column(name = "clinic_id", nullable = false)
     UUID clinicId;
 }
-
-// TODO: 9/4/2026 combine year and month into a single field
 
 

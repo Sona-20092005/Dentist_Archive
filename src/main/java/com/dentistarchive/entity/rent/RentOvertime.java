@@ -3,6 +3,8 @@ package com.dentistarchive.entity.rent;
 import com.dentistarchive.entity.ArchivableBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,15 +20,16 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RentOvertime extends ArchivableBaseEntity {
 
-    @NonNull
+    @NotNull
     @Column(name = "work_schedule_modification_id", nullable = false)
     UUID workScheduleModificationId;
 
-    @NonNull
+    @NotNull
+    @PositiveOrZero
     @Column(name = "hourly_rent", nullable = false)
     BigDecimal hourlyRent;
 
-    @NonNull
+    @NotNull
     @Column(nullable = false)
     Boolean locked;
 
